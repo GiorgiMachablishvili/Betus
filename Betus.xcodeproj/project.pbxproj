@@ -13,6 +13,8 @@
 		E32C49F82CF5FDE500C650B3 /* UIImage+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C49F72CF5FDE500C650B3 /* UIImage+Extention.swift */; };
 		E32E6D132CF71AB600C17240 /* HardWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E6D122CF71AB600C17240 /* HardWorkoutViewController.swift */; };
 		E34103DD2CF627E700CB0CF6 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34103DC2CF627E700CB0CF6 /* ProfileViewController.swift */; };
+		E359415C2CFCD29400624C50 /* AddWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */; };
+		E359415E2CFCD2B300624C50 /* AddWorkoutViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E359415D2CFCD2B300624C50 /* AddWorkoutViewCell.swift */; };
 		E3667EE82CF4F17C00D1AE68 /* WorkoutInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EE72CF4F17C00D1AE68 /* WorkoutInfoCell.swift */; };
 		E3667EEA2CF4F33200D1AE68 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EE92CF4F33200D1AE68 /* LikeView.swift */; };
 		E3667EEC2CF4F36500D1AE68 /* WorkoutInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EEB2CF4F36500D1AE68 /* WorkoutInfoView.swift */; };
@@ -49,9 +51,13 @@
 		E39C84192CF4BB0D003177BF /* MainBottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84182CF4BB0D003177BF /* MainBottomButtonView.swift */; };
 		E39C84222CF4BD46003177BF /* WorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84212CF4BD46003177BF /* WorkoutViewController.swift */; };
 		E39C84242CF4BD5B003177BF /* LikedWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84232CF4BD5B003177BF /* LikedWorkoutViewController.swift */; };
-		E39C84262CF4BD9E003177BF /* PlusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84252CF4BD9E003177BF /* PlusViewController.swift */; };
 		E3AE85072CF751AA00202CBB /* WarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE85062CF751AA00202CBB /* WarningView.swift */; };
-		E3B7E30B2CF876FC00ABCDC4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B7E30A2CF876FC00ABCDC4 /* User.swift */; };
+		E3B785CC2CF9A79000A0492A /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785CB2CF9A79000A0492A /* Alamofire */; };
+		E3B785CE2CF9A79000A0492A /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785CD2CF9A79000A0492A /* AlamofireDynamic */; };
+		E3B785D12CF9A89800A0492A /* NetworkManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B785D02CF9A89800A0492A /* NetworkManger.swift */; };
+		E3B785DA2CF9D63F00A0492A /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785D92CF9D63F00A0492A /* ProgressHUD */; };
+		E3B785DD2CF9D68300A0492A /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785DC2CF9D68300A0492A /* SVProgressHUD */; };
+		E3B7E30B2CF876FC00ABCDC4 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B7E30A2CF876FC00ABCDC4 /* UserInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +67,8 @@
 		E32C49F72CF5FDE500C650B3 /* UIImage+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extention.swift"; sourceTree = "<group>"; };
 		E32E6D122CF71AB600C17240 /* HardWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardWorkoutViewController.swift; sourceTree = "<group>"; };
 		E34103DC2CF627E700CB0CF6 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutViewController.swift; sourceTree = "<group>"; };
+		E359415D2CFCD2B300624C50 /* AddWorkoutViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutViewCell.swift; sourceTree = "<group>"; };
 		E3667EE72CF4F17C00D1AE68 /* WorkoutInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfoCell.swift; sourceTree = "<group>"; };
 		E3667EE92CF4F33200D1AE68 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
 		E3667EEB2CF4F36500D1AE68 /* WorkoutInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfoView.swift; sourceTree = "<group>"; };
@@ -97,9 +105,9 @@
 		E39C84182CF4BB0D003177BF /* MainBottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBottomButtonView.swift; sourceTree = "<group>"; };
 		E39C84212CF4BD46003177BF /* WorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutViewController.swift; sourceTree = "<group>"; };
 		E39C84232CF4BD5B003177BF /* LikedWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedWorkoutViewController.swift; sourceTree = "<group>"; };
-		E39C84252CF4BD9E003177BF /* PlusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusViewController.swift; sourceTree = "<group>"; };
 		E3AE85062CF751AA00202CBB /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
-		E3B7E30A2CF876FC00ABCDC4 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E3B785D02CF9A89800A0492A /* NetworkManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManger.swift; sourceTree = "<group>"; };
+		E3B7E30A2CF876FC00ABCDC4 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +115,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3B785DD2CF9D68300A0492A /* SVProgressHUD in Frameworks */,
+				E3B785DA2CF9D63F00A0492A /* ProgressHUD in Frameworks */,
+				E3B785CC2CF9A79000A0492A /* Alamofire in Frameworks */,
+				E3B785CE2CF9A79000A0492A /* AlamofireDynamic in Frameworks */,
 				E39C840D2CF4AC5E003177BF /* SnapKit in Frameworks */,
 				E39C840F2CF4AC5E003177BF /* SnapKit-Dynamic in Frameworks */,
 			);
@@ -162,6 +174,7 @@
 			children = (
 				E39C83EC2CF4A619003177BF /* App */,
 				E39C83ED2CF4A641003177BF /* Scenas */,
+				E3B785CF2CF9A86D00A0492A /* NetworkManager */,
 				E3B7E3092CF876C500ABCDC4 /* Models */,
 				E39C84102CF4AD47003177BF /* Constraints */,
 				E39C841A2CF4BC74003177BF /* Managers */,
@@ -296,16 +309,25 @@
 		E39C84202CF4BD24003177BF /* Plus */ = {
 			isa = PBXGroup;
 			children = (
-				E39C84252CF4BD9E003177BF /* PlusViewController.swift */,
+				E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */,
+				E359415D2CFCD2B300624C50 /* AddWorkoutViewCell.swift */,
 				E39997DF2CF7AD4300CF8E48 /* AddTaskView.swift */,
 			);
 			path = Plus;
 			sourceTree = "<group>";
 		};
+		E3B785CF2CF9A86D00A0492A /* NetworkManager */ = {
+			isa = PBXGroup;
+			children = (
+				E3B785D02CF9A89800A0492A /* NetworkManger.swift */,
+			);
+			path = NetworkManager;
+			sourceTree = "<group>";
+		};
 		E3B7E3092CF876C500ABCDC4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E3B7E30A2CF876FC00ABCDC4 /* User.swift */,
+				E3B7E30A2CF876FC00ABCDC4 /* UserInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -329,6 +351,10 @@
 			packageProductDependencies = (
 				E39C840C2CF4AC5E003177BF /* SnapKit */,
 				E39C840E2CF4AC5E003177BF /* SnapKit-Dynamic */,
+				E3B785CB2CF9A79000A0492A /* Alamofire */,
+				E3B785CD2CF9A79000A0492A /* AlamofireDynamic */,
+				E3B785D92CF9D63F00A0492A /* ProgressHUD */,
+				E3B785DC2CF9D68300A0492A /* SVProgressHUD */,
 			);
 			productName = Betus;
 			productReference = E39C83D52CF4A573003177BF /* Betus.app */;
@@ -360,6 +386,9 @@
 			mainGroup = E39C83CC2CF4A573003177BF;
 			packageReferences = (
 				E39C840B2CF4AC5E003177BF /* XCRemoteSwiftPackageReference "SnapKit" */,
+				E3B785CA2CF9A79000A0492A /* XCRemoteSwiftPackageReference "Alamofire" */,
+				E3B785D82CF9D63F00A0492A /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+				E3B785DB2CF9D68300A0492A /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
 			);
 			productRefGroup = E39C83D62CF4A573003177BF /* Products */;
 			projectDirPath = "";
@@ -403,18 +432,19 @@
 				E39C83DD2CF4A573003177BF /* SignInView.swift in Sources */,
 				E39997E02CF7AD4300CF8E48 /* AddTaskView.swift in Sources */,
 				E39C84242CF4BD5B003177BF /* LikedWorkoutViewController.swift in Sources */,
-				E39C84262CF4BD9E003177BF /* PlusViewController.swift in Sources */,
 				E32C49F42CF5EAFF00C650B3 /* TimerViewController.swift in Sources */,
 				E39C83D92CF4A573003177BF /* AppDelegate.swift in Sources */,
-				E3B7E30B2CF876FC00ABCDC4 /* User.swift in Sources */,
+				E3B7E30B2CF876FC00ABCDC4 /* UserInfo.swift in Sources */,
 				E3AE85072CF751AA00202CBB /* WarningView.swift in Sources */,
 				E39C84142CF4B4B5003177BF /* UiColorGradiation+Exttention.swift in Sources */,
 				E3667EE82CF4F17C00D1AE68 /* WorkoutInfoCell.swift in Sources */,
+				E3B785D12CF9A89800A0492A /* NetworkManger.swift in Sources */,
 				E3667EEE2CF4F5CB00D1AE68 /* TaskView.swift in Sources */,
 				E32C49F62CF5EB2900C650B3 /* CircularProgressView.swift in Sources */,
 				E39C840A2CF4AB69003177BF /* UIColor+Extention.swift in Sources */,
 				E3667EEA2CF4F33200D1AE68 /* LikeView.swift in Sources */,
 				E32E6D132CF71AB600C17240 /* HardWorkoutViewController.swift in Sources */,
+				E359415E2CFCD2B300624C50 /* AddWorkoutViewCell.swift in Sources */,
 				E39C84082CF4A978003177BF /* UIFont+Extension.swift in Sources */,
 				E39C84222CF4BD46003177BF /* WorkoutViewController.swift in Sources */,
 				E39C84122CF4AD6D003177BF /* Constraints.swift in Sources */,
@@ -425,6 +455,7 @@
 				E39997E62CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift in Sources */,
 				E39997E42CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift in Sources */,
 				E39C84172CF4BACC003177BF /* MainViewController.swift in Sources */,
+				E359415C2CFCD29400624C50 /* AddWorkoutViewController.swift in Sources */,
 				E34103DD2CF627E700CB0CF6 /* ProfileViewController.swift in Sources */,
 				E39C84192CF4BB0D003177BF /* MainBottomButtonView.swift in Sources */,
 				E32C49DF2CF5C19700C650B3 /* HomeHeaderView.swift in Sources */,
@@ -650,6 +681,30 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		E3B785CA2CF9A79000A0492A /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		E3B785D82CF9D63F00A0492A /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.3;
+			};
+		};
+		E3B785DB2CF9D68300A0492A /* XCRemoteSwiftPackageReference "SVProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVProgressHUD/SVProgressHUD";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -662,6 +717,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E39C840B2CF4AC5E003177BF /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = "SnapKit-Dynamic";
+		};
+		E3B785CB2CF9A79000A0492A /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3B785CA2CF9A79000A0492A /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		E3B785CD2CF9A79000A0492A /* AlamofireDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3B785CA2CF9A79000A0492A /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = AlamofireDynamic;
+		};
+		E3B785D92CF9D63F00A0492A /* ProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3B785D82CF9D63F00A0492A /* XCRemoteSwiftPackageReference "ProgressHUD" */;
+			productName = ProgressHUD;
+		};
+		E3B785DC2CF9D68300A0492A /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3B785DB2CF9D68300A0492A /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

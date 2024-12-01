@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import AuthenticationServices
+import Alamofire
+import ProgressHUD
 
 class SignInView: UIViewController {
 
@@ -63,28 +65,28 @@ class SignInView: UIViewController {
 
         setup()
         setupConstraints()
-//        setupGradientBackground()
+        //        setupGradientBackground()
         view.backgroundColor = UIColor.init(hexString: "101538")
         view.applyGradientBackground()
     }
 
 
-//    private func setupGradientBackground() {
-//        let gradientView = UIView.gradientViewWithCenterYellow(
-//            size: CGSize(width: view.bounds.width, height: view.bounds.height)
-//        )
-//        gradientView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(gradientView)
-//        view.sendSubviewToBack(gradientView)
-//
-//        gradientView.snp.makeConstraints { make in
-////            make.top.equalTo(view.snp.top).offset(-204)
-////            make.leading.equalTo(view.snp.leading).offset(-210)
-////            make.height.equalTo(258)
-////            make.width.equalTo(404)
-//            make.edges.equalToSuperview()
-//        }
-//    }
+    //    private func setupGradientBackground() {
+    //        let gradientView = UIView.gradientViewWithCenterYellow(
+    //            size: CGSize(width: view.bounds.width, height: view.bounds.height)
+    //        )
+    //        gradientView.translatesAutoresizingMaskIntoConstraints = false
+    //        view.addSubview(gradientView)
+    //        view.sendSubviewToBack(gradientView)
+    //
+    //        gradientView.snp.makeConstraints { make in
+    ////            make.top.equalTo(view.snp.top).offset(-204)
+    ////            make.leading.equalTo(view.snp.leading).offset(-210)
+    ////            make.height.equalTo(258)
+    ////            make.width.equalTo(404)
+    //            make.edges.equalToSuperview()
+    //        }
+    //    }
 
     private func setup() {
         view.addSubview(singInLabel)
@@ -118,65 +120,80 @@ class SignInView: UIViewController {
         }
     }
 
-    //TODO: how to make registration with apple account
-    //TODO: data for backend
     @objc func clickSignInWithAppleButton() {
-                let mainVC = MainViewController()
-                navigationController?.pushViewController(mainVC, animated: true)
+        let authorizationProvider = ASAuthorizationAppleIDProvider()
+        let request = authorizationProvider.createRequest()
+        request.requestedScopes = [.email, .fullName]
 
-//        startSignInWithAppleFlow()
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.performRequests()
     }
 
     @objc func clickLogInAsGuestButton() {
-
+        let mainVC = MainViewController()
+        navigationController?.pushViewController(mainVC, animated: true)
     }
 
-//    private func startSignInWithAppleFlow() {
-//        let request = ASAuthorizationAppleIDProvider().createRequest()
-//        request.requestedScopes = [.fullName, .email]
-//
-//        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-//        authorizationController.delegate = self
-//        authorizationController.presentationContextProvider = self
-//        authorizationController.performRequests()
-//    }
+    private func createUser() {
+        NetworkManager.shared.showProgressHud(true, animated: true)
+        let appleToken = UserDefaults.standard.string(forKey: "AccountCredential") ?? ""
+        let pushToken = UserDefaults.standard.string(forKey: "PushToken") ?? ""
+
+        // Prepare parameters
+        let parameters: [String: Any] = [
+            "auth_token": appleToken,
+            "push_token": pushToken
+        ]
+
+        // Make the network request
+        NetworkManager.shared.post(
+            url: "https://btus-exercises-77d51fa316c7.herokuapp.com/api/v1/users",
+            parameters: parameters,
+            headers: nil
+        ) { [weak self] (result: Result<UserInfo>) in
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                NetworkManager.shared.showProgressHud(false, animated: false)
+            }
+
+            switch result {
+            case .success(let userInfo):
+                DispatchQueue.main.async {
+                    // Navigate to the main dashboard or show success message
+                    print("User created: \(userInfo)")
+                    UserDefaults.standard.setValue(userInfo.id, forKey: "userId")
+                    self.showAlert(title: "Success", description: "User created successfully.")
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    // Show error message
+                    self.showAlert(title: "Error", description: error.localizedDescription)
+                }
+                print("Error: \(error)")
+            }
+        }
+    }
+
+    private func showAlert(title: String, description: String) {
+        let alert = UIAlertController(title: title, message: description, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
 }
 
-//extension SignInView: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-//
-//    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-//        return view.window!
-//    }
-//
-//    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-//        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-//            let userIdentifier = appleIDCredential.user
-//            let fullName = appleIDCredential.fullName
-//            let email = appleIDCredential.email
-//
-//            // Extract user details
-//            let firstName = fullName?.givenName ?? ""
-//            let lastName = fullName?.familyName ?? ""
-//
-//            print("User Identifier: \(userIdentifier)")
-//            print("Full Name: \(firstName) \(lastName)")
-//            print("Email: \(email ?? "No email provided")")
-//
-//            // Save user details to Firebase or your backend
-//            saveUserToBackend(userId: userIdentifier, firstName: firstName, lastName: lastName, email: email)
-//
-//            // Navigate to the next screen
-//            let mainVC = MainViewController()
-//            navigationController?.pushViewController(mainVC, animated: true)
-//        }
-//    }
-//
-//    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-//        print("Sign in with Apple failed: \(error.localizedDescription)")
-//
-//        // Display an alert
-//        let alert = UIAlertController(title: "Sign In Failed", message: "Unable to complete sign in with Apple. Please try again.", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//        present(alert, animated: true, completion: nil)
-//    }
-//}
+extension SignInView: ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
+
+        UserDefaults.standard.setValue(credential.user, forKey: "AccountCredential")
+        createUser()
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("Authorization failed: \(error.localizedDescription)")
+        showAlert(title: "Sign In Failed", description: error.localizedDescription)
+    }
+}
+

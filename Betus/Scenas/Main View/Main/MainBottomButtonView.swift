@@ -87,7 +87,6 @@ class MainBottomButtonView: UIView {
         }
     }
 
-    //TODO: button image size changes when press button
     private func resetButtonImages() {
         homeButton.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         infoWorkOutButton.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)

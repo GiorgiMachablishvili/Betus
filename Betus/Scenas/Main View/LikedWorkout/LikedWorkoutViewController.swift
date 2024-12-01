@@ -26,6 +26,44 @@ class LikedWorkoutViewController: UIViewController {
         return view
     }()
 
+    private lazy var infoLabel: UILabel = {
+        let view = UILabel(frame: .zero)
+        view.textAlignment = .center
+        view.text = "You don't have any selected workouts yet"
+        view.textColor = UIColor(hexString: "FFFFFF")
+        view.font = UIFont.latoBold(size: 16)
+        view.numberOfLines = 2
+        view.isHidden = true
+        return view
+    }()
+
+    private lazy var forOrderingStoreLabel: UILabel = {
+        let view = UILabel(frame: .zero)
+        view.textAlignment = .center
+        view.text = "In order for us to store your favourites you must be logged in."
+        view.textColor = UIColor(hexString: "FFFFFF")
+        view.font = UIFont.latoBold(size: 16)
+        view.numberOfLines = 2
+        view.isHidden = true
+        return view
+    }()
+
+    private lazy var signInWithAppleButton: UIButton = {
+        let view = UIButton(frame: .zero)
+        view.setTitle("Sign In with Apple", for: .normal)
+        view.setTitleColor(UIColor(hexString: "000000"), for: .normal)
+        view.backgroundColor = UIColor(hexString: "FFFFFF")
+        view.layer.cornerRadius = 16
+        view.layer.borderColor = UIColor(hexString: "FFFFFF").cgColor
+        view.layer.borderWidth = 1
+        view.setImage(UIImage(named: "appleLogo"), for: .normal)
+        view.imageView?.contentMode = .scaleAspectFit
+        view.imageEdgeInsets = UIEdgeInsets(top: 16, left: -5, bottom: 16, right: 0)
+        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        view.addTarget(self, action: #selector(clickSignInWithAppleButton), for: .touchUpInside)
+        view.isHidden = true
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +75,9 @@ class LikedWorkoutViewController: UIViewController {
 
     private func setup() {
         view.addSubview(collectionView)
+        view.addSubview(infoLabel)
+        view.addSubview(forOrderingStoreLabel)
+        view.addSubview(signInWithAppleButton)
     }
 
     private func setupConstraints() {
@@ -45,6 +86,28 @@ class LikedWorkoutViewController: UIViewController {
             make.top.equalTo(view.snp.top).offset(10)
             make.bottom.equalToSuperview()
         }
+
+        infoLabel.snp.remakeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(230)
+        }
+
+        forOrderingStoreLabel.snp.remakeConstraints { make in
+            make.top.equalTo(view.snp.top).offset(367)
+            make.centerX.equalTo(view.snp.centerX)
+            make.width.equalTo(366)
+        }
+
+        signInWithAppleButton.snp.remakeConstraints { make in
+            make.top.equalTo(forOrderingStoreLabel.snp.bottom).offset(16)
+            make.centerX.equalTo(view.snp.centerX)
+            make.width.equalTo(366)
+            make.height.equalTo(56)
+        }
+    }
+
+    @objc private func clickSignInWithAppleButton() {
+
     }
 }
 

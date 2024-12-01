@@ -14,7 +14,7 @@ protocol MainBottomButtonViewDelegate: AnyObject {
     func pressPlusButton()
 }
 
-class MainViewController: UIViewController, MainBottomButtonViewDelegate, PlusViewControllerDelegate {
+class MainViewController: UIViewController, MainBottomButtonViewDelegate, AddWorkoutViewControllerDelegate {
     func shouldHideMainBottomButtonView(_ hide: Bool) {
         mainBottomButtons.isHidden = hide
     }
@@ -28,8 +28,8 @@ class MainViewController: UIViewController, MainBottomButtonViewDelegate, PlusVi
 
     private lazy var homeVC = WorkoutViewController()
     private lazy var heartVC = LikedWorkoutViewController()
-    private lazy var plusVC: PlusViewController = {
-        let view = PlusViewController()
+    private lazy var plusVC: AddWorkoutViewController = {
+        let view = AddWorkoutViewController()
         view.delegate = self
         return view
     }()

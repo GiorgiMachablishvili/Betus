@@ -99,7 +99,7 @@ class AddTaskView: UIView {
         setup()
         setupConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -157,4 +157,9 @@ class AddTaskView: UIView {
         delegate?.didPressAddButton(taskName: taskName, timer: timer, description: description)
     }
 
+    func configure(taskName: String, timer: String, description: String) {
+        nameWorkoutAddTextfield.text = taskName
+        timerAddTextfield.text = timer
+        descriptionWorkoutAddTextfield.text = description
+    }
 }

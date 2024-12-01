@@ -34,7 +34,6 @@ class WorkoutViewController: UIViewController {
         setupConstraints()
     }
 
-
     private func setup() {
         view.addSubview(collectionView)
     }

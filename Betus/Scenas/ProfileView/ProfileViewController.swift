@@ -181,7 +181,6 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    //TODO: cant press whole button
     @objc private func pressLeftButton() {
         print("did press back") 
         navigationController?.popViewController(animated: true)

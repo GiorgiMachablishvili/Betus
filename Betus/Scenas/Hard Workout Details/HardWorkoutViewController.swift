@@ -170,10 +170,10 @@ class HardWorkoutViewController: UIViewController {
         view.addSubview(workoutLevelLabel)
         view.addSubview(likeView)
         view.addSubview(workoutImage)
-        view.addSubview(workoutDetailsYellowButton)
         view.addSubview(workoutInfoView)
-        view.addSubview(workoutDetailsWhiteButton)
+        view.addSubview(workoutDetailsYellowButton)
         view.addSubview(reminderLabel)
+        view.addSubview(workoutDetailsWhiteButton)
         view.addSubview(startWorkoutButton)
         view.addSubview(darkOverlay)
         view.addSubview(warningView)
@@ -218,13 +218,6 @@ class HardWorkoutViewController: UIViewController {
             make.height.equalTo(287)
         }
 
-        workoutDetailsYellowButton.snp.remakeConstraints { make in
-            make.top.equalTo(workoutImage.snp.bottom).offset(-23)
-            make.bottom.equalTo(workoutInfoView.snp.top).offset(28)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(131)
-        }
-
         workoutInfoView.snp.remakeConstraints { make in
             make.top.equalTo(workoutImage.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
@@ -232,9 +225,9 @@ class HardWorkoutViewController: UIViewController {
             make.height.equalTo(122)
         }
 
-        workoutDetailsWhiteButton.snp.remakeConstraints { make in
-            make.top.equalTo(workoutInfoView.snp.bottom).offset(-23)
-            make.bottom.equalTo(reminderLabel.snp.top).offset(28)
+        workoutDetailsYellowButton.snp.remakeConstraints { make in
+            make.top.equalTo(workoutImage.snp.bottom).offset(-23)
+            make.bottom.equalTo(workoutInfoView.snp.top).offset(28)
             make.centerX.equalToSuperview()
             make.width.equalTo(131)
         }
@@ -244,6 +237,13 @@ class HardWorkoutViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.width.equalTo(366)
             make.height.equalTo(111)
+        }
+
+        workoutDetailsWhiteButton.snp.remakeConstraints { make in
+            make.top.equalTo(workoutInfoView.snp.bottom).offset(-23)
+            make.bottom.equalTo(reminderLabel.snp.top).offset(28)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(131)
         }
 
         startWorkoutButton.snp.remakeConstraints { make in
