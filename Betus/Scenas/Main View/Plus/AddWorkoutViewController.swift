@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 protocol AddWorkoutViewControllerDelegate: AnyObject {
     func shouldHideMainBottomButtonView(_ hide: Bool)
@@ -95,7 +96,6 @@ class AddWorkoutViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-
 }
 
 extension AddWorkoutViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -118,10 +118,35 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
         navigationController?.pushViewController(profileView, animated: true)
     }
 
-    func didPressRightButton() {
-        let mainViewController = MainViewController()
-        navigationController?.pushViewController(mainViewController, animated: true)
+    func didPressRightButton(workoutName: String, workoutImage: UIImage) {
+        guard let workoutImageData = workoutImage.jpegData(compressionQuality: 0.8) else { return }
+
+        guard let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell else { return }
+        let selectedLevel = visibleCell.getSelectedLevel()
+        let parameters: [String: Any] = [
+            "task_count": 0,
+            "time": 0,
+            "level": selectedLevel,
+            "completers": [],
+            "details": workoutName,
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "image": workoutImageData.base64EncodedString(),
+            "creator_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        ]
+
+        // Make PUT request
+        NetworkManager.shared.put(url: "https://betus-orange-nika-46706b42b39b.herokuapp.com", parameters: parameters, headers: nil) { (result: Result<UserInfo>) in
+            switch result {
+            case .success:
+                print("Workout saved successfully.")
+            case .failure(let error):
+                print("Error saving workout: \(error.localizedDescription)")
+            }
+        }
+//        let mainViewController = MainViewController()
+//        navigationController?.pushViewController(mainViewController, animated: true)
     }
+
 
     func shouldHideMainBottomButtonView(_ hide: Bool) {
         delegate?.shouldHideMainBottomButtonView(hide)

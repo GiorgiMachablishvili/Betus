@@ -50,7 +50,7 @@ class MainBottomButtonView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         setup()
         setupConstraints()
         homeButton.backgroundColor = UIColor(hexString: "E5D820")

@@ -24,12 +24,22 @@ class LikeWorkoutViewCell: UICollectionViewCell {
         return view
     }()
 
-    private lazy var likeView: LikeView = {
-        let view = LikeView()
+    private lazy var likeViewButton: UIButton = {
+        let view = UIButton(type: .system)
+        view.setTitle("44", for: .normal)
+        view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.tintColor = UIColor(hexString: "FFFFFF")
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 26
+        view.imageView?.contentMode = .scaleAspectFit
+        // Adjust spacing between image and title
+        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8)
+        view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+        view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
         return view
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -43,7 +53,7 @@ class LikeWorkoutViewCell: UICollectionViewCell {
     private func setup() {
         addSubview(workoutImage)
         workoutImage.addSubview(workoutInfoView)
-        workoutImage.addSubview(likeView)
+        workoutImage.addSubview(likeViewButton)
     }
 
     private func setupConstraints() {
@@ -57,11 +67,15 @@ class LikeWorkoutViewCell: UICollectionViewCell {
             make.height.equalTo(116)
         }
 
-        likeView.snp.remakeConstraints { make in
+        likeViewButton.snp.remakeConstraints { make in
             make.top.equalTo(snp.top).offset(8)
             make.trailing.equalTo(snp.trailing).offset(-8)
             make.height.equalTo(44)
             make.width.equalTo(66)
         }
+    }
+
+    @objc func likeViewButtonTapped() {
+
     }
 }

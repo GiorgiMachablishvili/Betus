@@ -10,7 +10,7 @@ import SnapKit
 
 protocol AddWorkoutViewCellDelegate: AnyObject {
     func didPressUserInfoButton()
-    func didPressRightButton()
+    func didPressRightButton(workoutName: String, workoutImage: UIImage)
     func shouldHideMainBottomButtonView(_ hide: Bool)
     func presentImagePicker(_ picker: UIImagePickerController)
 }
@@ -77,7 +77,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
         return view
     }()
 
-    private lazy var easyWorkoutLevelsButton: UIButton = {
+    lazy var easyWorkoutLevelsButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 41))
         view.setTitle("Easy Level", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
@@ -91,7 +91,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
         return view
     }()
 
-    private lazy var advancedWorkoutLevelsButton: UIButton = {
+    lazy var advancedWorkoutLevelsButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 41))
         view.setTitle("Advanced Level", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
@@ -105,7 +105,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
         return view
     }()
 
-    private lazy var difficultWorkoutLevelsButton: UIButton = {
+    lazy var difficultWorkoutLevelsButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 41))
         view.setTitle("Difficult Level", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
@@ -114,6 +114,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
         view.setTitleColor(UIColor(hexString: "FFFFFF"), for: .normal)
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
+        view.isUserInteractionEnabled = true
         view.addTarget(self, action: #selector(pressDifficultLevelWorkoutButton), for: .touchUpInside)
         return view
     }()
@@ -343,7 +344,6 @@ class AddWorkoutViewCell: UICollectionViewCell {
             userImageView.image = image
         }
 
-    //TODO: Make taskView Constraints every taskView should be up to addTaskButton
     private func addTaskView(taskName: String, timer: String, description: String) {
         let nameLabel = UILabel()
         nameLabel.text = taskName
@@ -403,8 +403,15 @@ class AddWorkoutViewCell: UICollectionViewCell {
     }
 
     @objc func pressRightButton() {
-        delegate?.didPressRightButton()
+        guard let workoutName = nameWorkoutTextfield.text,
+              let workoutImage = userImageView.image,
+              !workoutName.isEmpty else {
+            print("Error: Missing workout name or image.")
+            return
+        }
+        delegate?.didPressRightButton(workoutName: workoutName, workoutImage: workoutImage)
     }
+
 
     @objc func pressEasyLevelWorkoutButton() {
         resetButtonImages()
@@ -441,6 +448,18 @@ class AddWorkoutViewCell: UICollectionViewCell {
         taskView.isHidden = true
         delegate.addTaskView.configure(taskName: "", timer: "", description: "")
         delegate.shouldHideMainBottomButtonView(true)
+    }
+
+    func getSelectedLevel() -> String {
+        if easyWorkoutLevelsButton.backgroundColor == UIColor(hexString: "E5D820") {
+            return "Easy"
+        } else if advancedWorkoutLevelsButton.backgroundColor == UIColor(hexString: "E5D820") {
+            return "Advance"
+        } else if difficultWorkoutLevelsButton.backgroundColor == UIColor(hexString: "E5D820") {
+            return "Difficult"
+        } else {
+            return "Unknown"
+        }
     }
 }
 

@@ -37,11 +37,19 @@ class TimerViewController: UIViewController {
         return view
     }()
 
-    private lazy var likeView: LikeView = {
-        let view = LikeView()
+    private lazy var likeViewButton: UIButton = {
+        let view = UIButton(type: .system)
+        view.setTitle("44", for: .normal)
+        view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.tintColor = UIColor(hexString: "FFFFFF")
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 16
-        view.layer.borderColor = UIColor.clearBlur(withAlpha: 0.2).cgColor
-        view.layer.borderWidth = 1
+        view.imageView?.contentMode = .scaleAspectFit
+        // Adjust spacing between image and title
+        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8)
+        view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+//        view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
         return view
     }()
 
@@ -101,7 +109,7 @@ class TimerViewController: UIViewController {
     private func setup() {
         view.addSubview(leftButton)
         view.addSubview(titleLabel)
-        view.addSubview(likeView)
+        view.addSubview(likeViewButton)
         view.addSubview(circularProgressView)
         view.addSubview(timeLabel)
         view.addSubview(beshOnTheSportImage)
@@ -121,7 +129,7 @@ class TimerViewController: UIViewController {
             make.height.equalTo(19)
         }
 
-        likeView.snp.remakeConstraints { make in
+        likeViewButton.snp.remakeConstraints { make in
             make.top.equalTo(view.snp.top).offset(60)
             make.trailing.equalTo(view.snp.trailing).offset(-12)
             make.height.equalTo(44)

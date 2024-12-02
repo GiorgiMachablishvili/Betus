@@ -16,12 +16,12 @@
 		E359415C2CFCD29400624C50 /* AddWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */; };
 		E359415E2CFCD2B300624C50 /* AddWorkoutViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E359415D2CFCD2B300624C50 /* AddWorkoutViewCell.swift */; };
 		E3667EE82CF4F17C00D1AE68 /* WorkoutInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EE72CF4F17C00D1AE68 /* WorkoutInfoCell.swift */; };
-		E3667EEA2CF4F33200D1AE68 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EE92CF4F33200D1AE68 /* LikeView.swift */; };
 		E3667EEC2CF4F36500D1AE68 /* WorkoutInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EEB2CF4F36500D1AE68 /* WorkoutInfoView.swift */; };
 		E3667EEE2CF4F5CB00D1AE68 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EED2CF4F5CB00D1AE68 /* TaskView.swift */; };
 		E3667EF02CF4F5D700D1AE68 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EEF2CF4F5D700D1AE68 /* TimeView.swift */; };
 		E3667EF22CF4F5EC00D1AE68 /* LevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EF12CF4F5EC00D1AE68 /* LevelView.swift */; };
 		E3667EF42CF5052D00D1AE68 /* BlurBackground+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EF32CF5052D00D1AE68 /* BlurBackground+Extention.swift */; };
+		E36E2F562CFE22E900613FBD /* NonPropagatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E2F552CFE22E900613FBD /* NonPropagatingButton.swift */; };
 		E39997E02CF7AD4300CF8E48 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39997DF2CF7AD4300CF8E48 /* AddTaskView.swift */; };
 		E39997E42CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39997E32CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift */; };
 		E39997E62CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39997E52CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift */; };
@@ -70,12 +70,12 @@
 		E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutViewController.swift; sourceTree = "<group>"; };
 		E359415D2CFCD2B300624C50 /* AddWorkoutViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutViewCell.swift; sourceTree = "<group>"; };
 		E3667EE72CF4F17C00D1AE68 /* WorkoutInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfoCell.swift; sourceTree = "<group>"; };
-		E3667EE92CF4F33200D1AE68 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
 		E3667EEB2CF4F36500D1AE68 /* WorkoutInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfoView.swift; sourceTree = "<group>"; };
 		E3667EED2CF4F5CB00D1AE68 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
 		E3667EEF2CF4F5D700D1AE68 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
 		E3667EF12CF4F5EC00D1AE68 /* LevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelView.swift; sourceTree = "<group>"; };
 		E3667EF32CF5052D00D1AE68 /* BlurBackground+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlurBackground+Extention.swift"; sourceTree = "<group>"; };
+		E36E2F552CFE22E900613FBD /* NonPropagatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPropagatingButton.swift; sourceTree = "<group>"; };
 		E39997DF2CF7AD4300CF8E48 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		E39997E32CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedWorkoutReusableView.swift; sourceTree = "<group>"; };
 		E39997E52CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeWorkoutViewCell.swift; sourceTree = "<group>"; };
@@ -287,7 +287,7 @@
 				E39C84212CF4BD46003177BF /* WorkoutViewController.swift */,
 				E32C49DE2CF5C19700C650B3 /* HomeHeaderView.swift */,
 				E3667EE72CF4F17C00D1AE68 /* WorkoutInfoCell.swift */,
-				E3667EE92CF4F33200D1AE68 /* LikeView.swift */,
+				E36E2F552CFE22E900613FBD /* NonPropagatingButton.swift */,
 				E3667EEB2CF4F36500D1AE68 /* WorkoutInfoView.swift */,
 				E3667EED2CF4F5CB00D1AE68 /* TaskView.swift */,
 				E3667EEF2CF4F5D700D1AE68 /* TimeView.swift */,
@@ -442,7 +442,6 @@
 				E3667EEE2CF4F5CB00D1AE68 /* TaskView.swift in Sources */,
 				E32C49F62CF5EB2900C650B3 /* CircularProgressView.swift in Sources */,
 				E39C840A2CF4AB69003177BF /* UIColor+Extention.swift in Sources */,
-				E3667EEA2CF4F33200D1AE68 /* LikeView.swift in Sources */,
 				E32E6D132CF71AB600C17240 /* HardWorkoutViewController.swift in Sources */,
 				E359415E2CFCD2B300624C50 /* AddWorkoutViewCell.swift in Sources */,
 				E39C84082CF4A978003177BF /* UIFont+Extension.swift in Sources */,
@@ -452,6 +451,7 @@
 				E3667EF02CF4F5D700D1AE68 /* TimeView.swift in Sources */,
 				E39C83DB2CF4A573003177BF /* SceneDelegate.swift in Sources */,
 				E32C49F82CF5FDE500C650B3 /* UIImage+Extention.swift in Sources */,
+				E36E2F562CFE22E900613FBD /* NonPropagatingButton.swift in Sources */,
 				E39997E62CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift in Sources */,
 				E39997E42CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift in Sources */,
 				E39C84172CF4BACC003177BF /* MainViewController.swift in Sources */,
@@ -609,6 +609,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -636,6 +637,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -69,6 +69,18 @@ class NetworkManager: NetworkManagerProtocol {
     func put<T: Decodable>(url: String, parameters: Parameters?, headers: HTTPHeaders?, completion: @escaping (Result<T>) -> Void) {
         request(url: url, method: .put, parameters: parameters, headers: headers, completion: completion)
     }
+//    func put<T: Decodable>(url: String, parameters: [String: Any], headers: HTTPHeaders?, completion: @escaping (Result<T>) -> Void) {
+//        AF.request(url, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+//            .validate()
+//            .responseDecodable(of: T.self) { response in
+//                switch response.result {
+//                case .success(let data):
+//                    completion(.success(data))
+//                case .failure(let error):
+//                    completion(.failure(error))
+//                }
+//            }
+//    }
 
     func uploadMultipart<T: Decodable>(url: String, params: Parameters?, headers: HTTPHeaders?, completion: @escaping (Result<T>) -> Void) {
         // Set a maximum chunk size (e.g., 1 MB)
@@ -111,34 +123,3 @@ class NetworkManager: NetworkManagerProtocol {
         }
     }
 }
-
-
-//private func createUser() {
-//      ProgressView.shared.showProgressHud(animate: true)
-//        let apppleToken = UserDefaults.standard.string(forKey: "AccountCredential")
-//        var pushToken = UserDefaults.standard.string(forKey: "PushToken")
-//        if pushToken == nil {
-//            pushToken = ""
-//        }
-//
-//        userInfo.appleToken = apppleToken ?? ""
-//        userInfo.pushToken = pushToken
-//      NetworkManager.shared.post(url: "https://btus-exercises-77d51fa316c7.herokuapp.com/api/v1/users", parameters: userInfo.asServiceParams, headers: nil) { [weak self] (result: Result<UserInfo>) in
-//        guard let self else { return }
-//        switch result {
-//        case .success(let userInfo):
-//          DispatchQueue.main.async {
-//            ProgressView.shared.showProgressHud(animate: false)
-//            self.navigateMainDashboard()
-//          }
-//          print(userInfo)
-//            UserDefaults.standard.setValue(userInfo.id, forKey: "userId")
-//        case .failure(let error):
-//          DispatchQueue.main.async {
-//            ProgressView.shared.showProgressHud(animate: false)
-//            self.showAlert(title: "", description: error.localizedDescription)
-//          }
-//          print("Error: \(error)")
-//        }
-//      }
-//    }

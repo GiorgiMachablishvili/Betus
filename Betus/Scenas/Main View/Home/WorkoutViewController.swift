@@ -60,13 +60,21 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        1
+        3
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: WorkoutInfoCell.self), for: indexPath) as? WorkoutInfoCell else {
+//            return UICollectionViewCell()
+//        }
+//        return cell
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: WorkoutInfoCell.self), for: indexPath) as? WorkoutInfoCell else {
             return UICollectionViewCell()
         }
+//        cell.configureCell {
+//            let hardWorkoutVC = HardWorkoutViewController()
+//            self.navigationController?.pushViewController(hardWorkoutVC, animated: true)
+//        }
         return cell
     }
 
@@ -85,7 +93,7 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let hardWorkoutVC = HardWorkoutViewController()
-                navigationController?.pushViewController(hardWorkoutVC, animated: true)
+        navigationController?.pushViewController(hardWorkoutVC, animated: true)
     }
 }
 

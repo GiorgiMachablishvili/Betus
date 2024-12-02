@@ -83,7 +83,4 @@ class WorkoutInfoView: UIView {
         }
 
     }
-
-
-
 }
