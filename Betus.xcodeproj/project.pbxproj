@@ -22,6 +22,7 @@
 		E3667EF22CF4F5EC00D1AE68 /* LevelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EF12CF4F5EC00D1AE68 /* LevelView.swift */; };
 		E3667EF42CF5052D00D1AE68 /* BlurBackground+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EF32CF5052D00D1AE68 /* BlurBackground+Extention.swift */; };
 		E36E2F562CFE22E900613FBD /* NonPropagatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E2F552CFE22E900613FBD /* NonPropagatingButton.swift */; };
+		E36E2F582CFE57E800613FBD /* WorkoutInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E2F572CFE57E800613FBD /* WorkoutInfo.swift */; };
 		E39997E02CF7AD4300CF8E48 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39997DF2CF7AD4300CF8E48 /* AddTaskView.swift */; };
 		E39997E42CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39997E32CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift */; };
 		E39997E62CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39997E52CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift */; };
@@ -76,6 +77,7 @@
 		E3667EF12CF4F5EC00D1AE68 /* LevelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelView.swift; sourceTree = "<group>"; };
 		E3667EF32CF5052D00D1AE68 /* BlurBackground+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlurBackground+Extention.swift"; sourceTree = "<group>"; };
 		E36E2F552CFE22E900613FBD /* NonPropagatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPropagatingButton.swift; sourceTree = "<group>"; };
+		E36E2F572CFE57E800613FBD /* WorkoutInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfo.swift; sourceTree = "<group>"; };
 		E39997DF2CF7AD4300CF8E48 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		E39997E32CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedWorkoutReusableView.swift; sourceTree = "<group>"; };
 		E39997E52CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeWorkoutViewCell.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 			isa = PBXGroup;
 			children = (
 				E3B7E30A2CF876FC00ABCDC4 /* UserInfo.swift */,
+				E36E2F572CFE57E800613FBD /* WorkoutInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 				E3667EF42CF5052D00D1AE68 /* BlurBackground+Extention.swift in Sources */,
 				E3667EEC2CF4F36500D1AE68 /* WorkoutInfoView.swift in Sources */,
 				E39C83DD2CF4A573003177BF /* SignInView.swift in Sources */,
+				E36E2F582CFE57E800613FBD /* WorkoutInfo.swift in Sources */,
 				E39997E02CF7AD4300CF8E48 /* AddTaskView.swift in Sources */,
 				E39C84242CF4BD5B003177BF /* LikedWorkoutViewController.swift in Sources */,
 				E32C49F42CF5EAFF00C650B3 /* TimerViewController.swift in Sources */,

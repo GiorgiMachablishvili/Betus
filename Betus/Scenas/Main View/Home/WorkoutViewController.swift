@@ -26,12 +26,16 @@ class WorkoutViewController: UIViewController {
         return view
     }()
 
+    private var workoutData: [WorkoutInfo] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(hexString: "#101538")
         view.applyGradientBackground()
         setup()
         setupConstraints()
+
+        fetchWorkoutInfo()
     }
 
     private func setup() {
@@ -45,6 +49,23 @@ class WorkoutViewController: UIViewController {
             make.bottom.equalToSuperview()
         }
     }
+
+    private func fetchWorkoutInfo() {
+           let userId = "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+           let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/\(userId)"
+
+           NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<WorkoutInfo>) in
+               switch result {
+               case .success(let data):
+                   self.workoutData = [data]
+                   DispatchQueue.main.async {
+                       self.collectionView.reloadData()
+                   }
+               case .failure(let error):
+                   print("Error fetching workout info: \(error.localizedDescription)")
+               }
+           }
+       }
 }
 
 extension WorkoutViewController: HomeHeaderViewDelegate {
@@ -55,26 +76,20 @@ extension WorkoutViewController: HomeHeaderViewDelegate {
 }
 
 extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
-    }
+//    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        1
+//    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        3
+        workoutData.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: WorkoutInfoCell.self), for: indexPath) as? WorkoutInfoCell else {
-//            return UICollectionViewCell()
-//        }
-//        return cell
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: WorkoutInfoCell.self), for: indexPath) as? WorkoutInfoCell else {
             return UICollectionViewCell()
         }
-//        cell.configureCell {
-//            let hardWorkoutVC = HardWorkoutViewController()
-//            self.navigationController?.pushViewController(hardWorkoutVC, animated: true)
-//        }
+        let workout = workoutData[indexPath.row]
+        cell.configure(with: workout.image)
         return cell
     }
 

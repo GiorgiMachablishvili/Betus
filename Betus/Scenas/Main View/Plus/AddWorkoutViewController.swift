@@ -133,7 +133,8 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
             "image": workoutImageData.base64EncodedString(),
             "creator_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
         ]
-
+        
+        //TODO: writes error - Error saving workout: URLSessionTask failed with error: The network connection was lost.
         // Make PUT request
         NetworkManager.shared.put(url: "https://betus-orange-nika-46706b42b39b.herokuapp.com", parameters: parameters, headers: nil) { (result: Result<UserInfo>) in
             switch result {

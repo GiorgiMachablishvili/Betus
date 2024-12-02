@@ -99,4 +99,18 @@ class WorkoutInfoCell: UICollectionViewCell {
             }
         }
     }
+
+    // Configure cell with fetched data
+    func configure(with imageUrl: String) {
+        if let url = URL(string: imageUrl) {
+            // Fetch image asynchronously
+            DispatchQueue.global().async {
+                if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self.workoutImage.image = image
+                    }
+                }
+            }
+        }
+    }
 }
