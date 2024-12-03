@@ -26,7 +26,7 @@ class SignInView: UIViewController {
         let view = UILabel(frame: .zero)
         view.text = "Sign IN"
         view.textColor = UIColor.init(hexString: "FFFFFF")
-        view.font = UIFont.latoRegular(size: 24)
+        view.font = UIFont.latoBold(size: 24)
         view.textAlignment = .center
         return view
     }()
@@ -151,7 +151,7 @@ class SignInView: UIViewController {
 
         // Make the network request
         NetworkManager.shared.post(
-            url: "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/",
+            url: "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users",
             parameters: parameters,
             headers: nil
         ) { [weak self] (result: Result<UserInfo>) in

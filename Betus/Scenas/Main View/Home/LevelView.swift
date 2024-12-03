@@ -24,7 +24,7 @@ class LevelView: UIView {
         view.text = "Hard"
         view.textColor = UIColor(hexString: "FFFFFF")
         view.textAlignment = .center
-        view.font = UIFont.latoRegular(size: 12)
+        view.font = UIFont.latoBold(size: 24)
         return view
     }()
 

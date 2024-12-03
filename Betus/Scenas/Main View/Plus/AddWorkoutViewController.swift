@@ -124,7 +124,7 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
     func didPressRightButton(workoutName: String, workoutImage: UIImage) {
         guard let workoutImageData = workoutImage.jpegData(compressionQuality: 0.8) else { return }
 
-        let id = "550a8125-84bf-4f06-8504-bcef6e89c986"
+        let id = "3fa85f64-5717-4562-b3fc-2c963f66afa6"
         let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/\(id)"
 
         guard let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell else { return }
@@ -135,9 +135,9 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
             "level": selectedLevel,
             "completers": [],
             "details": workoutName,
-            "id": "550a8125-84bf-4f06-8504-bcef6e89c986",
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
             "image": workoutImageData.base64EncodedString(),
-            "creator_id": "550a8125-84bf-4f06-8504-bcef6e89c986"
+            "creator_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
         ]
 
         // Show progress indicator

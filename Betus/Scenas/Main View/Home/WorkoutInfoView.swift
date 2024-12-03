@@ -12,7 +12,7 @@ class WorkoutInfoView: UIView {
 
     private lazy var workoutLevel: UILabel = {
         let view = UILabel(frame: .zero)
-        view.font = UIFont.latoRegular(size: 16)
+        view.font = UIFont.latoBold(size: 16)
         view.textColor = UIColor(hexString: "FFFFFF")
         view.textAlignment = .left
         view.text = "Workout Hard"

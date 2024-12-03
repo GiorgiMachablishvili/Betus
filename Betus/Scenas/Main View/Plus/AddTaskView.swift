@@ -21,7 +21,7 @@ class AddTaskView: UIView {
         let view = UITextField(frame: .zero)
         view.clipsToBounds = true
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
-        view.font = UIFont.latoRegular(size: 12)
+        view.font = UIFont.latoRegular(size: 14)
         view.textColor = UIColor(hexString: "FFFFFF")
         let placeholderText = "  Name Workout"
         let attributes: [NSAttributedString.Key: Any] = [
@@ -29,6 +29,9 @@ class AddTaskView: UIView {
             .font: UIFont.latoRegular(size: 14)
         ]
         view.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 1))
+        view.leftView = paddingView
+        view.leftViewMode = .always
         return view
     }()
 
@@ -36,7 +39,7 @@ class AddTaskView: UIView {
         let view = UITextField(frame: .zero)
         view.clipsToBounds = true
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
-        view.font = UIFont.latoRegular(size: 12)
+        view.font = UIFont.latoRegular(size: 14)
         view.textColor = UIColor(hexString: "FFFFFF")
         view.keyboardType = .numberPad
         let placeholderText = "  00:00:00"
@@ -45,6 +48,9 @@ class AddTaskView: UIView {
             .font: UIFont.latoRegular(size: 14)
         ]
         view.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 1))
+        view.leftView = paddingView
+        view.leftViewMode = .always
         return view
     }()
 
@@ -52,7 +58,7 @@ class AddTaskView: UIView {
         let view = UITextField(frame: .zero)
         view.clipsToBounds = true
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
-        view.font = UIFont.latoRegular(size: 12)
+        view.font = UIFont.latoRegular(size: 14)
         view.textColor = UIColor(hexString: "FFFFFF")
         let placeholderText = "  Description of the workout"
         let attributes: [NSAttributedString.Key: Any] = [
@@ -60,6 +66,9 @@ class AddTaskView: UIView {
             .font: UIFont.latoRegular(size: 14)
         ]
         view.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 1))
+        view.leftView = paddingView
+        view.leftViewMode = .always
         return view
     }()
 

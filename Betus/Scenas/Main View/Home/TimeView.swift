@@ -24,7 +24,7 @@ class TimeView: UIView {
         view.text = "00:00:00"
         view.textColor = UIColor(hexString: "FFFFFF")
         view.textAlignment = .center
-        view.font = UIFont.latoRegular(size: 12)
+        view.font = UIFont.latoBold(size: 24)
         return view
     }()
 
