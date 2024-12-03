@@ -24,27 +24,27 @@ class AddWorkoutViewCell: UICollectionViewCell {
     private var contentViewBottomConstraint: Constraint?
 
     lazy var userInfoButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "userProfile"), for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
         view.isUserInteractionEnabled = true
-        view.setImage(UIImage(named: "userProfile")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "userProfile")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.addTarget(self, action: #selector(pressUserInfoButton), for: .touchUpInside)
         return view
     }()
 
     lazy var rightButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "arrow-left-1"), for: .normal)
         view.backgroundColor = UIColor(hexString: "#E5D820")
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
         view.isUserInteractionEnabled = true
-        view.setImage(UIImage(named: "arrow-left-1")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "arrow-left-1")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.addTarget(self, action: #selector(pressRightButton), for: .touchUpInside)
         return view
     }()
@@ -78,7 +78,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
     }()
 
     lazy var easyWorkoutLevelsButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Easy Level", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 16
@@ -92,7 +92,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
     }()
 
     lazy var advancedWorkoutLevelsButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Advanced Level", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 16
@@ -106,7 +106,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
     }()
 
     lazy var difficultWorkoutLevelsButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Difficult Level", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 16
@@ -185,128 +185,144 @@ class AddWorkoutViewCell: UICollectionViewCell {
 
     private func setupConstraint() {
         userInfoButton.snp.remakeConstraints { make in
-            make.top.equalTo(snp.top).offset(60)
-            make.leading.equalTo(snp.leading).offset(12)
-            make.width.height.equalTo(44)
+            make.top.equalTo(snp.top).offset(15 * Constraint.yCoeff)
+            make.leading.equalTo(snp.leading).offset(20 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
         rightButton.snp.remakeConstraints { make in
-            make.top.equalTo(snp.top).offset(60)
-            make.trailing.equalTo(snp.trailing).offset(-12)
-            make.width.height.equalTo(44)
+            make.top.equalTo(snp.top).offset(15 * Constraint.yCoeff)
+            make.trailing.equalTo(snp.trailing).offset(-20 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
         userImageView.snp.remakeConstraints { make in
-            make.top.equalTo(userInfoButton.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(287)
+            make.top.equalTo(userInfoButton.snp.bottom).offset(10 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            make.height.equalTo(287 * Constraint.yCoeff)
         }
 
         nameWorkoutTextfield.snp.remakeConstraints { make in
-            make.top.equalTo(userImageView.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(44)
+            make.top.equalTo(userImageView.snp.bottom).offset(10 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
         }
 
         easyWorkoutLevelsButton.snp.remakeConstraints { make in
             make.centerY.equalTo(advancedWorkoutLevelsButton.snp.centerY)
             make.trailing.equalTo(advancedWorkoutLevelsButton.snp.leading).offset(-8)
-            make.width.equalTo(116.6)
-            make.height.equalTo(41)
+            make.width.equalTo(116.6 * Constraint.xCoeff)
+            make.height.equalTo(41 * Constraint.yCoeff)
         }
 
         advancedWorkoutLevelsButton.snp.remakeConstraints { make in
-            make.top.equalTo(nameWorkoutTextfield.snp.bottom).offset(10)
+            make.top.equalTo(nameWorkoutTextfield.snp.bottom).offset(10 * Constraint.yCoeff)
             make.centerX.equalTo(snp.centerX)
-            make.width.equalTo(116.6)
-            make.height.equalTo(41)
+            make.width.equalTo(116.6 * Constraint.xCoeff)
+            make.height.equalTo(41 * Constraint.yCoeff)
         }
 
         difficultWorkoutLevelsButton.snp.remakeConstraints { make in
             make.centerY.equalTo(advancedWorkoutLevelsButton.snp.centerY)
             make.leading.equalTo(advancedWorkoutLevelsButton.snp.trailing).offset(8)
-            make.width.equalTo(116.6)
-            make.height.equalTo(41)
+            make.width.equalTo(116.6 * Constraint.xCoeff)
+            make.height.equalTo(41 * Constraint.yCoeff)
         }
 
         descriptionWorkoutTextfield.snp.remakeConstraints { make in
-            make.top.equalTo(easyWorkoutLevelsButton.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(44)
+            make.top.equalTo(easyWorkoutLevelsButton.snp.bottom).offset(10 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
         }
 
         addTaskButton.snp.remakeConstraints { make in
-            make.top.equalTo(descriptionWorkoutTextfield.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(84)
+            make.top.equalTo(descriptionWorkoutTextfield.snp.bottom).offset(10 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            make.height.equalTo(84 * Constraint.yCoeff)
         }
     }
 
     func addTask(taskName: String, timer: String, description: String) {
-            let taskView = UIView()
-            taskView.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
-            taskView.layer.cornerRadius = 16
+        let taskView = UIView()
+        taskView.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        taskView.layer.cornerRadius = 16
 
-            let nameLabel = UILabel()
-            nameLabel.text = "Task: \(taskName)"
-            nameLabel.textColor = .white
-            nameLabel.font = UIFont.systemFont(ofSize: 14)
+        let nameLabel = UILabel()
+        nameLabel.text = "Task: \(taskName)"
+        nameLabel.textColor = .white
+        nameLabel.font = UIFont.systemFont(ofSize: 14)
 
-            let timerLabel = UILabel()
-            timerLabel.text = "Timer: \(timer)"
-            timerLabel.textColor = .white
-            timerLabel.font = UIFont.systemFont(ofSize: 12)
+        let timerLabel = UILabel()
+        timerLabel.text = "Timer: \(timer)"
+        timerLabel.textColor = .white
+        timerLabel.font = UIFont.systemFont(ofSize: 12)
+        
 
-            let descriptionLabel = UILabel()
-            descriptionLabel.text = "Description: \(description)"
-            descriptionLabel.textColor = .white.withAlphaComponent(0.7)
-            descriptionLabel.font = UIFont.systemFont(ofSize: 12)
-            descriptionLabel.numberOfLines = 0
+        let descriptionLabel = UILabel()
+        descriptionLabel.text = "Description: \(description)"
+        descriptionLabel.textColor = .white.withAlphaComponent(0.7)
+        descriptionLabel.font = UIFont.systemFont(ofSize: 12)
+        descriptionLabel.numberOfLines = 0
 
-            // Add labels to taskView
-            taskView.addSubview(nameLabel)
-            taskView.addSubview(timerLabel)
-            taskView.addSubview(descriptionLabel)
+        let deleteTaskViewButton = UIButton()
+        deleteTaskViewButton.setImage(UIImage(named: "xButton"), for: .normal)
+        deleteTaskViewButton.contentMode = .scaleAspectFit
+        deleteTaskViewButton.addTarget(self, action: #selector(pressDeleteTaskViewButton(_:)), for: .touchUpInside)
 
-            // Constraints for labels inside taskView
-            nameLabel.snp.makeConstraints { make in
-                make.top.leading.trailing.equalToSuperview().inset(8)
-            }
+        // Add labels to taskView
+        taskView.addSubview(nameLabel)
+        taskView.addSubview(timerLabel)
+        taskView.addSubview(descriptionLabel)
+        taskView.addSubview(deleteTaskViewButton)
 
-            timerLabel.snp.makeConstraints { make in
-                make.top.equalTo(nameLabel.snp.bottom).offset(4)
-                make.leading.trailing.equalToSuperview().inset(8)
-            }
-
-            descriptionLabel.snp.makeConstraints { make in
-                make.top.equalTo(timerLabel.snp.bottom).offset(4)
-                make.leading.trailing.bottom.equalToSuperview().inset(8)
-            }
-
-            // Add taskView to cell
-            addSubview(taskView)
-
-            // Constraints for taskView
-            if let lastTaskView = taskViews.last {
-                taskView.snp.makeConstraints { make in
-                    make.top.equalTo(lastTaskView.snp.bottom).offset(10)
-                    make.leading.trailing.equalToSuperview().inset(12)
-                }
-            } else {
-                taskView.snp.makeConstraints { make in
-                    make.top.equalTo(descriptionWorkoutTextfield.snp.bottom).offset(10)
-                    make.leading.trailing.equalToSuperview().inset(12)
-                }
-            }
-            // Update addTaskButton position
-            addTaskButton.snp.remakeConstraints { make in
-                make.top.equalTo(taskView.snp.bottom).offset(10)
-                make.leading.trailing.equalToSuperview().inset(12)
-                make.height.equalTo(84)
-            }
-
-            taskViews.append(taskView)
+        // Constraints for labels inside taskView
+        nameLabel.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview().inset(8 * Constraint.yCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
         }
+
+        timerLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(4 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(8 * Constraint.xCoeff)
+            make.height.equalTo(24 * Constraint.yCoeff)
+        }
+
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(timerLabel.snp.bottom).offset(4 * Constraint.yCoeff)
+            make.leading.trailing.bottom.equalToSuperview().inset(8 * Constraint.xCoeff)
+            make.height.equalTo(34 * Constraint.yCoeff)
+        }
+
+        deleteTaskViewButton.snp.remakeConstraints { make in
+            make.centerY.equalTo(nameLabel.snp.centerY)
+            make.trailing.equalTo(taskView.snp.trailing).offset(-20 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
+        }
+
+        // Add taskView to cell
+        addSubview(taskView)
+
+        // Constraints for taskView
+        if let lastTaskView = taskViews.last {
+            taskView.snp.makeConstraints { make in
+                make.top.equalTo(lastTaskView.snp.bottom).offset(10 * Constraint.yCoeff)
+                make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            }
+        } else {
+            taskView.snp.makeConstraints { make in
+                make.top.equalTo(descriptionWorkoutTextfield.snp.bottom).offset(10 * Constraint.yCoeff)
+                make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            }
+        }
+        // Update addTaskButton position
+        addTaskButton.snp.remakeConstraints { make in
+            make.top.equalTo(taskView.snp.bottom).offset(10 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            make.height.equalTo(84 * Constraint.yCoeff)
+        }
+
+        taskViews.append(taskView)
+    }
 
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -341,8 +357,8 @@ class AddWorkoutViewCell: UICollectionViewCell {
     }
 
     func updateUserImage(_ image: UIImage) {
-            userImageView.image = image
-        }
+        userImageView.image = image
+    }
 
     private func addTaskView(taskName: String, timer: String, description: String) {
         let nameLabel = UILabel()
@@ -368,30 +384,30 @@ class AddWorkoutViewCell: UICollectionViewCell {
         addSubview(taskView)
 
         nameLabel.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview().inset(8)
+            make.top.leading.trailing.equalToSuperview().inset(8 * Constraint.yCoeff)
         }
 
         timerLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(4)
-            make.leading.trailing.equalToSuperview().inset(8)
+            make.top.equalTo(nameLabel.snp.bottom).offset(4 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(8 * Constraint.xCoeff)
         }
 
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(timerLabel.snp.bottom).offset(4)
-            make.leading.trailing.bottom.equalToSuperview().inset(8)
+            make.top.equalTo(timerLabel.snp.bottom).offset(4 * Constraint.yCoeff)
+            make.leading.trailing.bottom.equalToSuperview().inset(8 * Constraint.xCoeff)
         }
 
         if let lastTaskView = taskViews.last {
             taskView.snp.makeConstraints { make in
-                make.top.equalTo(lastTaskView.snp.bottom).offset(12)
-                make.leading.trailing.equalToSuperview().inset(16)
-                make.height.greaterThanOrEqualTo(60)
+                make.top.equalTo(lastTaskView.snp.bottom).offset(12 * Constraint.yCoeff)
+                make.leading.trailing.equalToSuperview().inset(16 * Constraint.xCoeff)
+                make.height.greaterThanOrEqualTo(60 * Constraint.yCoeff)
             }
         } else {
             taskView.snp.makeConstraints { make in
-                make.top.equalTo(addTaskButton.snp.bottom).offset(12)
-                make.leading.trailing.equalToSuperview().inset(16)
-                make.height.greaterThanOrEqualTo(60)
+                make.top.equalTo(addTaskButton.snp.bottom).offset(12 * Constraint.yCoeff)
+                make.leading.trailing.equalToSuperview().inset(16 * Constraint.yCoeff)
+                make.height.greaterThanOrEqualTo(60 * Constraint.yCoeff)
             }
         }
         taskViews.append(taskView)
@@ -439,7 +455,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
         delegate.addTaskView.nameWorkoutAddTextfield.text = ""
         delegate.addTaskView.timerAddTextfield.text = ""
         delegate.addTaskView.descriptionWorkoutAddTextfield.text = ""
-        
+
         // Show the addTaskView and dark overlay
         delegate.darkOverlay.isHidden = false
         delegate.addTaskView.isHidden = false
@@ -459,6 +475,56 @@ class AddWorkoutViewCell: UICollectionViewCell {
             return "Difficult"
         } else {
             return "Unknown"
+        }
+    }
+
+    @objc func pressDeleteTaskViewButton(_ sender: UIButton) {
+        guard let taskViewToDelete = sender.superview else {
+            print("Error: Unable to find task view for the delete button.")
+            return
+        }
+        if let index = taskViews.firstIndex(of: taskViewToDelete) {
+            taskViews.remove(at: index)
+            taskViewToDelete.removeFromSuperview()
+            print("Task view removed successfully.")
+        } else {
+            print("Error: Task view not found in the array.")
+        }
+
+        updateTaskViewLayout()
+    }
+
+    private func updateTaskViewLayout() {
+        var previousTaskView: UIView?
+
+        for taskView in taskViews {
+            taskView.snp.remakeConstraints { make in
+                if let previous = previousTaskView {
+                    make.top.equalTo(previous.snp.bottom).offset(10 * Constraint.yCoeff)
+                } else {
+                    make.top.equalTo(descriptionWorkoutTextfield.snp.bottom).offset(10 * Constraint.yCoeff)
+                }
+                make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            }
+            previousTaskView = taskView
+        }
+
+        if let lastTaskView = previousTaskView {
+            addTaskButton.snp.remakeConstraints { make in
+                make.top.equalTo(lastTaskView.snp.bottom).offset(10 * Constraint.yCoeff)
+                make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+                make.height.equalTo(84 * Constraint.yCoeff)
+            }
+        } else {
+            addTaskButton.snp.remakeConstraints { make in
+                make.top.equalTo(descriptionWorkoutTextfield.snp.bottom).offset(10 * Constraint.yCoeff)
+                make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+                make.height.equalTo(84 * Constraint.yCoeff)
+            }
+        }
+
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded()
         }
     }
 }
@@ -492,20 +558,20 @@ extension UIView {
 // MARK: - Keyboard Handling
 extension AddWorkoutViewCell {
     @objc private func keyboardWillShow(_ notification: Notification) {
-            guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-            guard let activeField = findFirstResponder() as? UITextField else { return }
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        guard let activeField = findFirstResponder() as? UITextField else { return }
 
-            let keyboardHeight = keyboardFrame.height
-            let bottomOfTextField = activeField.convert(activeField.bounds, to: self).maxY
-            let visibleAreaHeight = self.bounds.height - keyboardHeight
+        let keyboardHeight = keyboardFrame.height
+        let bottomOfTextField = activeField.convert(activeField.bounds, to: self).maxY
+        let visibleAreaHeight = self.bounds.height - keyboardHeight
 
-            if bottomOfTextField > visibleAreaHeight {
-                let overlap = bottomOfTextField - visibleAreaHeight
-                UIView.animate(withDuration: 0.3) {
-                    self.transform = CGAffineTransform(translationX: 0, y: -overlap - 50)
-                }
+        if bottomOfTextField > visibleAreaHeight {
+            let overlap = bottomOfTextField - visibleAreaHeight
+            UIView.animate(withDuration: 0.3) {
+                self.transform = CGAffineTransform(translationX: 0, y: -overlap - 50)
             }
         }
+    }
 
     @objc private func keyboardWillHide(_ notification: Notification) {
         UIView.animate(withDuration: 0.3) {

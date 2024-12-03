@@ -48,16 +48,16 @@ class LevelView: UIView {
 
     private func setupConstraints() {
         levelLabel.snp.remakeConstraints { make in
-            make.top.equalTo(snp.top).offset(8)
+            make.top.equalTo(snp.top).offset(8 * Constraint.yCoeff)
             make.centerX.equalTo(snp.centerX)
-            make.height.equalTo(17)
+            make.height.equalTo(17 * Constraint.yCoeff)
 
         }
 
         levelInfoLabel.snp.remakeConstraints { make in
-            make.bottom.equalTo(snp.bottom).offset(-8)
+            make.bottom.equalTo(snp.bottom).offset(-8 * Constraint.yCoeff)
             make.centerX.equalTo(snp.centerX)
-            make.height.equalTo(14)
+            make.height.equalTo(14 * Constraint.yCoeff)
         }
 
     }

@@ -64,7 +64,7 @@ class AddTaskView: UIView {
     }()
 
     private lazy var cancelButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 131, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 131 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Cancel", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 16
@@ -79,7 +79,7 @@ class AddTaskView: UIView {
     }()
 
     private lazy var addButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 131, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 131 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Add", for: .normal)
         view.backgroundColor = UIColor(hexString: "#E5D820")
         view.layer.cornerRadius = 16
@@ -114,35 +114,35 @@ class AddTaskView: UIView {
 
     private func setupConstraints() {
         nameWorkoutAddTextfield.snp.remakeConstraints { make in
-            make.top.equalTo(snp.top).offset(32)
-            make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(54)
+            make.top.equalTo(snp.top).offset(32 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            make.height.equalTo(54 * Constraint.yCoeff)
         }
 
         timerAddTextfield.snp.remakeConstraints { make in
-            make.top.equalTo(nameWorkoutAddTextfield.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(54)
+            make.top.equalTo(nameWorkoutAddTextfield.snp.bottom).offset(10 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            make.height.equalTo(54 * Constraint.yCoeff)
         }
 
         descriptionWorkoutAddTextfield.snp.remakeConstraints { make in
-            make.top.equalTo(timerAddTextfield.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(54)
+            make.top.equalTo(timerAddTextfield.snp.bottom).offset(10 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            make.height.equalTo(54 * Constraint.yCoeff)
         }
 
         cancelButton.snp.remakeConstraints { make in
-            make.bottom.equalTo(snp.bottom).offset(-32)
-            make.leading.equalTo(snp.leading).offset(76)
-            make.width.equalTo(115)
-            make.height.equalTo(54)
+            make.bottom.equalTo(snp.bottom).offset(-32 * Constraint.yCoeff)
+            make.leading.equalTo(snp.leading).offset(76 * Constraint.xCoeff)
+            make.width.equalTo(115 * Constraint.xCoeff)
+            make.height.equalTo(54 * Constraint.yCoeff)
         }
 
         addButton.snp.remakeConstraints { make in
-            make.bottom.equalTo(snp.bottom).offset(-32)
-            make.trailing.equalTo(snp.trailing).offset(-76)
-            make.width.equalTo(115)
-            make.height.equalTo(54)
+            make.bottom.equalTo(snp.bottom).offset(-32 * Constraint.yCoeff)
+            make.trailing.equalTo(snp.trailing).offset(-76 * Constraint.xCoeff)
+            make.width.equalTo(115 * Constraint.xCoeff)
+            make.height.equalTo(54 * Constraint.yCoeff)
         }
     }
 

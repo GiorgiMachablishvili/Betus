@@ -11,7 +11,7 @@ import SnapKit
 class HardWorkoutViewController: UIViewController {
 
     lazy var leftButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "backArrow"), for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 22
@@ -25,7 +25,7 @@ class HardWorkoutViewController: UIViewController {
     }()
 
     lazy var warningButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "danger"), for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 22
@@ -33,7 +33,7 @@ class HardWorkoutViewController: UIViewController {
         view.imageView?.contentMode = .scaleAspectFit
         view.layer.borderColor = UIColor.init(hexString: "FFFFFF").cgColor
         view.layer.borderWidth = 1
-        view.setImage(UIImage(named: "danger")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "danger")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.addTarget(self, action: #selector(pressWarningButton), for: .touchUpInside)
         return view
     }()
@@ -59,15 +59,15 @@ class HardWorkoutViewController: UIViewController {
     private lazy var likeViewButton: UIButton = {
         let view = UIButton(type: .system)
         view.setTitle("44", for: .normal)
-        view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.tintColor = UIColor(hexString: "FFFFFF")
-        view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 16 * Constraint.yCoeff, weight: .bold)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 16
         view.imageView?.contentMode = .scaleAspectFit
         // Adjust spacing between image and title
-        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8)
-        view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8 * Constraint.xCoeff)
+        view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8 * Constraint.xCoeff, bottom: 0, right: 0)
 //        view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
         return view
     }()
@@ -83,7 +83,7 @@ class HardWorkoutViewController: UIViewController {
     }()
 
     private lazy var workoutDetailsYellowButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 131, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 131 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Workout details", for: .normal)
         view.backgroundColor = UIColor(hexString: "#E5D820")
         view.layer.cornerRadius = 16
@@ -105,7 +105,7 @@ class HardWorkoutViewController: UIViewController {
     }()
 
     private lazy var workoutDetailsWhiteButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 131, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 131 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Workout details", for: .normal)
         view.backgroundColor = UIColor(hexString: "#FFFFFF")
         view.layer.cornerRadius = 22
@@ -133,7 +133,7 @@ class HardWorkoutViewController: UIViewController {
     }()
 
     private lazy var startWorkoutButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 216, height: 60))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 216 * Constraint.xCoeff, height: 60 * Constraint.yCoeff))
         view.setTitle("Start This Workout", for: .normal)
         view.backgroundColor = UIColor(hexString: "##E5D820")
         view.layer.cornerRadius = 26
@@ -189,76 +189,76 @@ class HardWorkoutViewController: UIViewController {
 
     private func setupConstraints() {
         leftButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60)
-            make.leading.equalTo(view.snp.leading).offset(12)
-            make.width.height.equalTo(44)
+            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.leading.equalTo(view.snp.leading).offset(12 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
         }
         
         warningButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60)
-            make.leading.equalTo(leftButton.snp.trailing).offset(4)
-            make.width.height.equalTo(44)
+            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.leading.equalTo(leftButton.snp.trailing).offset(4 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
         titleLabel.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(63)
+            make.top.equalTo(view.snp.top).offset(63 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.height.equalTo(19)
+            make.height.equalTo(19 * Constraint.yCoeff)
         }
 
         workoutLevelLabel.snp.remakeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.top.equalTo(titleLabel.snp.bottom).offset(4 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.height.equalTo(14)
+            make.height.equalTo(14 * Constraint.yCoeff)
         }
 
         likeViewButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60)
-            make.trailing.equalTo(view.snp.trailing).offset(-12)
-            make.height.equalTo(44)
-            make.width.equalTo(66)
+            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.trailing.equalTo(view.snp.trailing).offset(-12 * Constraint.xCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
+            make.width.equalTo(66 * Constraint.xCoeff)
         }
         
         workoutImage.snp.remakeConstraints { make in
-            make.top.equalTo(leftButton.snp.bottom).offset(10)
+            make.top.equalTo(leftButton.snp.bottom).offset(10 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.width.equalTo(366)
-            make.height.equalTo(287)
+            make.width.equalTo(366 * Constraint.xCoeff)
+            make.height.equalTo(287 * Constraint.yCoeff)
         }
 
         workoutInfoView.snp.remakeConstraints { make in
-            make.top.equalTo(workoutImage.snp.bottom).offset(10)
+            make.top.equalTo(workoutImage.snp.bottom).offset(10 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.width.equalTo(366)
-            make.height.equalTo(122)
+            make.width.equalTo(366 * Constraint.xCoeff)
+            make.height.equalTo(122 * Constraint.yCoeff)
         }
 
         workoutDetailsYellowButton.snp.remakeConstraints { make in
-            make.top.equalTo(workoutImage.snp.bottom).offset(-23)
-            make.bottom.equalTo(workoutInfoView.snp.top).offset(28)
+            make.top.equalTo(workoutImage.snp.bottom).offset(-23 * Constraint.yCoeff)
+            make.bottom.equalTo(workoutInfoView.snp.top).offset(28 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.width.equalTo(131)
+            make.width.equalTo(131 * Constraint.xCoeff)
         }
 
         reminderLabel.snp.remakeConstraints { make in
-            make.top.equalTo(workoutInfoView.snp.bottom).offset(10)
+            make.top.equalTo(workoutInfoView.snp.bottom).offset(10 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.width.equalTo(366)
-            make.height.equalTo(111)
+            make.width.equalTo(366 * Constraint.xCoeff)
+            make.height.equalTo(111 * Constraint.yCoeff)
         }
 
         workoutDetailsWhiteButton.snp.remakeConstraints { make in
-            make.top.equalTo(workoutInfoView.snp.bottom).offset(-23)
-            make.bottom.equalTo(reminderLabel.snp.top).offset(28)
+            make.top.equalTo(workoutInfoView.snp.bottom).offset(-23 * Constraint.yCoeff)
+            make.bottom.equalTo(reminderLabel.snp.top).offset(28 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.width.equalTo(131)
+            make.width.equalTo(131 * Constraint.xCoeff)
         }
 
         startWorkoutButton.snp.remakeConstraints { make in
-            make.bottom.equalTo(view.snp.bottom).offset(-48)
+            make.bottom.equalTo(view.snp.bottom).offset(-48 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.width.equalTo(216)
-            make.height.equalTo(59)
+            make.width.equalTo(216 * Constraint.xCoeff)
+            make.height.equalTo(59 * Constraint.yCoeff)
         }
 
         darkOverlay.snp.remakeConstraints { make in
@@ -267,7 +267,7 @@ class HardWorkoutViewController: UIViewController {
 
         warningView.snp.remakeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(357)
+            make.height.equalTo(357 * Constraint.yCoeff)
         }
     }
 

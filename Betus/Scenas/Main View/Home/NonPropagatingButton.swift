@@ -8,8 +8,13 @@
 import UIKit
 
 class NonPropagatingButton: UIButton {
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let hitView = super.hitTest(point, with: event)
-        return hitView == self ? self : nil
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        return bounds.contains(point)
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        // Prevent propagation to other views
+        self.next?.touchesCancelled(touches, with: event)
     }
 }

@@ -13,10 +13,10 @@ class LikedWorkoutViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: view.frame.width - 24, height: 287)
+        layout.itemSize = CGSize(width: view.frame.width - 24 * Constraint.xCoeff, height: 287 * Constraint.yCoeff)
         layout.minimumLineSpacing = 10
-        layout.headerReferenceSize = CGSize(width: view.frame.width, height: 65)
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
+        layout.headerReferenceSize = CGSize(width: view.frame.width, height: 65 * Constraint.yCoeff)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10 * Constraint.yCoeff, right: 0)
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .clear
         view.dataSource = self
@@ -58,7 +58,7 @@ class LikedWorkoutViewController: UIViewController {
         view.layer.borderWidth = 1
         view.setImage(UIImage(named: "appleLogo"), for: .normal)
         view.imageView?.contentMode = .scaleAspectFit
-        view.imageEdgeInsets = UIEdgeInsets(top: 16, left: -5, bottom: 16, right: 0)
+        view.imageEdgeInsets = UIEdgeInsets(top: 16 * Constraint.yCoeff, left: -5 * Constraint.xCoeff, bottom: 16 * Constraint.yCoeff, right: 0)
         view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         view.addTarget(self, action: #selector(clickSignInWithAppleButton), for: .touchUpInside)
         view.isHidden = true
@@ -82,27 +82,27 @@ class LikedWorkoutViewController: UIViewController {
 
     private func setupConstraints() {
         collectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(12)
-            make.top.equalTo(view.snp.top).offset(10)
+            make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            make.top.equalTo(view.snp.top).offset(10 * Constraint.yCoeff)
             make.bottom.equalToSuperview()
         }
 
         infoLabel.snp.remakeConstraints { make in
             make.center.equalToSuperview()
-            make.width.equalTo(230)
+            make.width.equalTo(230 * Constraint.xCoeff)
         }
 
         forOrderingStoreLabel.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(367)
+            make.top.equalTo(view.snp.top).offset(367 * Constraint.yCoeff)
             make.centerX.equalTo(view.snp.centerX)
-            make.width.equalTo(366)
+            make.width.equalTo(366 * Constraint.xCoeff)
         }
 
         signInWithAppleButton.snp.remakeConstraints { make in
-            make.top.equalTo(forOrderingStoreLabel.snp.bottom).offset(16)
+            make.top.equalTo(forOrderingStoreLabel.snp.bottom).offset(16 * Constraint.yCoeff)
             make.centerX.equalTo(view.snp.centerX)
-            make.width.equalTo(366)
-            make.height.equalTo(56)
+            make.width.equalTo(366 * Constraint.xCoeff)
+            make.height.equalTo(56 * Constraint.yCoeff)
         }
     }
 
@@ -119,9 +119,9 @@ extension LikedWorkoutViewController: LikeWorkoutReusableDelegate {
 }
 
 extension LikedWorkoutViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        1
-    }
+//    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        1
+//    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         1

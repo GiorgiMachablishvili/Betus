@@ -17,7 +17,7 @@ class WarningView: UIView {
     weak var delegate: WarningViewDelegate?
 
     private lazy var complaintButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 96, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 96 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Complaint", for: .normal)
         view.backgroundColor = UIColor(hexString: "FFFFFF")
         view.layer.cornerRadius = 16
@@ -40,7 +40,7 @@ class WarningView: UIView {
     }()
 
     private lazy var dontWantToSeeUserAccountButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 358, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 358 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setTitle("I don't want to see this user's content", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 22
@@ -55,7 +55,7 @@ class WarningView: UIView {
     }()
 
     private lazy var sheWillFileAComlaintButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 358, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 358 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setTitle("Yeah, she'll file a complaint", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 22
@@ -70,7 +70,7 @@ class WarningView: UIView {
     }()
 
     private lazy var cancelButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 216, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 216 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setTitle("Cancel", for: .normal)
         view.backgroundColor = UIColor(hexString: "#E5D820")
         view.layer.cornerRadius = 26
@@ -105,38 +105,38 @@ class WarningView: UIView {
 
     private func setupConstraints() {
         complaintButton.snp.remakeConstraints { make in
-            make.top.equalTo(snp.top).offset(16)
+            make.top.equalTo(snp.top).offset(16 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.width.equalTo(96)
-            make.height.equalTo(41)
+            make.width.equalTo(96 * Constraint.xCoeff)
+            make.height.equalTo(41 * Constraint.yCoeff)
         }
 
         askLabel.snp.remakeConstraints { make in
-            make.top.equalTo(complaintButton.snp.bottom).offset(20)
+            make.top.equalTo(complaintButton.snp.bottom).offset(20 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(34)
+            make.leading.trailing.equalToSuperview().inset(16 * Constraint.xCoeff)
+            make.height.equalTo(34 * Constraint.yCoeff)
         }
         
         dontWantToSeeUserAccountButton.snp.remakeConstraints { make in
-            make.top.equalTo(askLabel.snp.bottom).offset(48)
+            make.top.equalTo(askLabel.snp.bottom).offset(48 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(44)
+            make.leading.trailing.equalToSuperview().inset(16 * Constraint.xCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
         }
 
         sheWillFileAComlaintButton.snp.remakeConstraints { make in
-            make.top.equalTo(dontWantToSeeUserAccountButton.snp.bottom).offset(4)
+            make.top.equalTo(dontWantToSeeUserAccountButton.snp.bottom).offset(4 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(44)
+            make.leading.trailing.equalToSuperview().inset(16 * Constraint.xCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
         }
 
         cancelButton.snp.remakeConstraints { make in
-            make.bottom.equalTo(snp.bottom).offset(-34)
+            make.bottom.equalTo(snp.bottom).offset(-34 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(87)
-            make.height.equalTo(44)
+            make.leading.trailing.equalToSuperview().inset(87 * Constraint.xCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
         }
     }
 

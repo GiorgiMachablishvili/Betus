@@ -76,20 +76,17 @@ extension WorkoutViewController: HomeHeaderViewDelegate {
 }
 
 extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        1
-//    }
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        workoutData.count
+//        workoutData.count
+        1
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: WorkoutInfoCell.self), for: indexPath) as? WorkoutInfoCell else {
             return UICollectionViewCell()
         }
-        let workout = workoutData[indexPath.row]
-        cell.configure(with: workout.image)
+//        let workout = workoutData[indexPath.row]
+//        cell.configure(with: workout.image)
         return cell
     }
 

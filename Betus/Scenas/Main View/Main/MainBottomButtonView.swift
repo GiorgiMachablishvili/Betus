@@ -13,37 +13,37 @@ class MainBottomButtonView: UIView {
     weak var delegate: MainViewController?
 
     lazy var homeButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "home"), for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
-        view.setImage(UIImage(named: "home")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "home")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.addTarget(self, action: #selector(pressHomeButton), for: .touchUpInside)
         return view
     }()
 
     lazy var infoWorkOutButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "heart"), for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
-        view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.addTarget(self, action: #selector(pressinfoWorkOutButton), for: .touchUpInside)
         return view
     }()
 
     lazy var plusButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "plus"), for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
-        view.setImage(UIImage(named: "plus")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "plus")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.addTarget(self, action: #selector(pressPlusButton), for: .touchUpInside)
         return view
     }()

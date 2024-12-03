@@ -30,10 +30,9 @@ class WorkoutInfoCell: UICollectionViewCell {
         view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
         view.tintColor = UIColor(hexString: "FFFFFF")
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
-        view.layer.cornerRadius = 26
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.3)
+        view.layer.cornerRadius = 22
         view.imageView?.contentMode = .scaleAspectFit
-        // Adjust spacing between image and title
         view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8)
         view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
         view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
@@ -54,6 +53,14 @@ class WorkoutInfoCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let convertedPoint = likeViewButton.convert(point, from: self)
+        if likeViewButton.bounds.contains(convertedPoint) {
+            return likeViewButton
+        }
+        return super.hitTest(point, with: event)
+    }
+
     private func setup() {
         addSubview(workoutImage)
         workoutImage.addSubview(workoutInfoView)
@@ -66,34 +73,32 @@ class WorkoutInfoCell: UICollectionViewCell {
         }
         
         workoutInfoView.snp.remakeConstraints { make in
-            make.bottom.equalTo(workoutImage.snp.bottom).offset(-8)
-            make.leading.trailing.equalToSuperview().inset(8)
-            make.height.equalTo(116)
+            make.bottom.equalTo(workoutImage.snp.bottom).offset(-8 * Constraint.xCoeff)
+            make.leading.trailing.equalToSuperview().inset(8 * Constraint.xCoeff)
+            make.height.equalTo(116 * Constraint.yCoeff)
         }
 
         likeViewButton.snp.remakeConstraints { make in
-            make.top.equalTo(snp.top).offset(8)
-            make.trailing.equalTo(snp.trailing).offset(-8)
-            make.height.equalTo(44)
-            make.width.equalTo(66)
+            make.top.equalTo(snp.top).offset(8 * Constraint.yCoeff)
+            make.trailing.equalTo(snp.trailing).offset(-8 * Constraint.xCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
+            make.width.equalTo(66 * Constraint.xCoeff)
         }
     }
     
-    //TODO: when press likeViewButtonTapped it should not press collectionView didSelectItemAt
     @objc func likeViewButtonTapped() {
-        print("press likeView button")
         isLiked.toggle()
         updateLikeState()
     }
 
     private func updateLikeState() {
         if isLiked {
-            likeViewButton.setImage(UIImage(named: "heartFilled")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+            likeViewButton.setImage(UIImage(named: "heartFilled")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
             if let likes = Int(likeViewButton.title(for: .normal) ?? "0") {
                 likeViewButton.setTitle("\(likes + 1)", for: .normal)
             }
         } else {
-            likeViewButton.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+            likeViewButton.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
             if let likes = Int(likeViewButton.title(for: .normal) ?? "0"), likes > 0 {
                 likeViewButton.setTitle("\(likes - 1)", for: .normal)
             }

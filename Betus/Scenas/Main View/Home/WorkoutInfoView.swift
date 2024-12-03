@@ -56,30 +56,30 @@ class WorkoutInfoView: UIView {
 
     private func setupConstraints() {
         workoutLevel.snp.remakeConstraints { make in
-            make.top.equalTo(snp.top).offset(20)
-            make.leading.equalTo(snp.leading).offset(20)
-            make.height.equalTo(19)
+            make.top.equalTo(snp.top).offset(20 * Constraint.yCoeff)
+            make.leading.equalTo(snp.leading).offset(20 * Constraint.xCoeff)
+            make.height.equalTo(19 * Constraint.yCoeff)
         }
 
         taskView.snp.remakeConstraints { make in
-            make.top.equalTo(workoutLevel.snp.bottom).offset(8)
-            make.trailing.equalTo(timeView.snp.leading).offset(-4)
-            make.height.equalTo(49)
-            make.width.equalTo(100)
+            make.top.equalTo(workoutLevel.snp.bottom).offset(8 * Constraint.yCoeff)
+            make.trailing.equalTo(timeView.snp.leading).offset(-4 * Constraint.xCoeff)
+            make.height.equalTo(49 * Constraint.yCoeff)
+            make.width.equalTo(100 * Constraint.xCoeff)
         }
 
         timeView.snp.remakeConstraints { make in
             make.centerY.equalTo(taskView.snp.centerY)
             make.centerX.equalTo(snp.centerX)
-            make.height.equalTo(49)
-            make.width.equalTo(100)
+            make.height.equalTo(49 * Constraint.yCoeff)
+            make.width.equalTo(100 * Constraint.xCoeff)
         }
 
         levelView.snp.remakeConstraints { make in
             make.centerY.equalTo(taskView.snp.centerY)
-            make.leading.equalTo(timeView.snp.trailing).offset(4)
-            make.height.equalTo(49)
-            make.width.equalTo(100)
+            make.leading.equalTo(timeView.snp.trailing).offset(4 * Constraint.xCoeff)
+            make.height.equalTo(49 * Constraint.yCoeff)
+            make.width.equalTo(100 * Constraint.xCoeff)
         }
 
     }

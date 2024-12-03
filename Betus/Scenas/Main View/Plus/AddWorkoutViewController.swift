@@ -17,8 +17,6 @@ class AddWorkoutViewController: UIViewController {
 
     weak var delegate: AddWorkoutViewControllerDelegate?
 
-//    private var taskViews: [UIView] = []
-
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -47,6 +45,7 @@ class AddWorkoutViewController: UIViewController {
         view.delegate = self
         return view
     }()
+
 
     private lazy var taskView: UIView = {
         let view = UIView(frame: .zero)
@@ -87,13 +86,17 @@ class AddWorkoutViewController: UIViewController {
         addTaskView.snp.remakeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.snp.bottom)
-            make.height.equalTo(343)
+            make.height.equalTo(343 * Constraint.yCoeff)
         }
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc func pressDeleteTaskViewButton() {
+
     }
 
 }
@@ -121,6 +124,9 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
     func didPressRightButton(workoutName: String, workoutImage: UIImage) {
         guard let workoutImageData = workoutImage.jpegData(compressionQuality: 0.8) else { return }
 
+        let id = "550a8125-84bf-4f06-8504-bcef6e89c986"
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/\(id)"
+
         guard let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell else { return }
         let selectedLevel = visibleCell.getSelectedLevel()
         let parameters: [String: Any] = [
@@ -129,14 +135,17 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
             "level": selectedLevel,
             "completers": [],
             "details": workoutName,
-            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "id": "550a8125-84bf-4f06-8504-bcef6e89c986",
             "image": workoutImageData.base64EncodedString(),
-            "creator_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            "creator_id": "550a8125-84bf-4f06-8504-bcef6e89c986"
         ]
-        
-        //TODO: writes error - Error saving workout: URLSessionTask failed with error: The network connection was lost.
+
+        // Show progress indicator
+        NetworkManager.shared.showProgressHud(true, animated: true)
+
         // Make PUT request
-        NetworkManager.shared.put(url: "https://betus-orange-nika-46706b42b39b.herokuapp.com", parameters: parameters, headers: nil) { (result: Result<UserInfo>) in
+        NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<Workouts>) in
+            NetworkManager.shared.showProgressHud(false, animated: false)
             switch result {
             case .success:
                 print("Workout saved successfully.")
@@ -144,8 +153,14 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
                 print("Error saving workout: \(error.localizedDescription)")
             }
         }
-//        let mainViewController = MainViewController()
-//        navigationController?.pushViewController(mainViewController, animated: true)
+        let mainViewController = MainViewController()
+        navigationController?.pushViewController(mainViewController, animated: true)
+    }
+    // Helper: Show an alert to the user
+    private func showAlert(title: String, description: String) {
+        let alert = UIAlertController(title: title, message: description, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 
 
@@ -196,7 +211,7 @@ extension AddWorkoutViewController: AddTaskViewDelegate {
         taskView.addSubview(taskLabel)
 
         taskLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(8)
+            make.edges.equalToSuperview().inset(8 * Constraint.yCoeff)
         }
 
         delegate?.shouldHideMainBottomButtonView(false)

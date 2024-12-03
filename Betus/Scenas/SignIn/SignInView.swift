@@ -5,6 +5,15 @@
 //  Created by Gio's Mac on 25.11.24.
 //
 
+//TODO: registration
+//TODO: create user
+//TODO: post information in back from AddWorkoutViewController
+//TODO: when post info from AddWorkoutViewController how should be struct of Model
+//TODO: fetch info from back
+//TODO: how make number of likes likeViewButton title in WorkoutInfoCell 
+//TODO: post like info
+
+
 import UIKit
 import SnapKit
 import AuthenticationServices
@@ -42,7 +51,7 @@ class SignInView: UIViewController {
         view.layer.borderWidth = 1
         view.setImage(UIImage(named: "appleLogo"), for: .normal)
         view.imageView?.contentMode = .scaleAspectFit
-        view.imageEdgeInsets = UIEdgeInsets(top: 16, left: -5, bottom: 16, right: 0)
+        view.imageEdgeInsets = UIEdgeInsets(top: 16 * Constraint.yCoeff, left: -5 * Constraint.xCoeff, bottom: 16 * Constraint.yCoeff, right: 0)
         view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         view.addTarget(self, action: #selector(clickSignInWithAppleButton), for: .touchUpInside)
         return view
@@ -89,22 +98,28 @@ class SignInView: UIViewController {
         }
 
         signInWithAppleButton.snp.remakeConstraints { make in
-            make.bottom.equalTo(view.snp.bottom).offset(-127)
-            make.leading.trailing.equalToSuperview().inset(37)
-            make.height.equalTo(59)
+            make.bottom.equalTo(view.snp.bottom).offset(-127 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(37 * Constraint.xCoeff)
+            make.height.equalTo(59 * Constraint.yCoeff)
         }
 
         logInAsGuestButton.snp.remakeConstraints { make in
-            make.top.equalTo(signInWithAppleButton.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview().inset(37)
-            make.height.equalTo(59)
+            make.top.equalTo(signInWithAppleButton.snp.bottom).offset(8 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(37 * Constraint.xCoeff)
+            make.height.equalTo(59 * Constraint.yCoeff)
         }
+    }
+    
+    // MARK: - Button Actions
+    @objc func clickLogInAsGuestButton() {
+        let mainVC = MainViewController()
+        navigationController?.pushViewController(mainVC, animated: true)
     }
 
     @objc func clickSignInWithAppleButton() {
         // Simulating tokens for testing
-        let mockPushToken = "mockPushToken123"
-        let mockAppleToken = "mockAppleToken456"
+        let mockPushToken = "mockPushTokenTest1"
+        let mockAppleToken = "mockAppleTokenTest1"
 
         // Store mock tokens in UserDefaults
         UserDefaults.standard.setValue(mockPushToken, forKey: "PushToken")
@@ -122,13 +137,9 @@ class SignInView: UIViewController {
 //        authorizationController.performRequests()
     }
 
-    @objc func clickLogInAsGuestButton() {
-        let mainVC = MainViewController()
-        navigationController?.pushViewController(mainVC, animated: true)
-    }
-
     private func createUser() {
         NetworkManager.shared.showProgressHud(true, animated: true)
+
         let pushToken = UserDefaults.standard.string(forKey: "PushToken") ?? ""
         let appleToken = UserDefaults.standard.string(forKey: "AccountCredential") ?? ""
 
@@ -140,7 +151,7 @@ class SignInView: UIViewController {
 
         // Make the network request
         NetworkManager.shared.post(
-            url: "https://betus-orange-nika-46706b42b39b.herokuapp.com",
+            url: "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/",
             parameters: parameters,
             headers: nil
         ) { [weak self] (result: Result<UserInfo>) in
@@ -153,19 +164,20 @@ class SignInView: UIViewController {
             switch result {
             case .success(let userInfo):
                 DispatchQueue.main.async {
-                    // Navigate to the main dashboard or show success message
                     print("User created: \(userInfo)")
                     UserDefaults.standard.setValue(userInfo.id, forKey: "userId")
-                    self.showAlert(title: "Success", description: "User created successfully.")
+                    print("Received User ID: \(userInfo.id)")
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    // Show error message
+                    //Show error message
                     self.showAlert(title: "Error", description: error.localizedDescription)
                 }
                 print("Error: \(error)")
             }
         }
+//        let mainVC = MainViewController()
+//        navigationController?.pushViewController(mainVC, animated: true)
     }
 
     private func showAlert(title: String, description: String) {
@@ -215,9 +227,9 @@ extension SignInView: ASAuthorizationControllerDelegate /*ASAuthorizationControl
             showAlert(title: "Sign In Failed", description: error.localizedDescription)
         }
     }
-//
-//    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-//        return self.view.window!
-//    }
+
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
 }
 

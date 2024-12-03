@@ -113,43 +113,43 @@ class HomeHeaderView: UICollectionReusableView {
 
     private func setupConstraints() {
         userInfoButton.snp.remakeConstraints { make in
-            make.top.equalTo(snp.top).offset(10)
-            make.leading.equalTo(snp.leading).offset(12)
-            make.width.height.equalTo(44)
+            make.top.equalTo(snp.top).offset(10 * Constraint.yCoeff)
+            make.leading.equalTo(snp.leading).offset(12 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
         searchButton.snp.remakeConstraints { make in
-            make.top.equalTo(snp.top).offset(10)
-            make.trailing.equalTo(snp.trailing).offset(-12)
-            make.width.height.equalTo(44)
+            make.top.equalTo(snp.top).offset(10 * Constraint.yCoeff)
+            make.trailing.equalTo(snp.trailing).offset(-12 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.yCoeff)
         }
 
         allWorkoutLevelsButton.snp.remakeConstraints { make in
-            make.top.equalTo(userInfoButton.snp.bottom).offset(10)
-            make.leading.equalTo(snp.leading).offset(2)
-            make.width.equalTo(65)
-            make.height.equalTo(41)
+            make.top.equalTo(userInfoButton.snp.bottom).offset(10 * Constraint.yCoeff)
+            make.leading.equalTo(snp.leading).offset(2 * Constraint.xCoeff)
+            make.width.equalTo(65 * Constraint.xCoeff)
+            make.height.equalTo(41 * Constraint.yCoeff)
         }
 
         easyWorkoutLevelsButton.snp.remakeConstraints { make in
             make.centerY.equalTo(allWorkoutLevelsButton.snp.centerY)
-            make.leading.equalTo(allWorkoutLevelsButton.snp.trailing).offset(4)
-            make.width.equalTo(77)
-            make.height.equalTo(41)
+            make.leading.equalTo(allWorkoutLevelsButton.snp.trailing).offset(4 * Constraint.xCoeff)
+            make.width.equalTo(77 * Constraint.xCoeff)
+            make.height.equalTo(41 * Constraint.yCoeff)
         }
 
         advancedWorkoutLevelsButton.snp.remakeConstraints { make in
             make.centerY.equalTo(allWorkoutLevelsButton.snp.centerY)
-            make.leading.equalTo(easyWorkoutLevelsButton.snp.trailing).offset(4)
-            make.width.equalTo(110)
-            make.height.equalTo(41)
+            make.leading.equalTo(easyWorkoutLevelsButton.snp.trailing).offset(4 * Constraint.xCoeff)
+            make.width.equalTo(110 * Constraint.xCoeff)
+            make.height.equalTo(41 * Constraint.yCoeff)
         }
 
         difficultWorkoutLevelsButton.snp.remakeConstraints { make in
             make.centerY.equalTo(allWorkoutLevelsButton.snp.centerY)
-            make.leading.equalTo(advancedWorkoutLevelsButton.snp.trailing).offset(4)
-            make.width.equalTo(98)
-            make.height.equalTo(41)
+            make.leading.equalTo(advancedWorkoutLevelsButton.snp.trailing).offset(4 * Constraint.xCoeff)
+            make.width.equalTo(98 * Constraint.xCoeff)
+            make.height.equalTo(41 * Constraint.yCoeff)
         }
     }
 

@@ -15,7 +15,7 @@ class TimerViewController: UIViewController {
     private var isTimerRunning = false
 
     lazy var leftButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "backArrow"), for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 22
@@ -23,7 +23,7 @@ class TimerViewController: UIViewController {
         view.imageView?.contentMode = .scaleAspectFit
         view.layer.borderColor = UIColor.init(hexString: "FFFFFF").cgColor
         view.layer.borderWidth = 1
-        view.setImage(UIImage(named: "backArrow")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "backArrow")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.addTarget(self, action: #selector(pressLeftButton), for: .touchUpInside)
         return view
     }()
@@ -40,15 +40,15 @@ class TimerViewController: UIViewController {
     private lazy var likeViewButton: UIButton = {
         let view = UIButton(type: .system)
         view.setTitle("44", for: .normal)
-        view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.tintColor = UIColor(hexString: "FFFFFF")
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 16
         view.imageView?.contentMode = .scaleAspectFit
         // Adjust spacing between image and title
-        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8)
-        view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8 * Constraint.xCoeff)
+        view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8 * Constraint.xCoeff, bottom: 0, right: 0)
 //        view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
         return view
     }()
@@ -83,7 +83,7 @@ class TimerViewController: UIViewController {
 
 
     private lazy var startButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 216, height: 60))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 216 * Constraint.xCoeff, height: 60 * Constraint.yCoeff))
         view.setTitle("Play", for: .normal)
         view.backgroundColor = UIColor(hexString: "#E5D820")
         view.layer.cornerRadius = 26
@@ -118,28 +118,28 @@ class TimerViewController: UIViewController {
 
     private func setupConstraints() {
         leftButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60)
-            make.leading.equalTo(view.snp.leading).offset(12)
-            make.width.height.equalTo(44)
+            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.leading.equalTo(view.snp.leading).offset(12 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
         titleLabel.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(63)
+            make.top.equalTo(view.snp.top).offset(63 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.height.equalTo(19)
+            make.height.equalTo(19 * Constraint.yCoeff)
         }
 
         likeViewButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60)
-            make.trailing.equalTo(view.snp.trailing).offset(-12)
-            make.height.equalTo(44)
-            make.width.equalTo(66)
+            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.trailing.equalTo(view.snp.trailing).offset(-12 * Constraint.xCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
+            make.width.equalTo(66 * Constraint.xCoeff)
         }
 
         circularProgressView.snp.remakeConstraints { make in
-            make.top.equalTo(leftButton.snp.bottom).offset(104)
+            make.top.equalTo(leftButton.snp.bottom).offset(104 * Constraint.yCoeff)
             make.centerX.equalTo(view.snp.centerX)
-            make.width.height.equalTo(300)
+            make.width.height.equalTo(300 * Constraint.xCoeff)
         }
 
         timeLabel.snp.remakeConstraints { make in
@@ -148,17 +148,17 @@ class TimerViewController: UIViewController {
         }
 
         beshOnTheSportImage.snp.remakeConstraints { make in
-            make.bottom.equalTo(startButton.snp.top).offset(-16)
+            make.bottom.equalTo(startButton.snp.top).offset(-16 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
-            make.height.equalTo(103)
-            make.width.equalTo(342)
+            make.height.equalTo(103 * Constraint.yCoeff)
+            make.width.equalTo(342 * Constraint.xCoeff)
         }
 
         startButton.snp.remakeConstraints { make in
-            make.bottom.equalTo(view.snp.bottom).offset(-48)
+            make.bottom.equalTo(view.snp.bottom).offset(-48 * Constraint.yCoeff)
             make.centerX.equalTo(view.snp.centerX)
-            make.width.equalTo(115)
-            make.height.equalTo(59)
+            make.width.equalTo(115 * Constraint.xCoeff)
+            make.height.equalTo(59 * Constraint.yCoeff)
         }
     }
 
