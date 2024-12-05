@@ -10,6 +10,10 @@ import SnapKit
 
 class WorkoutViewController: UIViewController {
 
+    private var workouts: [Workouts] = []
+    private var allWorkouts: [Workouts] = []
+    private var displayedWorkouts: [Workouts] = []
+
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -26,8 +30,6 @@ class WorkoutViewController: UIViewController {
         return view
     }()
 
-    private var workoutData: [WorkoutInfo] = []
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(hexString: "#101538")
@@ -35,7 +37,7 @@ class WorkoutViewController: UIViewController {
         setup()
         setupConstraints()
 
-        fetchWorkoutInfo()
+        fetchWorkoutCurrentUserInfo()
     }
 
     private func setup() {
@@ -50,22 +52,23 @@ class WorkoutViewController: UIViewController {
         }
     }
 
-    private func fetchWorkoutInfo() {
-           let userId = "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-           let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/\(userId)"
+    private func fetchWorkoutCurrentUserInfo() {
+        let id = UserDefaults.standard.value(forKey: "userId")
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(id ?? "")"
 
-           NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<WorkoutInfo>) in
-               switch result {
-               case .success(let data):
-                   self.workoutData = [data]
-                   DispatchQueue.main.async {
-                       self.collectionView.reloadData()
-                   }
-               case .failure(let error):
-                   print("Error fetching workout info: \(error.localizedDescription)")
-               }
-           }
-       }
+        NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
+            switch result {
+            case .success(let workouts):
+                self.allWorkouts = workouts
+                self.displayedWorkouts = workouts
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error fetching workouts: \(error.localizedDescription)")
+            }
+        }
+    }
 }
 
 extension WorkoutViewController: HomeHeaderViewDelegate {
@@ -73,20 +76,46 @@ extension WorkoutViewController: HomeHeaderViewDelegate {
         let profileView = ProfileViewController()
         navigationController?.pushViewController(profileView, animated: true)
     }
+
+    func filterWorkouts(by level: Workouts.Level) {
+        guard level != .all else {
+            displayedWorkouts = allWorkouts
+            collectionView.reloadData()
+            return
+        }
+        displayedWorkouts = allWorkouts.filter { $0.level.rawValue.lowercased() == level.rawValue.lowercased()}
+        collectionView.reloadData()
+    }
+
+    func searchWorkouts(with searchText: String) {
+        guard !searchText.isEmpty else {
+            displayedWorkouts = allWorkouts
+            collectionView.reloadData()
+            return
+        }
+        displayedWorkouts = allWorkouts.filter { workout in
+            workout.details.lowercased().contains(searchText.lowercased())
+            /*$0.details.lowercased().contains(searchText.lowercased())*/
+        }
+        collectionView.reloadData()
+    }
 }
 
 extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        workoutData.count
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return displayedWorkouts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: WorkoutInfoCell.self), for: indexPath) as? WorkoutInfoCell else {
             return UICollectionViewCell()
         }
-//        let workout = workoutData[indexPath.row]
-//        cell.configure(with: workout.image)
+        let workout = displayedWorkouts[indexPath.row]
+        cell.configure(with: workout)
         return cell
     }
 
@@ -104,10 +133,13 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? WorkoutInfoCell,
+              let selectedImage = cell.workoutImage.image else { return }
+        let selectedWorkout = displayedWorkouts[indexPath.row]
         let hardWorkoutVC = HardWorkoutViewController()
+
+        hardWorkoutVC.workoutImage.image = selectedImage
+        hardWorkoutVC.workoutData = selectedWorkout
         navigationController?.pushViewController(hardWorkoutVC, animated: true)
     }
 }
-
-
-

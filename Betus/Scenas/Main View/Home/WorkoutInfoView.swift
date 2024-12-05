@@ -10,7 +10,7 @@ import SnapKit
 
 class WorkoutInfoView: UIView {
 
-    private lazy var workoutLevel: UILabel = {
+    lazy var workoutLevel: UILabel = {
         let view = UILabel(frame: .zero)
         view.font = UIFont.latoBold(size: 16)
         view.textColor = UIColor(hexString: "FFFFFF")
@@ -19,25 +19,27 @@ class WorkoutInfoView: UIView {
         return view
     }()
 
-    private lazy var taskView: TaskView = {
+    lazy var taskView: TaskView = {
         let view = TaskView()
         view.layer.cornerRadius = 16
         return view
     }()
 
-    private lazy var timeView: TimeView = {
+    lazy var timeView: TimeView = {
         let view = TimeView()
+        view.layer.cornerRadius = 16
         return view
     }()
 
-    private lazy var levelView: LevelView = {
+    lazy var levelView: LevelView = {
         let view = LevelView()
+        view.layer.cornerRadius = 16
         return view
     }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
+        backgroundColor = UIColor.clearBlur(withAlpha: 0.4)
 
         setup()
         setupConstraints()
@@ -64,23 +66,22 @@ class WorkoutInfoView: UIView {
         taskView.snp.remakeConstraints { make in
             make.top.equalTo(workoutLevel.snp.bottom).offset(8 * Constraint.yCoeff)
             make.trailing.equalTo(timeView.snp.leading).offset(-4 * Constraint.xCoeff)
-            make.height.equalTo(49 * Constraint.yCoeff)
+            make.height.equalTo(51 * Constraint.yCoeff)
             make.width.equalTo(100 * Constraint.xCoeff)
         }
 
         timeView.snp.remakeConstraints { make in
             make.centerY.equalTo(taskView.snp.centerY)
             make.centerX.equalTo(snp.centerX)
-            make.height.equalTo(49 * Constraint.yCoeff)
+            make.height.equalTo(51 * Constraint.yCoeff)
             make.width.equalTo(100 * Constraint.xCoeff)
         }
 
         levelView.snp.remakeConstraints { make in
             make.centerY.equalTo(taskView.snp.centerY)
             make.leading.equalTo(timeView.snp.trailing).offset(4 * Constraint.xCoeff)
-            make.height.equalTo(49 * Constraint.yCoeff)
+            make.height.equalTo(51 * Constraint.yCoeff)
             make.width.equalTo(100 * Constraint.xCoeff)
         }
-
     }
 }

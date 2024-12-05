@@ -9,6 +9,14 @@ import UIKit
 import SnapKit
 
 class TimeView: UIView {
+    var remainingTime: TimeInterval = 0 {
+        didSet {
+            updateTimerLabel()
+        }
+    }
+    var remainingTimeInt: Int {
+        return Int(remainingTime)
+    }
 
     private lazy var timeLabel: UILabel = {
         let view = UILabel(frame: .zero)
@@ -19,12 +27,24 @@ class TimeView: UIView {
         return view
     }()
 
-    private lazy var timerLabel: UILabel = {
-        let view = UILabel(frame: .zero)
-        view.text = "00:00:00"
+//    lazy var timerLabel: UILabel = {
+//        let view = UILabel(frame: .zero)
+//        view.text = "00:00:00"
+//        view.textColor = UIColor(hexString: "FFFFFF")
+//        view.textAlignment = .center
+//        view.font = UIFont.latoBold(size: 18)
+//        return view
+//    }()
+
+    lazy var timerLabel: UILabel = {
+        let view = UILabel()
+        let hours = Int(remainingTimeInt) / 3600
+        let minutes = (Int(remainingTimeInt) % 3600) / 60
+        let seconds = Int(remainingTimeInt) % 60
+        view.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        view.font = UIFont.boldSystemFont(ofSize: 18)
         view.textColor = UIColor(hexString: "FFFFFF")
         view.textAlignment = .center
-        view.font = UIFont.latoBold(size: 24)
         return view
     }()
 
@@ -59,5 +79,12 @@ class TimeView: UIView {
             make.centerX.equalTo(snp.centerX)
             make.height.equalTo(14 * Constraint.yCoeff)
         }
+    }
+    
+    private func updateTimerLabel() {
+        let hours = remainingTimeInt / 3600
+        let minutes = (remainingTimeInt % 3600) / 60
+        let seconds = remainingTimeInt % 60
+        timerLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
 }

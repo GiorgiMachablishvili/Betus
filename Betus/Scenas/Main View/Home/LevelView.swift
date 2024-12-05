@@ -19,12 +19,12 @@ class LevelView: UIView {
         return view
     }()
 
-    private lazy var levelInfoLabel: UILabel = {
+    lazy var levelInfoLabel: UILabel = {
         let view = UILabel(frame: .zero)
         view.text = "Hard"
         view.textColor = UIColor(hexString: "FFFFFF")
         view.textAlignment = .center
-        view.font = UIFont.latoBold(size: 24)
+        view.font = UIFont.latoBold(size: 18)
         return view
     }()
 

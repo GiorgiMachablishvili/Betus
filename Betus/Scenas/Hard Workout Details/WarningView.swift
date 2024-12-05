@@ -73,7 +73,7 @@ class WarningView: UIView {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 216 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setTitle("Cancel", for: .normal)
         view.backgroundColor = UIColor(hexString: "#E5D820")
-        view.layer.cornerRadius = 26
+        view.layer.cornerRadius = 22
         view.titleLabel?.font = UIFont.latoRegular(size: 14)
         view.setTitleColor(UIColor(hexString: "#FFFFFF"), for: .normal)
         view.clipsToBounds = true

@@ -10,6 +10,8 @@ import SnapKit
 
 class HardWorkoutViewController: UIViewController {
 
+    var workoutData: Workouts?
+
     lazy var leftButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "backArrow"), for: .normal)
@@ -49,7 +51,7 @@ class HardWorkoutViewController: UIViewController {
 
     private lazy var workoutLevelLabel: UILabel = {
         let view = UILabel(frame: .zero)
-        view.text = "Level  Difficult"
+        view.text = "Level Difficult"
         view.textAlignment = .center
         view.font = UIFont.latoRegular(size: 12)
         view.textColor = UIColor(hexString: "FFFFFF").withAlphaComponent(40)
@@ -65,19 +67,16 @@ class HardWorkoutViewController: UIViewController {
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 16
         view.imageView?.contentMode = .scaleAspectFit
-        // Adjust spacing between image and title
         view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8 * Constraint.xCoeff)
         view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8 * Constraint.xCoeff, bottom: 0, right: 0)
-//        view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
+        //        view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
         return view
     }()
 
-
-    private lazy var workoutImage: UIImageView = {
+    lazy var workoutImage: UIImageView = {
         let view = UIImageView(frame: .zero)
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .scaleAspectFill
         view.image = UIImage(systemName: "figure.australian.football.circle")
-        view.backgroundColor = .red
         view.layer.cornerRadius = 26
         return view
     }()
@@ -168,6 +167,7 @@ class HardWorkoutViewController: UIViewController {
         view.applyGradientBackground()
         setup()
         setupConstraints()
+        configureWithData()
         self.navigationItem.hidesBackButton = true
     }
 
@@ -193,7 +193,7 @@ class HardWorkoutViewController: UIViewController {
             make.leading.equalTo(view.snp.leading).offset(12 * Constraint.xCoeff)
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
-        
+
         warningButton.snp.remakeConstraints { make in
             make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
             make.leading.equalTo(leftButton.snp.trailing).offset(4 * Constraint.xCoeff)
@@ -218,7 +218,7 @@ class HardWorkoutViewController: UIViewController {
             make.height.equalTo(44 * Constraint.yCoeff)
             make.width.equalTo(66 * Constraint.xCoeff)
         }
-        
+
         workoutImage.snp.remakeConstraints { make in
             make.top.equalTo(leftButton.snp.bottom).offset(10 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
@@ -273,6 +273,11 @@ class HardWorkoutViewController: UIViewController {
 
     @objc private func pressStartWorkoutButton() {
         let timerVC = TimerViewController()
+
+        if let workout = workoutData {
+            timerVC.remainingTime = Double(workout.time)
+            timerVC.duration = Double(workout.time) 
+        }
         navigationController?.pushViewController(timerVC, animated: true)
     }
 
@@ -284,6 +289,23 @@ class HardWorkoutViewController: UIViewController {
         darkOverlay.isHidden = false
         warningView.isHidden = false
     }
+
+
+    private func configureWithData() {
+        if let image = workoutImage.image {
+            workoutImage.image = image
+        }
+
+        if let workout = workoutData {
+            titleLabel.text = workout.details
+            workoutLevelLabel.text = "Level \(workout.level.rawValue)"
+
+            workoutInfoView.workoutLevel.text = workout.details
+            workoutInfoView.taskView.taskNumberLabel.text = String(workout.taskCount)
+            workoutInfoView.timeView.remainingTime = Double(workout.time)
+            workoutInfoView.levelView.levelInfoLabel.text = workout.level.rawValue
+        }
+    }
 }
 
 extension HardWorkoutViewController: WarningViewDelegate {
@@ -291,6 +313,4 @@ extension HardWorkoutViewController: WarningViewDelegate {
         darkOverlay.isHidden = true
         warningView.isHidden = true
     }
-    
-
 }

@@ -49,7 +49,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
         return view
     }()
 
-    private lazy var userImageView: UIImageView = {
+    private lazy var workoutImage: UIImageView = {
         let view = UIImageView(frame: .zero)
         view.clipsToBounds = true
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
@@ -179,14 +179,13 @@ class AddWorkoutViewCell: UICollectionViewCell {
     private func setup() {
         addSubview(userInfoButton)
         addSubview(rightButton)
-        addSubview(userImageView)
+        addSubview(workoutImage)
         addSubview(nameWorkoutTextfield)
         addSubview(easyWorkoutLevelsButton)
         addSubview(advancedWorkoutLevelsButton)
         addSubview(difficultWorkoutLevelsButton)
         addSubview(descriptionWorkoutTextfield)
         addSubview(addTaskButton)
-
     }
 
     private func setupConstraint() {
@@ -202,14 +201,14 @@ class AddWorkoutViewCell: UICollectionViewCell {
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
-        userImageView.snp.remakeConstraints { make in
+        workoutImage.snp.remakeConstraints { make in
             make.top.equalTo(userInfoButton.snp.bottom).offset(10 * Constraint.yCoeff)
             make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
             make.height.equalTo(287 * Constraint.yCoeff)
         }
 
         nameWorkoutTextfield.snp.remakeConstraints { make in
-            make.top.equalTo(userImageView.snp.bottom).offset(10 * Constraint.yCoeff)
+            make.top.equalTo(workoutImage.snp.bottom).offset(10 * Constraint.yCoeff)
             make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
             make.height.equalTo(44 * Constraint.yCoeff)
         }
@@ -275,13 +274,11 @@ class AddWorkoutViewCell: UICollectionViewCell {
         deleteTaskViewButton.contentMode = .scaleAspectFit
         deleteTaskViewButton.addTarget(self, action: #selector(pressDeleteTaskViewButton(_:)), for: .touchUpInside)
 
-        // Add labels to taskView
         taskView.addSubview(nameLabel)
         taskView.addSubview(timerLabel)
         taskView.addSubview(descriptionLabel)
         taskView.addSubview(deleteTaskViewButton)
 
-        // Constraints for labels inside taskView
         nameLabel.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview().inset(8 * Constraint.yCoeff)
             make.height.equalTo(44 * Constraint.yCoeff)
@@ -337,8 +334,8 @@ class AddWorkoutViewCell: UICollectionViewCell {
 
     private func tapGestureForUserImageView() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapUserImageView))
-        userImageView.addGestureRecognizer(tapGesture)
-        userImageView.isUserInteractionEnabled = true
+        workoutImage.addGestureRecognizer(tapGesture)
+        workoutImage.isUserInteractionEnabled = true
     }
 
     @objc private func didTapUserImageView() {
@@ -351,9 +348,9 @@ class AddWorkoutViewCell: UICollectionViewCell {
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let editedImage = info[.editedImage] as? UIImage {
-            userImageView.image = editedImage
+            workoutImage.image = editedImage
         } else if let originalImage = info[.originalImage] as? UIImage {
-            userImageView.image = originalImage
+            workoutImage.image = originalImage
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -363,7 +360,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
     }
 
     func updateUserImage(_ image: UIImage) {
-        userImageView.image = image
+        workoutImage.image = image
     }
 
     private func addTaskView(taskName: String, timer: String, description: String) {
@@ -419,21 +416,19 @@ class AddWorkoutViewCell: UICollectionViewCell {
         taskViews.append(taskView)
     }
 
-
     @objc func pressUserInfoButton() {
         delegate?.didPressUserInfoButton()
     }
 
     @objc func pressRightButton() {
         guard let workoutName = nameWorkoutTextfield.text,
-              let workoutImage = userImageView.image,
+              let workoutImage = workoutImage.image,
               !workoutName.isEmpty else {
             print("Error: Missing workout name or image.")
             return
         }
         delegate?.didPressRightButton(workoutName: workoutName, workoutImage: workoutImage)
     }
-
 
     @objc func pressEasyLevelWorkoutButton() {
         resetButtonImages()

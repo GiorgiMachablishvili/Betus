@@ -10,6 +10,11 @@ import SnapKit
 
 class LikedWorkoutViewController: UIViewController {
 
+    var workoutImage: UIImage?
+    var workoutData: [Workouts] = []
+
+    var likeWorkoutCell = LikeWorkoutViewCell()
+
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -71,6 +76,8 @@ class LikedWorkoutViewController: UIViewController {
         view.applyGradientBackground()
         setup()
         setupConstraints()
+
+//        fetchLikedWorkouts()
     }
 
     private func setup() {
@@ -106,6 +113,37 @@ class LikedWorkoutViewController: UIViewController {
         }
     }
 
+    private func fetchLikedWorkouts() {
+        let url = "https://example.com/api/v1/workouts?like=true"
+
+        NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
+            switch result {
+            case .success(let likedWorkouts):
+                DispatchQueue.main.async {
+                    if likedWorkouts.isEmpty {
+                        self.likeWorkoutCell.workoutInfoView.isHidden = true
+                        self.likeWorkoutCell.likeViewButton.isHidden = true
+                        self.likeWorkoutCell.workoutInfoView.isHidden = true
+                        self.infoLabel.isHidden = false
+                    } else {
+                        self.likeWorkoutCell.workoutInfoView.isHidden = false
+                        self.likeWorkoutCell.likeViewButton.isHidden = false
+                        self.likeWorkoutCell.workoutInfoView.isHidden = false
+                        self.infoLabel.isHidden = true
+                    }
+                    self.workoutData = likedWorkouts
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error fetching liked workouts: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.infoLabel.isHidden = false
+                    self.collectionView.isHidden = true
+                }
+            }
+        }
+    }
+
     @objc private func clickSignInWithAppleButton() {
 
     }
@@ -119,18 +157,20 @@ extension LikedWorkoutViewController: LikeWorkoutReusableDelegate {
 }
 
 extension LikedWorkoutViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        1
-//    }
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        1
+    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        1
+        workoutData.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: LikeWorkoutViewCell.self), for: indexPath) as? LikeWorkoutViewCell else {
             return UICollectionViewCell()
         }
+        let workout = workoutData[indexPath.row]
+        cell.configure(with: workout)
         return cell
     }
 
@@ -149,7 +189,6 @@ extension LikedWorkoutViewController: UICollectionViewDelegate, UICollectionView
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let hardWorkoutVC = HardWorkoutViewController()
-                navigationController?.pushViewController(hardWorkoutVC, animated: true)
+        navigationController?.pushViewController(hardWorkoutVC, animated: true)
     }
 }
-

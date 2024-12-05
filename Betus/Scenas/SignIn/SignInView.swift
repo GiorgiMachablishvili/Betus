@@ -8,9 +8,9 @@
 //TODO: registration
 //TODO: create user
 //TODO: post information in back from AddWorkoutViewController
-//TODO: when post info from AddWorkoutViewController how should be struct of Model
-//TODO: fetch info from back
-//TODO: how make number of likes likeViewButton title in WorkoutInfoCell 
+//TODO: how to get from id
+//TODO: fetch info from back, it goes failure
+//TODO: how make number of likes likeViewButton title in WorkoutInfoCell
 //TODO: post like info
 
 
@@ -61,11 +61,21 @@ class SignInView: UIViewController {
     private lazy var logInAsGuestButton: UIButton = {
         let view = UIButton(frame: .zero)
         view.setTitle("log in as guest", for: .normal)
-        view.layer.cornerRadius = 20
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        view.layer.cornerRadius = 16
         view.layer.borderColor = UIColor.init(hexString: "FFFFFF").withAlphaComponent(0.4).cgColor
         view.layer.borderWidth = 1
         view.addTarget(self, action: #selector(clickLogInAsGuestButton), for: .touchUpInside)
+        return view
+    }()
+
+    private lazy var termsAndPrivacyPolicyButton: UIButton = {
+        let view = UIButton(frame: .zero)
+        view.setTitle("Terms and Privacy Policy!", for: .normal)
+        view.setTitleColor(UIColor(hexString: "FFFFFF").withAlphaComponent(0.4), for: .normal)
+        view.titleLabel?.font = UIFont.latoRegular(size: 10)
+        view.backgroundColor = .clear
+        view.addTarget(self, action: #selector(clickTermsAndPrivacyPolicyButton), for: .touchUpInside)
         return view
     }()
 
@@ -83,6 +93,7 @@ class SignInView: UIViewController {
         view.addSubview(singInInfoLabel)
         view.addSubview(signInWithAppleButton)
         view.addSubview(logInAsGuestButton)
+        view.addSubview(termsAndPrivacyPolicyButton)
     }
 
     private func setupConstraints() {
@@ -108,8 +119,19 @@ class SignInView: UIViewController {
             make.leading.trailing.equalToSuperview().inset(37 * Constraint.xCoeff)
             make.height.equalTo(59 * Constraint.yCoeff)
         }
+
+        termsAndPrivacyPolicyButton.snp.remakeConstraints { make in
+            make.centerX.equalTo(view.snp.centerX)
+            make.top.equalTo(logInAsGuestButton.snp.bottom).offset(12)
+            make.width.equalTo(143)
+            make.height.equalTo(12)
+        }
     }
-    
+
+    @objc func clickTermsAndPrivacyPolicyButton() {
+
+    }
+
     // MARK: - Button Actions
     @objc func clickLogInAsGuestButton() {
         let mainVC = MainViewController()
@@ -118,8 +140,8 @@ class SignInView: UIViewController {
 
     @objc func clickSignInWithAppleButton() {
         // Simulating tokens for testing
-        let mockPushToken = "mockPushTokenTest1"
-        let mockAppleToken = "mockAppleTokenTest1"
+        let mockPushToken = "mockPushTokenTest2"
+        let mockAppleToken = "mockAppleTokenTest2"
 
         // Store mock tokens in UserDefaults
         UserDefaults.standard.setValue(mockPushToken, forKey: "PushToken")
@@ -151,7 +173,7 @@ class SignInView: UIViewController {
 
         // Make the network request
         NetworkManager.shared.post(
-            url: "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users",
+            url: "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/",
             parameters: parameters,
             headers: nil
         ) { [weak self] (result: Result<UserInfo>) in
@@ -170,14 +192,13 @@ class SignInView: UIViewController {
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    //Show error message
                     self.showAlert(title: "Error", description: error.localizedDescription)
                 }
                 print("Error: \(error)")
             }
         }
-//        let mainVC = MainViewController()
-//        navigationController?.pushViewController(mainVC, animated: true)
+        let mainVC = MainViewController()
+        navigationController?.pushViewController(mainVC, animated: true)
     }
 
     private func showAlert(title: String, description: String) {

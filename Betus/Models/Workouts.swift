@@ -10,12 +10,11 @@ import Foundation
 struct Workouts: Codable {
     let taskCount: Int
     let time: Int
-    let level: String
+    let level: Level
     let completers: [String]
     let details: String
-    let id: String
+    let userId: String?
     let image: String
-    let creatorId: String
 
     enum CodingKeys: String, CodingKey {
         case taskCount = "task_count"
@@ -23,8 +22,14 @@ struct Workouts: Codable {
         case level
         case completers
         case details
-        case id
+        case userId = "user_id"
         case image
-        case creatorId = "creator_id"
+    }
+
+    enum Level: String, Codable {
+        case easy = "Easy"
+        case advance = "Advance"
+        case difficult = "Difficult"
+        case all = "All"
     }
 }

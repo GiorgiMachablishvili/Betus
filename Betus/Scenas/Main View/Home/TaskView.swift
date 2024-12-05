@@ -19,12 +19,12 @@ class TaskView: UIView {
         return view
     }()
 
-    private lazy var taskNumberLabel: UILabel = {
+    lazy var taskNumberLabel: UILabel = {
         let view = UILabel(frame: .zero)
         view.text = "5"
         view.textColor = UIColor(hexString: "FFFFFF")
         view.textAlignment = .center
-        view.font = UIFont.latoBold(size: 24)
+        view.font = UIFont.latoBold(size: 18)
         return view
     }()
 

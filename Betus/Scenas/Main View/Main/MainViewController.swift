@@ -15,6 +15,8 @@ protocol MainBottomButtonViewDelegate: AnyObject {
 }
 
 class MainViewController: UIViewController, MainBottomButtonViewDelegate, AddWorkoutViewControllerDelegate {
+
+    
     func shouldHideMainBottomButtonView(_ hide: Bool) {
         mainBottomButtons.isHidden = hide
     }
@@ -95,6 +97,9 @@ class MainViewController: UIViewController, MainBottomButtonViewDelegate, AddWor
         view.insertSubview(childVC.view, belowSubview: mainBottomButtons)
         childVC.view.frame = view.bounds
         childVC.didMove(toParent: self)
+    }
+
+    func didAddWorkout(_ workout: Workouts) {
     }
 }
 

@@ -10,6 +10,8 @@ import SnapKit
 
 protocol HomeHeaderViewDelegate: AnyObject {
     func didPressUserInfoButton()
+    func filterWorkouts(by level: Workouts.Level)
+    func searchWorkouts(with searchText: String)
 }
 
 class HomeHeaderView: UICollectionReusableView {
@@ -36,6 +38,45 @@ class HomeHeaderView: UICollectionReusableView {
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
         view.setImage(UIImage(named: "searchImage")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.isHidden = false
+        view.addTarget(self, action: #selector(pressSearchButton), for: .touchUpInside)
+        return view
+    }()
+
+    private lazy var backButton: UIButton = {
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        view.setImage(UIImage(named: "backArrow"), for: .normal)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        view.layer.cornerRadius = 22
+        view.clipsToBounds = true
+        view.imageView?.contentMode = .scaleAspectFit
+        view.setImage(UIImage(named: "backArrow")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.isHidden = true
+        view.addTarget(self, action: #selector(pressBackButton), for: .touchUpInside)
+        return view
+    }()
+
+    private lazy var searchBar: UISearchBar = {
+        let view = UISearchBar(frame: .zero)
+        view.layer.cornerRadius = 22
+        view.placeholder = "Search"
+        view.backgroundColor = .clear
+        view.tintColor = UIColor(hexString: "FFFFFF")
+        view.isHidden = true
+        view.searchBarStyle = .minimal
+        view.delegate = self
+        if let textField = view.value(forKey: "searchField") as? UITextField {
+            let placeholderTextColor = UIColor.lightGray
+            textField.attributedPlaceholder = NSAttributedString(
+                string: "Search",
+                attributes: [NSAttributedString.Key.foregroundColor: placeholderTextColor]
+            )
+            textField.textColor = UIColor(hexString: "FFFFFF")
+            if let iconView = textField.leftView as? UIImageView {
+                iconView.tintColor = UIColor.lightGray
+                iconView.image = iconView.image?.withRenderingMode(.alwaysTemplate)
+            }
+        }
         return view
     }()
 
@@ -105,6 +146,8 @@ class HomeHeaderView: UICollectionReusableView {
     private func setup() {
         addSubview(userInfoButton)
         addSubview(searchButton)
+        addSubview(backButton)
+        addSubview(searchBar)
         addSubview(allWorkoutLevelsButton)
         addSubview(easyWorkoutLevelsButton)
         addSubview(advancedWorkoutLevelsButton)
@@ -122,6 +165,19 @@ class HomeHeaderView: UICollectionReusableView {
             make.top.equalTo(snp.top).offset(10 * Constraint.yCoeff)
             make.trailing.equalTo(snp.trailing).offset(-12 * Constraint.xCoeff)
             make.width.height.equalTo(44 * Constraint.yCoeff)
+        }
+
+        backButton.snp.remakeConstraints { make in
+            make.top.equalTo(snp.top).offset(10 * Constraint.yCoeff)
+            make.leading.equalTo(snp.leading).offset(12 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
+        }
+
+        searchBar.snp.remakeConstraints { make in
+            make.centerY.equalTo(backButton.snp.centerY)
+            make.leading.equalTo(backButton.snp.trailing).offset(4 * Constraint.xCoeff)
+            make.width.equalTo(318 * Constraint.xCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
         }
 
         allWorkoutLevelsButton.snp.remakeConstraints { make in
@@ -163,25 +219,49 @@ class HomeHeaderView: UICollectionReusableView {
     @objc private func clickAllWorkoutButton() {
         resetButtonImages()
         allWorkoutLevelsButton.backgroundColor = UIColor(hexString: "E5D820")
+        delegate?.filterWorkouts(by: .all)
     }
 
     @objc private func clickEasyWorkoutButton() {
         resetButtonImages()
         easyWorkoutLevelsButton.backgroundColor = UIColor(hexString: "E5D820")
+        delegate?.filterWorkouts(by: .easy)
     }
 
     @objc private func clickAdvancedButton() {
         resetButtonImages()
         advancedWorkoutLevelsButton.backgroundColor = UIColor(hexString: "E5D820")
+        delegate?.filterWorkouts(by: .advance)
     }
 
     @objc private func clickDifficultButton() {
         resetButtonImages()
         difficultWorkoutLevelsButton.backgroundColor = UIColor(hexString: "E5D820")
+        delegate?.filterWorkouts(by: .difficult)
     }
 
     @objc private func pressUserInfoButton() {
-        print("did press user info button")
         delegate?.didPressUserInfoButton()
+    }
+
+    @objc private func pressBackButton() {
+        searchBar.isHidden = true
+        searchButton.isHidden = false
+        userInfoButton.isHidden = false
+        backButton.isHidden = true
+
+    }
+
+    @objc private func pressSearchButton() {
+        searchBar.isHidden = false
+        searchButton.isHidden = true
+        userInfoButton.isHidden = true
+        backButton.isHidden = false
+    }
+}
+
+extension HomeHeaderView: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        delegate?.searchWorkouts(with: searchText)
     }
 }

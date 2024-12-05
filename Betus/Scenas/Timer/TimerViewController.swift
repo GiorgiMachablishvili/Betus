@@ -10,8 +10,12 @@ import SnapKit
 
 class TimerViewController: UIViewController {
     private var timer: Timer?
-    private var duration: TimeInterval = 9
-    private var remainingTime: TimeInterval = 9
+    var duration: TimeInterval = 0
+    var remainingTime: TimeInterval = 0 {
+        didSet {
+            updateTimeLabel()
+        }
+    }
     private var isTimerRunning = false
 
     lazy var leftButton: UIButton = {

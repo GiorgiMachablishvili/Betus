@@ -124,43 +124,56 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
     func didPressRightButton(workoutName: String, workoutImage: UIImage) {
         guard let workoutImageData = workoutImage.jpegData(compressionQuality: 0.8) else { return }
 
-        let id = "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/\(id)"
+        let id = UserDefaults.standard.value(forKey: "userId")
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/"
 
         guard let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell else { return }
         let selectedLevel = visibleCell.getSelectedLevel()
+
+        guard let timerValue = addTaskView.timerAddTextfield.text, !timerValue.isEmpty else {
+              showAlert(title: "Error", description: "Please provide a valid timer value.")
+              return
+          }
+        let timeInSeconds = convertTimerToSeconds(timerValue)
+
         let parameters: [String: Any] = [
             "task_count": 0,
-            "time": 0,
+            "time": timeInSeconds,
             "level": selectedLevel,
             "completers": [],
             "details": workoutName,
-            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "image": workoutImageData.base64EncodedString(),
-            "creator_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            "user_id": id ?? "",
+            "image": workoutImageData.base64EncodedString()
         ]
-
-        // Show progress indicator
         NetworkManager.shared.showProgressHud(true, animated: true)
 
         // Make PUT request
         NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<Workouts>) in
             NetworkManager.shared.showProgressHud(false, animated: false)
             switch result {
-            case .success:
-                print("Workout saved successfully.")
+            case .success(let workout):
+                let mainViewController = MainViewController()
+                self.navigationController?.pushViewController(mainViewController, animated: true)
+                print("Workout saved successfully: \(workout)")
             case .failure(let error):
                 print("Error saving workout: \(error.localizedDescription)")
             }
         }
-        let mainViewController = MainViewController()
-        navigationController?.pushViewController(mainViewController, animated: true)
     }
     // Helper: Show an alert to the user
     private func showAlert(title: String, description: String) {
         let alert = UIAlertController(title: title, message: description, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+
+    func convertTimerToSeconds(_ timerString: String) -> Int {
+        let components = timerString.split(separator: ":").compactMap { Int($0) }
+        guard components.count == 3 else { return 0 }
+        let hours = components[0]
+        let minutes = components[1]
+        let seconds = components[2]
+        return (hours * 3600) + (minutes * 60) + seconds
     }
 
 

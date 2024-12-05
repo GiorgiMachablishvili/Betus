@@ -9,11 +9,10 @@ import UIKit
 import SnapKit
 
 class WorkoutInfoCell: UICollectionViewCell {
-    private lazy var workoutImage: UIImageView = {
+    lazy var workoutImage: UIImageView = {
         let view = UIImageView(frame: .zero)
-        view.contentMode = .scaleAspectFit
-        view.image = UIImage(systemName: "figure.australian.football.circle")
-        view.backgroundColor = .red
+        view.contentMode = .scaleAspectFill
+        view.backgroundColor = .gray
         view.layer.cornerRadius = 26
         return view
     }()
@@ -48,7 +47,7 @@ class WorkoutInfoCell: UICollectionViewCell {
         setup()
         setupConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -62,7 +61,7 @@ class WorkoutInfoCell: UICollectionViewCell {
     }
 
     private func setup() {
-        addSubview(workoutImage)
+        contentView.addSubview(workoutImage)
         workoutImage.addSubview(workoutInfoView)
         workoutImage.addSubview(likeViewButton)
     }
@@ -71,7 +70,7 @@ class WorkoutInfoCell: UICollectionViewCell {
         workoutImage.snp.remakeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         workoutInfoView.snp.remakeConstraints { make in
             make.bottom.equalTo(workoutImage.snp.bottom).offset(-8 * Constraint.xCoeff)
             make.leading.trailing.equalToSuperview().inset(8 * Constraint.xCoeff)
@@ -85,10 +84,41 @@ class WorkoutInfoCell: UICollectionViewCell {
             make.width.equalTo(66 * Constraint.xCoeff)
         }
     }
-    
+
     @objc func likeViewButtonTapped() {
         isLiked.toggle()
         updateLikeState()
+
+        let likeState = isLiked
+        postLikeState(isLiked: likeState)
+    }
+
+    private func postLikeState(isLiked: Bool) {
+        // Replace with the correct workout ID and URL
+        guard let workoutID = workoutInfoView.taskView.taskNumberLabel.text else { return }
+        let url = "https://example.com/api/v1/workouts/\(workoutID)/like"
+        guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
+
+        // Prepare parameters
+        let parameters: [String: Any] = [
+            "like": isLiked,
+            "user_id": userId
+        ]
+
+        // Send POST request
+        NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<LikeResponse>) in
+            switch result {
+            case .success(let response):
+                print("Like updated successfully: \(response.like)")
+            case .failure(let error):
+                print("Error updating like: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    // Revert the like state if the request fails
+                    self.isLiked.toggle()
+                    self.updateLikeState()
+                }
+            }
+        }
     }
 
     private func updateLikeState() {
@@ -104,18 +134,27 @@ class WorkoutInfoCell: UICollectionViewCell {
             }
         }
     }
+    
+    func configure(with data: Workouts) {
+        workoutInfoView.workoutLevel.text = data.details
+        workoutInfoView.taskView.taskNumberLabel.text = String(data.taskCount)
+        workoutInfoView.timeView.remainingTime = Double(data.time)
+        workoutInfoView.levelView.levelInfoLabel.text = data.level.rawValue
 
-    // Configure cell with fetched data
-    func configure(with imageUrl: String) {
-        if let url = URL(string: imageUrl) {
-            // Fetch image asynchronously
+        if let url = URL(string: data.image) {
             DispatchQueue.global().async {
                 if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                     DispatchQueue.main.async {
                         self.workoutImage.image = image
                     }
+                } else {
+                    DispatchQueue.main.async {
+                        self.workoutImage.image = UIImage(named: "placeholderImage")
+                    }
                 }
             }
+        } else {
+            self.workoutImage.image = UIImage(named: "placeholderImage")
         }
     }
 }
