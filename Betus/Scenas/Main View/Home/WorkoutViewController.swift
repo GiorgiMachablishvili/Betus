@@ -23,6 +23,7 @@ class WorkoutViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .clear
+        view.showsHorizontalScrollIndicator = false
         view.dataSource = self
         view.delegate = self
         view.register(HomeHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HomeHeaderView")
@@ -48,7 +49,7 @@ class WorkoutViewController: UIViewController {
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(12)
             make.top.equalTo(view.snp.top).offset(10)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(view.snp.bottom).offset(-5)
         }
     }
 
@@ -67,6 +68,20 @@ class WorkoutViewController: UIViewController {
             case .failure(let error):
                 print("Error fetching workouts: \(error.localizedDescription)")
             }
+        }
+    }
+}
+
+extension WorkoutViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        let bottomOffsetThreshold: CGFloat = 80.0
+
+        if scrollView.contentOffset.y + frameHeight >= contentHeight {
+            scrollView.contentInset.bottom = bottomOffsetThreshold
+        } else {
+            scrollView.contentInset.bottom = 0
         }
     }
 }
@@ -97,7 +112,9 @@ extension WorkoutViewController: HomeHeaderViewDelegate {
             workout.details.lowercased().contains(searchText.lowercased())
             /*$0.details.lowercased().contains(searchText.lowercased())*/
         }
-        collectionView.reloadData()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
 }
 
@@ -115,7 +132,8 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
             return UICollectionViewCell()
         }
         let workout = displayedWorkouts[indexPath.row]
-        cell.configure(with: workout)
+        let selectedLevel = workout.level.rawValue
+        cell.configure(with: workout, selectedLevel: selectedLevel)
         return cell
     }
 

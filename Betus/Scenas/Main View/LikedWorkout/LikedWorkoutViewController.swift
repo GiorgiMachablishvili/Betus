@@ -12,6 +12,7 @@ class LikedWorkoutViewController: UIViewController {
 
     var workoutImage: UIImage?
     var workoutData: [Workouts] = []
+    var likedWorkouts: [WorkoutLikes] = []
 
     var likeWorkoutCell = LikeWorkoutViewCell()
 
@@ -77,7 +78,7 @@ class LikedWorkoutViewController: UIViewController {
         setup()
         setupConstraints()
 
-//        fetchLikedWorkouts()
+        fetchLikedWorkouts()
     }
 
     private func setup() {
@@ -114,11 +115,12 @@ class LikedWorkoutViewController: UIViewController {
     }
 
     private func fetchLikedWorkouts() {
-        let url = "https://example.com/api/v1/workouts?like=true"
-
-        NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
-            switch result {
-            case .success(let likedWorkouts):
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected"
+        
+        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { (result: Result<[WorkoutLikes]>) in
+                switch result {
+                case .success(let workouts):
+                    let likedWorkouts = workouts.filter { $0.isSelected == true }
                 DispatchQueue.main.async {
                     if likedWorkouts.isEmpty {
                         self.likeWorkoutCell.workoutInfoView.isHidden = true
@@ -131,7 +133,7 @@ class LikedWorkoutViewController: UIViewController {
                         self.likeWorkoutCell.workoutInfoView.isHidden = false
                         self.infoLabel.isHidden = true
                     }
-                    self.workoutData = likedWorkouts
+                    self.likedWorkouts = likedWorkouts
                     self.collectionView.reloadData()
                 }
             case .failure(let error):
@@ -162,7 +164,7 @@ extension LikedWorkoutViewController: UICollectionViewDelegate, UICollectionView
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        workoutData.count
+        likedWorkouts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

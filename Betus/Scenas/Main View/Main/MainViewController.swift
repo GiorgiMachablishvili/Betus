@@ -24,6 +24,7 @@ class MainViewController: UIViewController, MainBottomButtonViewDelegate, AddWor
     private lazy var mainBottomButtons: MainBottomButtonView = {
         let view = MainBottomButtonView()
         view.layer.cornerRadius = 26
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.8)
         view.delegate = self
         return view
     }()

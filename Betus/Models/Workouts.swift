@@ -15,6 +15,7 @@ struct Workouts: Codable {
     let details: String
     let userId: String?
     let image: String
+    let isSelected: Bool
 
     enum CodingKeys: String, CodingKey {
         case taskCount = "task_count"
@@ -24,6 +25,7 @@ struct Workouts: Codable {
         case details
         case userId = "user_id"
         case image
+        case isSelected
     }
 
     enum Level: String, Codable {

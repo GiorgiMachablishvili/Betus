@@ -39,7 +39,7 @@ class WorkoutInfoView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clearBlur(withAlpha: 0.4)
+        backgroundColor = UIColor.clearBlur(withAlpha: 0.5)
 
         setup()
         setupConstraints()

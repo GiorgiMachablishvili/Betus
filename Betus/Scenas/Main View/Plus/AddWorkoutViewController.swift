@@ -17,12 +17,14 @@ class AddWorkoutViewController: UIViewController {
 
     weak var delegate: AddWorkoutViewControllerDelegate?
 
+    var totalTimeInSeconds: Int = 0
+
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 2
         layout.minimumLineSpacing = 2
-        layout.itemSize = CGSize(width: 390, height: 844)
+        layout.itemSize = CGSize(width: view.frame.width, height: view.frame.maxY)
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.dataSource = self
         view.delegate = self
@@ -45,7 +47,6 @@ class AddWorkoutViewController: UIViewController {
         view.delegate = self
         return view
     }()
-
 
     private lazy var taskView: UIView = {
         let view = UIView(frame: .zero)
@@ -76,7 +77,9 @@ class AddWorkoutViewController: UIViewController {
 
     func setupConstraint() {
         collectionView.snp.remakeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(view.snp.top)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.snp.bottom)
         }
 
         darkOverlay.snp.remakeConstraints { make in
@@ -98,7 +101,20 @@ class AddWorkoutViewController: UIViewController {
     @objc func pressDeleteTaskViewButton() {
 
     }
+}
 
+extension AddWorkoutViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        let bottomOffsetThreshold: CGFloat = 60.0
+
+        if scrollView.contentOffset.y + frameHeight >= contentHeight {
+            scrollView.contentInset.bottom = bottomOffsetThreshold
+        } else {
+            scrollView.contentInset.bottom = 0
+        }
+    }
 }
 
 extension AddWorkoutViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -116,6 +132,36 @@ extension AddWorkoutViewController: UICollectionViewDelegate, UICollectionViewDa
 }
 
 extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
+    func didUpdateTaskCount(_ count: Int) {
+        print("Updated task count from cell: \(count)")
+        saveTaskCountToServer(count)
+    }
+
+    private func saveTaskCountToServer(_ count: Int) {
+        let url = "https://example.com/api/v1/taskCount"
+        let parameters: [String: Any] = [
+            "taskCount": count - 1
+        ]
+
+        NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<Workouts>) in
+            switch result {
+            case .success(let response):
+                print("Task count updated on server: \(response)")
+            case .failure(let error):
+                print("Failed to update task count: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    func convertTimerToSeconds(_ timerString: String) -> Int {
+        let components = timerString.split(separator: ":").compactMap { Int($0) }
+        guard components.count == 3 else { return 0 }
+        let hours = components[0]
+        let minutes = components[1]
+        let seconds = components[2]
+        return (hours * 3600) + (minutes * 60) + seconds
+    }
+
     func didPressUserInfoButton() {
         let profileView = ProfileViewController()
         navigationController?.pushViewController(profileView, animated: true)
@@ -136,9 +182,15 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
           }
         let timeInSeconds = convertTimerToSeconds(timerValue)
 
+
+        var updatedTaskCount = 0
+        if let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell {
+            updatedTaskCount = visibleCell.taskViews.count - 1 + 1
+        }
+
         let parameters: [String: Any] = [
-            "task_count": 0,
-            "time": timeInSeconds,
+            "task_count": updatedTaskCount,
+            "time": totalTimeInSeconds,
             "level": selectedLevel,
             "completers": [],
             "details": workoutName,
@@ -166,16 +218,6 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
-
-    func convertTimerToSeconds(_ timerString: String) -> Int {
-        let components = timerString.split(separator: ":").compactMap { Int($0) }
-        guard components.count == 3 else { return 0 }
-        let hours = components[0]
-        let minutes = components[1]
-        let seconds = components[2]
-        return (hours * 3600) + (minutes * 60) + seconds
-    }
-
 
     func shouldHideMainBottomButtonView(_ hide: Bool) {
         delegate?.shouldHideMainBottomButtonView(hide)
@@ -216,6 +258,9 @@ extension AddWorkoutViewController: AddTaskViewDelegate {
             visibleCell.addTask(taskName: taskName, timer: timer, description: description)
         }
 
+        let timeInSeconds = convertTimerToSeconds(timer)
+        totalTimeInSeconds += timeInSeconds
+
         let taskLabel = UILabel()
         taskLabel.text = "Task: \(taskName)\nTimer: \(timer)\nDescription: \(description)"
         taskLabel.textColor = UIColor.white
@@ -223,10 +268,10 @@ extension AddWorkoutViewController: AddTaskViewDelegate {
         taskLabel.textAlignment = .left
         taskView.addSubview(taskLabel)
 
+
         taskLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(8 * Constraint.yCoeff)
         }
-
         delegate?.shouldHideMainBottomButtonView(false)
     }
 

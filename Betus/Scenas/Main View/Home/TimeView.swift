@@ -27,15 +27,6 @@ class TimeView: UIView {
         return view
     }()
 
-//    lazy var timerLabel: UILabel = {
-//        let view = UILabel(frame: .zero)
-//        view.text = "00:00:00"
-//        view.textColor = UIColor(hexString: "FFFFFF")
-//        view.textAlignment = .center
-//        view.font = UIFont.latoBold(size: 18)
-//        return view
-//    }()
-
     lazy var timerLabel: UILabel = {
         let view = UILabel()
         let hours = Int(remainingTimeInt) / 3600

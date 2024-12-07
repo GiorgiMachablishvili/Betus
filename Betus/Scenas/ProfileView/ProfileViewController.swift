@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 class ProfileViewController: UIViewController {
     private lazy var leftButton: UIButton = {
@@ -90,6 +91,7 @@ class ProfileViewController: UIViewController {
         view.setTitleColor(UIColor(hexString: "FFFFFF"), for: .normal)
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
+        view.addTarget(self, action: #selector(pressDeleteAccountButton), for: .touchUpInside)
         return view
     }()
 
@@ -180,7 +182,7 @@ class ProfileViewController: UIViewController {
             make.height.equalTo(59 * Constraint.yCoeff)
         }
     }
-    
+
     @objc private func pressLeftButton() {
         navigationController?.popViewController(animated: true)
     }
@@ -191,6 +193,60 @@ class ProfileViewController: UIViewController {
         } else {
             print("Invalid URL")
         }
+    }
+
+    @objc private func pressDeleteAccountButton() {
+        // Confirm user intention before deleting the account
+        let alertController = UIAlertController(
+            title: "Delete Account",
+            message: "Are you sure you want to delete your account? This action cannot be undone.",
+            preferredStyle: .alert
+        )
+
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+            // Get user ID from UserDefaults or another source
+            guard let userId = UserDefaults.standard.value(forKey: "userId") as? String else {
+                return
+            }
+
+            let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/\(userId)"
+
+            NetworkManager.shared.delete(url: url, parameters: nil, headers: nil) { (result: Result<EmptyResponse>) in
+                switch result {
+                case .success:
+                    print("Account deleted successfully")
+                    UserDefaults.standard.removeObject(forKey: "userId")
+                    DispatchQueue.main.async {
+                        self.navigateToSignInView()
+                    }
+                case .failure(let error):
+                    print("Failed to delete account: \(error.localizedDescription)")
+                    DispatchQueue.main.async {
+                        let errorAlert = UIAlertController(
+                            title: "Error",
+                            message: "Failed to delete account. Please try again later.",
+                            preferredStyle: .alert
+                        )
+                        errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(errorAlert, animated: true)
+                    }
+                }
+            }
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true)
+    }
+
+    private func navigateToSignInView() {
+        let loginVC = SignInView()
+        let navController = UINavigationController(rootViewController: loginVC)
+        navController.modalPresentationStyle = .fullScreen
+        self.present(navController, animated: true)
     }
 
     @objc private func clickSignInWithAppleButton() {

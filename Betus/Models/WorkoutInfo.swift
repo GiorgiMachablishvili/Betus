@@ -14,7 +14,6 @@ struct WorkoutInfo: Codable {
     let description: String
     let likes: Int
 
-
     enum CodingKeys: String, CodingKey {
         case id
         case image

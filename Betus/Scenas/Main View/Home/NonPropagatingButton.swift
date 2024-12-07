@@ -14,7 +14,6 @@ class NonPropagatingButton: UIButton {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        // Prevent propagation to other views
         self.next?.touchesCancelled(touches, with: event)
     }
 }

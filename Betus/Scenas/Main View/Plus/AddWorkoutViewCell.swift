@@ -13,6 +13,8 @@ protocol AddWorkoutViewCellDelegate: AnyObject {
     func didPressRightButton(workoutName: String, workoutImage: UIImage)
     func shouldHideMainBottomButtonView(_ hide: Bool)
     func presentImagePicker(_ picker: UIImagePickerController)
+    func didUpdateTaskCount(_ count: Int)
+    func convertTimerToSeconds(_ timerString: String) -> Int
 }
 
 class AddWorkoutViewCell: UICollectionViewCell {
@@ -20,7 +22,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
     weak var delegate: AddWorkoutViewCellDelegate?
 
     private var originalViewY: CGFloat = 0
-    private var taskViews: [UIView] = []
+    var taskViews: [UIView] = []
     private var contentViewBottomConstraint: Constraint?
 
     lazy var userInfoButton: UIButton = {
@@ -261,7 +263,6 @@ class AddWorkoutViewCell: UICollectionViewCell {
         timerLabel.text = "Timer: \(timer)"
         timerLabel.textColor = .white
         timerLabel.font = UIFont.systemFont(ofSize: 12)
-        
 
         let descriptionLabel = UILabel()
         descriptionLabel.text = "Description: \(description)"
@@ -302,26 +303,26 @@ class AddWorkoutViewCell: UICollectionViewCell {
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
-        // Add taskView to cell
         addSubview(taskView)
 
-        // Constraints for taskView
         if let lastTaskView = taskViews.last {
             taskView.snp.makeConstraints { make in
                 make.top.equalTo(lastTaskView.snp.bottom).offset(10 * Constraint.yCoeff)
                 make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+                make.height.equalTo(162)
             }
         } else {
             taskView.snp.makeConstraints { make in
                 make.top.equalTo(descriptionWorkoutTextfield.snp.bottom).offset(10 * Constraint.yCoeff)
                 make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+                make.height.equalTo(162)
             }
         }
-        // Update addTaskButton position
         addTaskButton.snp.remakeConstraints { make in
             make.top.equalTo(taskView.snp.bottom).offset(10 * Constraint.yCoeff)
             make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
             make.height.equalTo(84 * Constraint.yCoeff)
+            make.bottom.equalTo(snp.bottom).offset(-60)
         }
 
         taskViews.append(taskView)
@@ -404,13 +405,13 @@ class AddWorkoutViewCell: UICollectionViewCell {
             taskView.snp.makeConstraints { make in
                 make.top.equalTo(lastTaskView.snp.bottom).offset(12 * Constraint.yCoeff)
                 make.leading.trailing.equalToSuperview().inset(16 * Constraint.xCoeff)
-                make.height.greaterThanOrEqualTo(60 * Constraint.yCoeff)
+                make.height.greaterThanOrEqualTo(50 * Constraint.yCoeff)
             }
         } else {
             taskView.snp.makeConstraints { make in
                 make.top.equalTo(addTaskButton.snp.bottom).offset(12 * Constraint.yCoeff)
                 make.leading.trailing.equalToSuperview().inset(16 * Constraint.yCoeff)
-                make.height.greaterThanOrEqualTo(60 * Constraint.yCoeff)
+                make.height.greaterThanOrEqualTo(50 * Constraint.yCoeff)
             }
         }
         taskViews.append(taskView)
@@ -424,10 +425,28 @@ class AddWorkoutViewCell: UICollectionViewCell {
         guard let workoutName = nameWorkoutTextfield.text,
               let workoutImage = workoutImage.image,
               !workoutName.isEmpty else {
+            showAlert(title: "Missing Information", message: "Please select a workout image or workout name.")
             print("Error: Missing workout name or image.")
             return
         }
         delegate?.didPressRightButton(workoutName: workoutName, workoutImage: workoutImage)
+    }
+
+    private func showAlert(title: String, message: String) {
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            if let topController = UIApplication.shared.keyWindow?.rootViewController {
+                var visibleController = topController
+                while let presented = visibleController.presentedViewController {
+                    visibleController = presented
+                }
+                visibleController.present(alertController, animated: true, completion: nil)
+            } else {
+                print("Error: Unable to find top-level view controller for presenting alert.")
+            }
+        }
     }
 
     @objc func pressEasyLevelWorkoutButton() {
@@ -485,14 +504,29 @@ class AddWorkoutViewCell: UICollectionViewCell {
             return
         }
         if let index = taskViews.firstIndex(of: taskViewToDelete) {
+            if let timerLabel = taskViewToDelete.subviews.compactMap({ $0 as? UILabel }).first(where: { $0.text?.contains("Timer:") == true }),
+               let timerText = timerLabel.text?.replacingOccurrences(of: "Timer: ", with: "") {
+                if let controller = delegate as? AddWorkoutViewController {
+                    let timeInSeconds = controller.convertTimerToSeconds(timerText)
+                    controller.totalTimeInSeconds -= timeInSeconds
+                    print("Updated Total Time in Seconds: \(controller.totalTimeInSeconds)")
+                }
+            }
+
             taskViews.remove(at: index)
             taskViewToDelete.removeFromSuperview()
             print("Task view removed successfully.")
+            delegate?.didUpdateTaskCount(taskViews.count)
+
+            if let visibleCell = self.superview?.superview as? AddWorkoutViewCell {
+                let updatedTaskCount = taskViews.count
+//                delegate?.didUpdateTaskCount(taskViews.count)
+                print("Updated Task Count after deletion: \(updatedTaskCount)")
+            }
+            updateTaskViewLayout()
         } else {
             print("Error: Task view not found in the array.")
         }
-
-        updateTaskViewLayout()
     }
 
     private func updateTaskViewLayout() {

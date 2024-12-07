@@ -15,7 +15,7 @@ class MainBottomButtonView: UIView {
     lazy var homeButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "home"), for: .normal)
-        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.9)
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
@@ -27,7 +27,7 @@ class MainBottomButtonView: UIView {
     lazy var infoWorkOutButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "heart"), for: .normal)
-        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.9)
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
@@ -39,7 +39,7 @@ class MainBottomButtonView: UIView {
     lazy var plusButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "plus"), for: .normal)
-        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.9)
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
@@ -50,7 +50,8 @@ class MainBottomButtonView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
+//        backgroundColor = UIColor.clearBlur(withAlpha: 0.3)
+        
         setup()
         setupConstraints()
         homeButton.backgroundColor = UIColor(hexString: "E5D820")
@@ -88,9 +89,9 @@ class MainBottomButtonView: UIView {
     }
 
     private func resetButtonImages() {
-        homeButton.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
-        infoWorkOutButton.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
-        plusButton.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        homeButton.backgroundColor = UIColor.clearBlur(withAlpha: 0.9)
+        infoWorkOutButton.backgroundColor = UIColor.clearBlur(withAlpha: 0.9)
+        plusButton.backgroundColor = UIColor.clearBlur(withAlpha: 0.9)
     }
 
     // MARK: - Button Action Methods

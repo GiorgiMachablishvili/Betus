@@ -14,14 +14,14 @@ class LikeWorkoutViewCell: UICollectionViewCell {
         view.contentMode = .scaleAspectFit
         view.image = UIImage(systemName: "figure.australian.football.circle")
         view.layer.cornerRadius = 26
-        view.isHidden = true
+        view.isHidden = false
         return view
     }()
 
     lazy var workoutInfoView: WorkoutInfoView = {
         let view = WorkoutInfoView()
         view.layer.cornerRadius = 26
-        view.isHidden = true
+        view.isHidden = false
         return view
     }()
 
@@ -37,7 +37,7 @@ class LikeWorkoutViewCell: UICollectionViewCell {
         view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8)
         view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8 * Constraint.xCoeff, bottom: 0, right: 0)
         view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
-        view.isHidden = true
+        view.isHidden = false
         return view
     }()
 

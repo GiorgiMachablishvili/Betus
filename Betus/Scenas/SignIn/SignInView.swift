@@ -6,12 +6,10 @@
 //
 
 //TODO: registration
-//TODO: create user
-//TODO: post information in back from AddWorkoutViewController
-//TODO: how to get from id
-//TODO: fetch info from back, it goes failure
 //TODO: how make number of likes likeViewButton title in WorkoutInfoCell
 //TODO: post like info
+//TODO: searchBar don't reload in every letter
+//TODO:
 
 
 import UIKit
@@ -134,6 +132,13 @@ class SignInView: UIViewController {
 
     // MARK: - Button Actions
     @objc func clickLogInAsGuestButton() {
+//        UserDefaults.standard.setValue(true, forKey: "isGuestUser")
+//
+//        // Optionally, clear any existing user credentials
+//        UserDefaults.standard.removeObject(forKey: "userId")
+//        UserDefaults.standard.removeObject(forKey: "AccountCredential")
+
+
         let mainVC = MainViewController()
         navigationController?.pushViewController(mainVC, animated: true)
     }
