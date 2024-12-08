@@ -12,6 +12,7 @@
 		E32C49F62CF5EB2900C650B3 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C49F52CF5EB2900C650B3 /* CircularProgressView.swift */; };
 		E32C49F82CF5FDE500C650B3 /* UIImage+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C49F72CF5FDE500C650B3 /* UIImage+Extention.swift */; };
 		E32E6D132CF71AB600C17240 /* HardWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E6D122CF71AB600C17240 /* HardWorkoutViewController.swift */; };
+		E33582372D05AAC800817F7A /* WorkoutTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33582362D05AAC800817F7A /* WorkoutTask.swift */; };
 		E34103DD2CF627E700CB0CF6 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34103DC2CF627E700CB0CF6 /* ProfileViewController.swift */; };
 		E359415C2CFCD29400624C50 /* AddWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */; };
 		E359415E2CFCD2B300624C50 /* AddWorkoutViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E359415D2CFCD2B300624C50 /* AddWorkoutViewCell.swift */; };
@@ -71,6 +72,7 @@
 		E32C49F52CF5EB2900C650B3 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		E32C49F72CF5FDE500C650B3 /* UIImage+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extention.swift"; sourceTree = "<group>"; };
 		E32E6D122CF71AB600C17240 /* HardWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardWorkoutViewController.swift; sourceTree = "<group>"; };
+		E33582362D05AAC800817F7A /* WorkoutTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTask.swift; sourceTree = "<group>"; };
 		E34103DC2CF627E700CB0CF6 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutViewController.swift; sourceTree = "<group>"; };
 		E359415D2CFCD2B300624C50 /* AddWorkoutViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutViewCell.swift; sourceTree = "<group>"; };
@@ -338,6 +340,7 @@
 			isa = PBXGroup;
 			children = (
 				E3B7E30A2CF876FC00ABCDC4 /* UserInfo.swift */,
+				E33582362D05AAC800817F7A /* WorkoutTask.swift */,
 				E36BDCCD2CFEF98A00FA18FA /* Workouts.swift */,
 				E36E2F572CFE57E800613FBD /* WorkoutInfo.swift */,
 				E3A372972D024E260008ED9C /* LikeResponse.swift */,
@@ -448,6 +451,7 @@
 				E36E2F582CFE57E800613FBD /* WorkoutInfo.swift in Sources */,
 				E39997E02CF7AD4300CF8E48 /* AddTaskView.swift in Sources */,
 				E39C84242CF4BD5B003177BF /* LikedWorkoutViewController.swift in Sources */,
+				E33582372D05AAC800817F7A /* WorkoutTask.swift in Sources */,
 				E32C49F42CF5EAFF00C650B3 /* TimerViewController.swift in Sources */,
 				E39C83D92CF4A573003177BF /* AppDelegate.swift in Sources */,
 				E3B7E30B2CF876FC00ABCDC4 /* UserInfo.swift in Sources */,

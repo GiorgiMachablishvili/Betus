@@ -8,17 +8,31 @@
 import UIKit
 
 struct WorkoutInfo: Codable {
-    let id: String
+    let taskCount: Int
+    let time: Int
+    let level: Level
+    let completers: [String]
+    let details: String
+    let userId: String?
     let image: String
-    let name: String
-    let description: String
-    let likes: Int
+    let isSelected: Bool
 
     enum CodingKeys: String, CodingKey {
-        case id
+        case taskCount = "task_count"
+        case time
+        case level
+        case completers
+        case details
+        case userId = "user_id"
         case image
-        case name
-        case description
-        case likes
+        case isSelected
+    }
+
+    enum Level: String, Codable {
+        case easy = "Easy"
+        case advance = "Advance"
+        case difficult = "Difficult"
+        case all = "All"
     }
 }
+

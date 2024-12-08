@@ -15,6 +15,7 @@ protocol AddWorkoutViewCellDelegate: AnyObject {
     func presentImagePicker(_ picker: UIImagePickerController)
     func didUpdateTaskCount(_ count: Int)
     func convertTimerToSeconds(_ timerString: String) -> Int
+    func getSelectedTaskDetails() -> (name: String, description: String)?
 }
 
 class AddWorkoutViewCell: UICollectionViewCell {
@@ -23,6 +24,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
 
     private var originalViewY: CGFloat = 0
     var taskViews: [UIView] = []
+    var taskDetails: [WorkoutTask] = []
     private var contentViewBottomConstraint: Constraint?
 
     lazy var userInfoButton: UIButton = {
@@ -152,7 +154,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
         return view
     }()
 
-    private lazy var taskView: UIView = {
+    lazy var taskView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 16
@@ -326,6 +328,9 @@ class AddWorkoutViewCell: UICollectionViewCell {
         }
 
         taskViews.append(taskView)
+        guard let workoutId = UserDefaults.standard.value(forKey: "currentId") else { return }
+        let newTask = WorkoutTask(name: taskName, description: description, id: workoutId as! String)
+        taskDetails.append(newTask)
     }
 
     deinit {
@@ -415,6 +420,9 @@ class AddWorkoutViewCell: UICollectionViewCell {
             }
         }
         taskViews.append(taskView)
+        guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
+        let newTask = WorkoutTask(name: taskName, description: description, id: userId as! String)
+        taskDetails.append(newTask)
     }
 
     @objc func pressUserInfoButton() {
@@ -518,7 +526,7 @@ class AddWorkoutViewCell: UICollectionViewCell {
             print("Task view removed successfully.")
             delegate?.didUpdateTaskCount(taskViews.count)
 
-            if let visibleCell = self.superview?.superview as? AddWorkoutViewCell {
+            if self.superview?.superview is AddWorkoutViewCell {
                 let updatedTaskCount = taskViews.count
 //                delegate?.didUpdateTaskCount(taskViews.count)
                 print("Updated Task Count after deletion: \(updatedTaskCount)")
@@ -557,7 +565,6 @@ class AddWorkoutViewCell: UICollectionViewCell {
                 make.height.equalTo(84 * Constraint.yCoeff)
             }
         }
-
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
         }
@@ -624,4 +631,17 @@ extension AddWorkoutViewCell {
         endEditing(true)
     }
 
+}
+
+extension AddWorkoutViewCell {
+    func configure(with workout: WorkoutInfo) {
+        userInfoButton.setImage(UIImage(named: "userProfile"), for: .normal)
+        rightButton.setImage(UIImage(named: "arrow-left-1"), for: .normal)
+        nameWorkoutTextfield.text = ""
+        easyWorkoutLevelsButton.setTitle("Easy Level", for: .normal)
+        advancedWorkoutLevelsButton.setTitle("Advanced Level", for: .normal)
+        difficultWorkoutLevelsButton.setTitle("Difficult Level", for: .normal)
+        descriptionWorkoutTextfield.text = ""
+        addTaskButton.setImage(UIImage(named: "addTask"), for: .normal)
+    }
 }

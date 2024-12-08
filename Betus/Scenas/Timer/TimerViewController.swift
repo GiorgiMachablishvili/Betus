@@ -18,6 +18,9 @@ class TimerViewController: UIViewController {
     }
     private var isTimerRunning = false
 
+    var taskName: String = ""
+    var taskDescription: String = ""
+
     lazy var leftButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "backArrow"), for: .normal)
@@ -77,14 +80,30 @@ class TimerViewController: UIViewController {
         view.textAlignment = .center
         return view
     }()
-
-    private lazy var beshOnTheSportImage: UIImageView = {
-        let view = UIImageView(frame: .zero)
-        view.image = UIImage(named: "beshOnTheSport")
-        view.contentMode = .scaleAspectFit
+    
+    private lazy var taskView: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        view.layer.cornerRadius = 16
+        view.isHidden = false
         return view
     }()
 
+    private lazy var nameLabel: UILabel = {
+        let view = UILabel(frame: .zero)
+        view.text = taskName
+        view.textColor = UIColor(hexString: "#FFFFFF")
+        view.font = UIFont.latoRegular(size: 14)
+        return view
+    }()
+
+    private lazy var descriptionLabel: UILabel = {
+        let view = UILabel(frame: .zero)
+        view.text = taskDescription
+        view.textColor = UIColor(hexString: "#FFFFFF")
+        view.font = UIFont.latoRegular(size: 12)
+        return view
+    }()
 
     private lazy var startButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 216 * Constraint.xCoeff, height: 60 * Constraint.yCoeff))
@@ -107,6 +126,9 @@ class TimerViewController: UIViewController {
         view.applyGradientBackground()
         setup()
         setupConstraints()
+
+        nameLabel.text = taskName
+            descriptionLabel.text = taskDescription
         self.navigationItem.hidesBackButton = true
     }
 
@@ -116,8 +138,10 @@ class TimerViewController: UIViewController {
         view.addSubview(likeViewButton)
         view.addSubview(circularProgressView)
         view.addSubview(timeLabel)
-        view.addSubview(beshOnTheSportImage)
         view.addSubview(startButton)
+        view.addSubview(taskView)
+        taskView.addSubview(nameLabel)
+        taskView.addSubview(descriptionLabel)
     }
 
     private func setupConstraints() {
@@ -151,12 +175,22 @@ class TimerViewController: UIViewController {
             make.centerY.equalTo(circularProgressView.snp.centerY)
         }
 
-        beshOnTheSportImage.snp.remakeConstraints { make in
+        taskView.snp.remakeConstraints { make in
             make.bottom.equalTo(startButton.snp.top).offset(-16 * Constraint.yCoeff)
             make.centerX.equalToSuperview()
             make.height.equalTo(103 * Constraint.yCoeff)
             make.width.equalTo(342 * Constraint.xCoeff)
         }
+
+        nameLabel.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview().inset(8 * Constraint.yCoeff)
+        }
+
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(10 * Constraint.yCoeff)
+            make.leading.trailing.bottom.equalToSuperview().inset(8 * Constraint.xCoeff)
+        }
+
 
         startButton.snp.remakeConstraints { make in
             make.bottom.equalTo(view.snp.bottom).offset(-48 * Constraint.yCoeff)

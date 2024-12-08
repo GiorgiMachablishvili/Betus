@@ -190,10 +190,6 @@ class AddTaskView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         timerAddTextfield.text = timer
         descriptionWorkoutAddTextfield.text = description
     }
-
-//    @objc func dismissTimerPicker() {
-//
-//    }
 }
 
 // MARK: - UIPickerViewDelegate and UIPickerViewDataSource

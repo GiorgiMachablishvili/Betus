@@ -8,8 +8,9 @@
 //TODO: registration
 //TODO: how make number of likes likeViewButton title in WorkoutInfoCell
 //TODO: post like info
-//TODO: searchBar don't reload in every letter
-//TODO:
+//TODO: searchBar don't reload in every letter +
+//TODO: in time view controller add nameLabel and descriptionLabel
+//TODO: in workoutCell get workout id 
 
 
 import UIKit

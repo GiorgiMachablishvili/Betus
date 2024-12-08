@@ -18,6 +18,20 @@ class AddWorkoutViewController: UIViewController {
     weak var delegate: AddWorkoutViewControllerDelegate?
 
     var totalTimeInSeconds: Int = 0
+    var workouts: [WorkoutInfo] = [
+        WorkoutInfo(
+            taskCount: 1,
+            time: 0,
+            level: .easy, 
+            completers: [],
+            details: "Default Workout",
+            userId: nil,
+            image: "",
+            isSelected: false
+        )
+    ]
+
+    var numberOfSections: Int = 1
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -65,7 +79,6 @@ class AddWorkoutViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         setupTapToDismissKeyboard()
-
     }
 
     func setup() {
@@ -119,19 +132,25 @@ extension AddWorkoutViewController: UIScrollViewDelegate {
 
 extension AddWorkoutViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        1
+        return /*numberOfSections*/ 1
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddWorkoutViewCell", for: indexPath) as? AddWorkoutViewCell else {
             return UICollectionViewCell()
         }
+        let workout = workouts[indexPath.row]
+        cell.configure(with: workout)
         cell.delegate = self
         return cell
     }
 }
 
 extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
+    func getSelectedTaskDetails() -> (name: String, description: String)? {
+        return ("", "")
+    }
+    
     func didUpdateTaskCount(_ count: Int) {
         print("Updated task count from cell: \(count)")
         saveTaskCountToServer(count)
@@ -171,6 +190,7 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
         guard let workoutImageData = workoutImage.jpegData(compressionQuality: 0.8) else { return }
 
         let id = UserDefaults.standard.value(forKey: "userId")
+        let workoutId = UserDefaults.standard.value(forKey: "workoutId")
         let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/"
 
         guard let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell else { return }
@@ -181,7 +201,6 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
               return
           }
         let timeInSeconds = convertTimerToSeconds(timerValue)
-
 
         var updatedTaskCount = 0
         if let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell {
@@ -195,11 +214,11 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
             "completers": [],
             "details": workoutName,
             "user_id": id ?? "",
-            "image": workoutImageData.base64EncodedString()
+            "image": workoutImageData.base64EncodedString(),
+            "workoutId": workoutId ?? ""
         ]
         NetworkManager.shared.showProgressHud(true, animated: true)
 
-        // Make PUT request
         NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<Workouts>) in
             NetworkManager.shared.showProgressHud(false, animated: false)
             switch result {
@@ -210,6 +229,15 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
             case .failure(let error):
                 print("Error saving workout: \(error.localizedDescription)")
             }
+        }
+//        for (key, value) in UserDefaults.standard.dictionaryRepresentation() {
+//            print("Key: \(key), Value: \(value)")
+//        }
+
+        if let workoutID = UserDefaults.standard.value(forKey: "userId") as? String {
+            print("Workout ID: \(workoutID)")
+        } else {
+            print("Workout ID not found or not stored as a single value.")
         }
     }
     // Helper: Show an alert to the user
@@ -257,8 +285,18 @@ extension AddWorkoutViewController: AddTaskViewDelegate {
         if let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell {
             visibleCell.addTask(taskName: taskName, timer: timer, description: description)
         }
-
         let timeInSeconds = convertTimerToSeconds(timer)
+
+        numberOfSections += 1
+//
+//        if let collectionViewHeightConstraint = collectionView.constraints.first(where: { $0.firstAttribute == .height }) {
+//            collectionViewHeightConstraint.constant += 150
+//        }
+
+        view.layoutIfNeeded()
+
+        collectionView.reloadData()
+
         totalTimeInSeconds += timeInSeconds
 
         let taskLabel = UILabel()

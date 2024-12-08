@@ -13,6 +13,7 @@ class WorkoutViewController: UIViewController {
     private var workouts: [Workouts] = []
     private var allWorkouts: [Workouts] = []
     private var displayedWorkouts: [Workouts] = []
+    private var searchWorkItem: DispatchWorkItem?
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -103,18 +104,36 @@ extension WorkoutViewController: HomeHeaderViewDelegate {
     }
 
     func searchWorkouts(with searchText: String) {
-        guard !searchText.isEmpty else {
-            displayedWorkouts = allWorkouts
-            collectionView.reloadData()
-            return
+        //        guard !searchText.isEmpty else {
+        //            displayedWorkouts = allWorkouts
+        //            collectionView.reloadData()
+        //            return
+        //        }
+        //        displayedWorkouts = allWorkouts.filter { workout in
+        //            workout.details.lowercased().contains(searchText.lowercased())
+        //            /*$0.details.lowercased().contains(searchText.lowercased())*/
+        //        }
+        //        DispatchQueue.main.async {
+        //            self.collectionView.reloadData()
+        //        }
+        //    }
+        searchWorkItem?.cancel()
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+
+            if searchText.isEmpty {
+                self.displayedWorkouts = self.allWorkouts
+            } else {
+                self.displayedWorkouts = self.allWorkouts.filter { workout in
+                    workout.details.lowercased().contains(searchText.lowercased())
+                }
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
         }
-        displayedWorkouts = allWorkouts.filter { workout in
-            workout.details.lowercased().contains(searchText.lowercased())
-            /*$0.details.lowercased().contains(searchText.lowercased())*/
-        }
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+        searchWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: workItem)
     }
 }
 
@@ -159,5 +178,24 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
         hardWorkoutVC.workoutImage.image = selectedImage
         hardWorkoutVC.workoutData = selectedWorkout
         navigationController?.pushViewController(hardWorkoutVC, animated: true)
+
+
+//        guard let cell = collectionView.cellForItem(at: indexPath) as? AddWorkoutViewCell else { return }
+//        
+//        if let taskView = cell.taskViews.first,
+//           let nameLabel = taskView.subviews.compactMap({ $0 as? UILabel }).first(where: { $0.text?.contains("Task:") == true }),
+//           let descriptionLabel = taskView.subviews.compactMap({ $0 as? UILabel }).first(where: { $0.text?.contains("Description:") == true }) {
+//
+//            let taskName = nameLabel.text?.replacingOccurrences(of: "Task: ", with: "") ?? "Default Task"
+//            let taskDescription = descriptionLabel.text?.replacingOccurrences(of: "Description: ", with: "") ?? "No description provided"
+//
+//            let timerVC = TimerViewController()
+//            timerVC.taskName = taskName
+//            timerVC.taskDescription = taskDescription
+//
+//            navigationController?.pushViewController(timerVC, animated: true)
+//        } else {
+//            print("No task available to pass.")
+//        }
     }
 }

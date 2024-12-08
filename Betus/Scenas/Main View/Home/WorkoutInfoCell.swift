@@ -105,30 +105,25 @@ class WorkoutInfoCell: UICollectionViewCell {
 
     private func postLikeState(isLiked: Bool) {
         guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
-        guard let workoutID = UserDefaults.standard.value(forKey: "id") else { return }
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)_id\(workoutID)"
-
+        guard let workoutId = UserDefaults.standard.value(forKey: "id") else { return }
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
 //        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected"
 
-        let taskCount = workout?.taskCount
-        let time = workout?.time
-        let details = workout?.details
-        let level = workout?.level.rawValue
+        for (key, value) in UserDefaults.standard.dictionaryRepresentation() {
+            print("Key: \(key), Value: \(value)")
+        }
 
         let parameters: [String: Any] = [
-            "id": userId,
-            "task_count": taskCount ?? 0,
-            "time": time ?? 0,
-            "level": level ?? "",
-            "details": details ?? "",
+            "creator_id": userId,
+            "id": workoutId,
             "isSelected": isLiked
         ]
 
-        NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<WorkoutLikes>) in
+        NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<LikeResponse>) in
             switch result {
             case .success(let response):
                 print("Like updated successfully: \(response.isSelected)")
-                self.fetchLikesCount(for: workoutID as! String)
+                self.fetchLikesCount(for: workoutId as! String )
             case .failure(let error):
                 print("Error updating like: \(error.localizedDescription)")
                 DispatchQueue.main.async {
@@ -162,7 +157,7 @@ class WorkoutInfoCell: UICollectionViewCell {
         workoutInfoView.timeView.remainingTime = Double(data.time)
         workoutInfoView.levelView.levelInfoLabel.text = data.level.rawValue
 
-        isLiked = data.isSelected
+//        isLiked = data.isSelected
         updateLikeState()
 
         fetchLikesCount(for: data.userId ?? "")

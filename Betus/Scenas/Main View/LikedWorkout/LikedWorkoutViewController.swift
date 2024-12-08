@@ -12,7 +12,7 @@ class LikedWorkoutViewController: UIViewController {
 
     var workoutImage: UIImage?
     var workoutData: [Workouts] = []
-    var likedWorkouts: [WorkoutLikes] = []
+    var likedWorkouts: [LikeResponse] = []
 
     var likeWorkoutCell = LikeWorkoutViewCell()
 
@@ -115,12 +115,13 @@ class LikedWorkoutViewController: UIViewController {
     }
 
     private func fetchLikedWorkouts() {
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected"
-        
-        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { (result: Result<[WorkoutLikes]>) in
+        guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(userId)"
+
+        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { (result: Result<[LikeResponse]>) in
                 switch result {
-                case .success(let workouts):
-                    let likedWorkouts = workouts.filter { $0.isSelected == true }
+                case .success(let likedWorkouts):
+                    let likedWorkouts = likedWorkouts.filter { $0.isSelected == true }
                 DispatchQueue.main.async {
                     if likedWorkouts.isEmpty {
                         self.likeWorkoutCell.workoutInfoView.isHidden = true
