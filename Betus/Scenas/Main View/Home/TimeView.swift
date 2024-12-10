@@ -71,7 +71,7 @@ class TimeView: UIView {
             make.height.equalTo(14 * Constraint.yCoeff)
         }
     }
-    
+
     private func updateTimerLabel() {
         let hours = remainingTimeInt / 3600
         let minutes = (remainingTimeInt % 3600) / 60

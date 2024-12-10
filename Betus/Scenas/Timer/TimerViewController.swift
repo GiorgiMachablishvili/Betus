@@ -18,8 +18,22 @@ class TimerViewController: UIViewController {
     }
     private var isTimerRunning = false
 
-    var taskName: String = ""
-    var taskDescription: String = ""
+    var tasks: [Workouts] = []
+    var hardWorkoutView = HardWorkoutViewController()
+
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 342, height: 103)
+        layout.minimumLineSpacing = 10
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.backgroundColor = .clear
+        view.showsHorizontalScrollIndicator = false
+        view.dataSource = self
+        view.delegate = self
+        view.register(WorkoutTaskViewCell.self, forCellWithReuseIdentifier: "WorkoutTaskViewCell")
+        return view
+    }()
 
     lazy var leftButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
@@ -53,7 +67,6 @@ class TimerViewController: UIViewController {
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.2)
         view.layer.cornerRadius = 16
         view.imageView?.contentMode = .scaleAspectFit
-        // Adjust spacing between image and title
         view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8 * Constraint.xCoeff)
         view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8 * Constraint.xCoeff, bottom: 0, right: 0)
 //        view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
@@ -80,30 +93,6 @@ class TimerViewController: UIViewController {
         view.textAlignment = .center
         return view
     }()
-    
-    private lazy var taskView: UIView = {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
-        view.layer.cornerRadius = 16
-        view.isHidden = false
-        return view
-    }()
-
-    private lazy var nameLabel: UILabel = {
-        let view = UILabel(frame: .zero)
-        view.text = taskName
-        view.textColor = UIColor(hexString: "#FFFFFF")
-        view.font = UIFont.latoRegular(size: 14)
-        return view
-    }()
-
-    private lazy var descriptionLabel: UILabel = {
-        let view = UILabel(frame: .zero)
-        view.text = taskDescription
-        view.textColor = UIColor(hexString: "#FFFFFF")
-        view.font = UIFont.latoRegular(size: 12)
-        return view
-    }()
 
     private lazy var startButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 216 * Constraint.xCoeff, height: 60 * Constraint.yCoeff))
@@ -127,21 +116,19 @@ class TimerViewController: UIViewController {
         setup()
         setupConstraints()
 
-        nameLabel.text = taskName
-            descriptionLabel.text = taskDescription
+        fetchWorkoutCurrentUserInfo()
+
         self.navigationItem.hidesBackButton = true
     }
 
     private func setup() {
+        view.addSubview(collectionView)
         view.addSubview(leftButton)
         view.addSubview(titleLabel)
         view.addSubview(likeViewButton)
         view.addSubview(circularProgressView)
         view.addSubview(timeLabel)
         view.addSubview(startButton)
-        view.addSubview(taskView)
-        taskView.addSubview(nameLabel)
-        taskView.addSubview(descriptionLabel)
     }
 
     private func setupConstraints() {
@@ -175,28 +162,34 @@ class TimerViewController: UIViewController {
             make.centerY.equalTo(circularProgressView.snp.centerY)
         }
 
-        taskView.snp.remakeConstraints { make in
-            make.bottom.equalTo(startButton.snp.top).offset(-16 * Constraint.yCoeff)
-            make.centerX.equalToSuperview()
+        collectionView.snp.remakeConstraints { make in
+            make.top.equalTo(circularProgressView.snp.bottom).offset(110 * Constraint.yCoeff)
+            make.leading.trailing.equalToSuperview().inset(24 * Constraint.xCoeff)
             make.height.equalTo(103 * Constraint.yCoeff)
-            make.width.equalTo(342 * Constraint.xCoeff)
         }
-
-        nameLabel.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview().inset(8 * Constraint.yCoeff)
-        }
-
-        descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(10 * Constraint.yCoeff)
-            make.leading.trailing.bottom.equalToSuperview().inset(8 * Constraint.xCoeff)
-        }
-
 
         startButton.snp.remakeConstraints { make in
             make.bottom.equalTo(view.snp.bottom).offset(-48 * Constraint.yCoeff)
             make.centerX.equalTo(view.snp.centerX)
             make.width.equalTo(115 * Constraint.xCoeff)
             make.height.equalTo(59 * Constraint.yCoeff)
+        }
+    }
+
+    private func fetchWorkoutCurrentUserInfo() {
+        guard let id = UserDefaults.standard.value(forKey: "userId") else { return }
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(id)"
+
+        NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
+            switch result {
+            case .success(let workouts):
+                self.tasks = workouts
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error fetching workouts: \(error.localizedDescription)")
+            }
         }
     }
 
@@ -250,5 +243,20 @@ class TimerViewController: UIViewController {
 
     @objc private func pressLeftButton() {
         navigationController?.popViewController(animated: true)
+    }
+}
+
+extension TimerViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        tasks.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WorkoutTaskViewCell", for: indexPath) as? WorkoutTaskViewCell else {
+            return UICollectionViewCell()
+        }
+        let timerTask = tasks[indexPath.row]
+        cell.configure(with: timerTask)
+        return cell
     }
 }

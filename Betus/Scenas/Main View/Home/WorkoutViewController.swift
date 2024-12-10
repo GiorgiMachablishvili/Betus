@@ -11,9 +11,11 @@ import SnapKit
 class WorkoutViewController: UIViewController {
 
     private var workouts: [Workouts] = []
+    private var likes: [LikeResponse] = []
     private var allWorkouts: [Workouts] = []
     private var displayedWorkouts: [Workouts] = []
     private var searchWorkItem: DispatchWorkItem?
+    var receivedWorkoutDetails: String?
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -39,6 +41,18 @@ class WorkoutViewController: UIViewController {
         setup()
         setupConstraints()
 
+//        NotificationCenter.default
+//            .addObserver(
+//                self,
+//                selector: #selector(
+//                    didTapObserver
+//                ),
+//                name: NSNotification.Name (
+//                    "workoutViewCenter"
+//                ),
+//                object: nil
+//            )
+
         fetchWorkoutCurrentUserInfo()
     }
 
@@ -55,8 +69,8 @@ class WorkoutViewController: UIViewController {
     }
 
     private func fetchWorkoutCurrentUserInfo() {
-        let id = UserDefaults.standard.value(forKey: "userId")
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(id ?? "")"
+        guard let id = UserDefaults.standard.value(forKey: "userId") else { return }
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(id)"
 
         NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
             switch result {
@@ -71,6 +85,33 @@ class WorkoutViewController: UIViewController {
             }
         }
     }
+
+
+    private func postLikeState(userId: String, workoutId: String) {
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
+
+        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[Workouts]>) in
+            switch result {
+            case .success(let response):
+                self?.workouts = response
+                self?.collectionView.reloadData()
+            case .failure(let error):
+                print("Error updating like: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+//                    self.isLiked.toggle()
+//                    self.updateLikeState()
+                }
+            }
+        }
+    }
+
+//    @objc private func didTapObserver() {
+//        print("Notification received in WorkoutViewController")
+//        self.allWorkouts.removeAll()
+//        self.displayedWorkouts.removeAll()
+//
+//        self.collectionView.reloadData()
+//    }
 }
 
 extension WorkoutViewController: UIScrollViewDelegate {
@@ -104,19 +145,6 @@ extension WorkoutViewController: HomeHeaderViewDelegate {
     }
 
     func searchWorkouts(with searchText: String) {
-        //        guard !searchText.isEmpty else {
-        //            displayedWorkouts = allWorkouts
-        //            collectionView.reloadData()
-        //            return
-        //        }
-        //        displayedWorkouts = allWorkouts.filter { workout in
-        //            workout.details.lowercased().contains(searchText.lowercased())
-        //            /*$0.details.lowercased().contains(searchText.lowercased())*/
-        //        }
-        //        DispatchQueue.main.async {
-        //            self.collectionView.reloadData()
-        //        }
-        //    }
         searchWorkItem?.cancel()
         let workItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
@@ -153,6 +181,9 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
         let workout = displayedWorkouts[indexPath.row]
         let selectedLevel = workout.level.rawValue
         cell.configure(with: workout, selectedLevel: selectedLevel)
+        cell.didTapOnLikeButton = { [weak self] workout in
+            self?.postLikeState(userId: workout.userId ?? "", workoutId: workout.id)
+        }
         return cell
     }
 
@@ -178,24 +209,5 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
         hardWorkoutVC.workoutImage.image = selectedImage
         hardWorkoutVC.workoutData = selectedWorkout
         navigationController?.pushViewController(hardWorkoutVC, animated: true)
-
-
-//        guard let cell = collectionView.cellForItem(at: indexPath) as? AddWorkoutViewCell else { return }
-//        
-//        if let taskView = cell.taskViews.first,
-//           let nameLabel = taskView.subviews.compactMap({ $0 as? UILabel }).first(where: { $0.text?.contains("Task:") == true }),
-//           let descriptionLabel = taskView.subviews.compactMap({ $0 as? UILabel }).first(where: { $0.text?.contains("Description:") == true }) {
-//
-//            let taskName = nameLabel.text?.replacingOccurrences(of: "Task: ", with: "") ?? "Default Task"
-//            let taskDescription = descriptionLabel.text?.replacingOccurrences(of: "Description: ", with: "") ?? "No description provided"
-//
-//            let timerVC = TimerViewController()
-//            timerVC.taskName = taskName
-//            timerVC.taskDescription = taskDescription
-//
-//            navigationController?.pushViewController(timerVC, animated: true)
-//        } else {
-//            print("No task available to pass.")
-//        }
     }
 }

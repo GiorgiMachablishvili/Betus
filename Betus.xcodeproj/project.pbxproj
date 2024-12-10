@@ -12,10 +12,15 @@
 		E32C49F62CF5EB2900C650B3 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C49F52CF5EB2900C650B3 /* CircularProgressView.swift */; };
 		E32C49F82CF5FDE500C650B3 /* UIImage+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C49F72CF5FDE500C650B3 /* UIImage+Extention.swift */; };
 		E32E6D132CF71AB600C17240 /* HardWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E6D122CF71AB600C17240 /* HardWorkoutViewController.swift */; };
-		E33582372D05AAC800817F7A /* WorkoutTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33582362D05AAC800817F7A /* WorkoutTask.swift */; };
 		E34103DD2CF627E700CB0CF6 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34103DC2CF627E700CB0CF6 /* ProfileViewController.swift */; };
 		E359415C2CFCD29400624C50 /* AddWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */; };
-		E359415E2CFCD2B300624C50 /* AddWorkoutViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E359415D2CFCD2B300624C50 /* AddWorkoutViewCell.swift */; };
+		E35A458E2D08979A00C99907 /* WorkoutTaskViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35A458D2D08979A00C99907 /* WorkoutTaskViewCell.swift */; };
+		E361C13C2D06E7D000B9D3D7 /* ImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361C13B2D06E7D000B9D3D7 /* ImageViewCell.swift */; };
+		E361C13E2D06E81500B9D3D7 /* NameViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361C13D2D06E81500B9D3D7 /* NameViewCell.swift */; };
+		E361C1402D06E83D00B9D3D7 /* WorkLevelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361C13F2D06E83D00B9D3D7 /* WorkLevelViewCell.swift */; };
+		E361C1422D06E85300B9D3D7 /* DescriptionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361C1412D06E85300B9D3D7 /* DescriptionViewCell.swift */; };
+		E361C1442D06E85F00B9D3D7 /* AddTaskViewButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361C1432D06E85F00B9D3D7 /* AddTaskViewButtonCell.swift */; };
+		E361C1462D06EDCA00B9D3D7 /* TaskViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361C1452D06EDCA00B9D3D7 /* TaskViewCell.swift */; };
 		E3667EE82CF4F17C00D1AE68 /* WorkoutInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EE72CF4F17C00D1AE68 /* WorkoutInfoCell.swift */; };
 		E3667EEC2CF4F36500D1AE68 /* WorkoutInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EEB2CF4F36500D1AE68 /* WorkoutInfoView.swift */; };
 		E3667EEE2CF4F5CB00D1AE68 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3667EED2CF4F5CB00D1AE68 /* TaskView.swift */; };
@@ -64,6 +69,7 @@
 		E3B785DA2CF9D63F00A0492A /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785D92CF9D63F00A0492A /* ProgressHUD */; };
 		E3B785DD2CF9D68300A0492A /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785DC2CF9D68300A0492A /* SVProgressHUD */; };
 		E3B7E30B2CF876FC00ABCDC4 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B7E30A2CF876FC00ABCDC4 /* UserInfo.swift */; };
+		E3B8DCAB2D078BCD005A8B19 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B8DCAA2D078BCD005A8B19 /* Task.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,10 +78,15 @@
 		E32C49F52CF5EB2900C650B3 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		E32C49F72CF5FDE500C650B3 /* UIImage+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extention.swift"; sourceTree = "<group>"; };
 		E32E6D122CF71AB600C17240 /* HardWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardWorkoutViewController.swift; sourceTree = "<group>"; };
-		E33582362D05AAC800817F7A /* WorkoutTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTask.swift; sourceTree = "<group>"; };
 		E34103DC2CF627E700CB0CF6 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutViewController.swift; sourceTree = "<group>"; };
-		E359415D2CFCD2B300624C50 /* AddWorkoutViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutViewCell.swift; sourceTree = "<group>"; };
+		E35A458D2D08979A00C99907 /* WorkoutTaskViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTaskViewCell.swift; sourceTree = "<group>"; };
+		E361C13B2D06E7D000B9D3D7 /* ImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCell.swift; sourceTree = "<group>"; };
+		E361C13D2D06E81500B9D3D7 /* NameViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameViewCell.swift; sourceTree = "<group>"; };
+		E361C13F2D06E83D00B9D3D7 /* WorkLevelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkLevelViewCell.swift; sourceTree = "<group>"; };
+		E361C1412D06E85300B9D3D7 /* DescriptionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionViewCell.swift; sourceTree = "<group>"; };
+		E361C1432D06E85F00B9D3D7 /* AddTaskViewButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewButtonCell.swift; sourceTree = "<group>"; };
+		E361C1452D06EDCA00B9D3D7 /* TaskViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewCell.swift; sourceTree = "<group>"; };
 		E3667EE72CF4F17C00D1AE68 /* WorkoutInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfoCell.swift; sourceTree = "<group>"; };
 		E3667EEB2CF4F36500D1AE68 /* WorkoutInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfoView.swift; sourceTree = "<group>"; };
 		E3667EED2CF4F5CB00D1AE68 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
@@ -120,6 +131,7 @@
 		E3AE85062CF751AA00202CBB /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
 		E3B785D02CF9A89800A0492A /* NetworkManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManger.swift; sourceTree = "<group>"; };
 		E3B7E30A2CF876FC00ABCDC4 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		E3B8DCAA2D078BCD005A8B19 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				E32C49F32CF5EAFF00C650B3 /* TimerViewController.swift */,
+				E35A458D2D08979A00C99907 /* WorkoutTaskViewCell.swift */,
 				E32C49F52CF5EB2900C650B3 /* CircularProgressView.swift */,
 			);
 			path = Timer;
@@ -322,7 +335,12 @@
 			isa = PBXGroup;
 			children = (
 				E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */,
-				E359415D2CFCD2B300624C50 /* AddWorkoutViewCell.swift */,
+				E361C13B2D06E7D000B9D3D7 /* ImageViewCell.swift */,
+				E361C13D2D06E81500B9D3D7 /* NameViewCell.swift */,
+				E361C13F2D06E83D00B9D3D7 /* WorkLevelViewCell.swift */,
+				E361C1412D06E85300B9D3D7 /* DescriptionViewCell.swift */,
+				E361C1432D06E85F00B9D3D7 /* AddTaskViewButtonCell.swift */,
+				E361C1452D06EDCA00B9D3D7 /* TaskViewCell.swift */,
 				E39997DF2CF7AD4300CF8E48 /* AddTaskView.swift */,
 			);
 			path = Plus;
@@ -339,8 +357,8 @@
 		E3B7E3092CF876C500ABCDC4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E3B8DCAA2D078BCD005A8B19 /* Task.swift */,
 				E3B7E30A2CF876FC00ABCDC4 /* UserInfo.swift */,
-				E33582362D05AAC800817F7A /* WorkoutTask.swift */,
 				E36BDCCD2CFEF98A00FA18FA /* Workouts.swift */,
 				E36E2F572CFE57E800613FBD /* WorkoutInfo.swift */,
 				E3A372972D024E260008ED9C /* LikeResponse.swift */,
@@ -451,7 +469,7 @@
 				E36E2F582CFE57E800613FBD /* WorkoutInfo.swift in Sources */,
 				E39997E02CF7AD4300CF8E48 /* AddTaskView.swift in Sources */,
 				E39C84242CF4BD5B003177BF /* LikedWorkoutViewController.swift in Sources */,
-				E33582372D05AAC800817F7A /* WorkoutTask.swift in Sources */,
+				E3B8DCAB2D078BCD005A8B19 /* Task.swift in Sources */,
 				E32C49F42CF5EAFF00C650B3 /* TimerViewController.swift in Sources */,
 				E39C83D92CF4A573003177BF /* AppDelegate.swift in Sources */,
 				E3B7E30B2CF876FC00ABCDC4 /* UserInfo.swift in Sources */,
@@ -460,19 +478,25 @@
 				E36BDCCE2CFEF98A00FA18FA /* Workouts.swift in Sources */,
 				E39D36C42D03450900A5ABCA /* EmptyResponse.swift in Sources */,
 				E3667EE82CF4F17C00D1AE68 /* WorkoutInfoCell.swift in Sources */,
+				E35A458E2D08979A00C99907 /* WorkoutTaskViewCell.swift in Sources */,
 				E3B785D12CF9A89800A0492A /* NetworkManger.swift in Sources */,
+				E361C1402D06E83D00B9D3D7 /* WorkLevelViewCell.swift in Sources */,
 				E3667EEE2CF4F5CB00D1AE68 /* TaskView.swift in Sources */,
 				E32C49F62CF5EB2900C650B3 /* CircularProgressView.swift in Sources */,
 				E39C840A2CF4AB69003177BF /* UIColor+Extention.swift in Sources */,
 				E32E6D132CF71AB600C17240 /* HardWorkoutViewController.swift in Sources */,
-				E359415E2CFCD2B300624C50 /* AddWorkoutViewCell.swift in Sources */,
 				E39C84082CF4A978003177BF /* UIFont+Extension.swift in Sources */,
+				E361C1462D06EDCA00B9D3D7 /* TaskViewCell.swift in Sources */,
 				E39C84222CF4BD46003177BF /* WorkoutViewController.swift in Sources */,
 				E39C84122CF4AD6D003177BF /* Constraints.swift in Sources */,
+				E361C1422D06E85300B9D3D7 /* DescriptionViewCell.swift in Sources */,
+				E361C1442D06E85F00B9D3D7 /* AddTaskViewButtonCell.swift in Sources */,
 				E3667EF22CF4F5EC00D1AE68 /* LevelView.swift in Sources */,
+				E361C13E2D06E81500B9D3D7 /* NameViewCell.swift in Sources */,
 				E3667EF02CF4F5D700D1AE68 /* TimeView.swift in Sources */,
 				E39C83DB2CF4A573003177BF /* SceneDelegate.swift in Sources */,
 				E32C49F82CF5FDE500C650B3 /* UIImage+Extention.swift in Sources */,
+				E361C13C2D06E7D000B9D3D7 /* ImageViewCell.swift in Sources */,
 				E36E2F562CFE22E900613FBD /* NonPropagatingButton.swift in Sources */,
 				E39997E62CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift in Sources */,
 				E3A372982D024E260008ED9C /* LikeResponse.swift in Sources */,

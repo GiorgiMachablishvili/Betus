@@ -13,47 +13,59 @@ protocol AddWorkoutViewControllerDelegate: AnyObject {
     func shouldHideMainBottomButtonView(_ hide: Bool)
 }
 
-class AddWorkoutViewController: UIViewController {
-
+class AddWorkoutViewController: UIViewController, ImageViewDelegate {
+    
     weak var delegate: AddWorkoutViewControllerDelegate?
 
+    private weak var imageCell: ImageViewCell?
+    
     var totalTimeInSeconds: Int = 0
-    var workouts: [WorkoutInfo] = [
-        WorkoutInfo(
-            taskCount: 1,
-            time: 0,
-            level: .easy, 
-            completers: [],
-            details: "Default Workout",
-            userId: nil,
-            image: "",
-            isSelected: false
-        )
-    ]
-
-    var numberOfSections: Int = 1
+    var tasks: [Task] = []
 
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 2
-        layout.minimumLineSpacing = 2
-        layout.itemSize = CGSize(width: view.frame.width, height: view.frame.maxY)
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsVerticalScrollIndicator = false
         view.dataSource = self
         view.delegate = self
         view.backgroundColor = UIColor(hexString: "#101538")
-        view.register(AddWorkoutViewCell.self, forCellWithReuseIdentifier: "AddWorkoutViewCell")
+        //        view.allowsSelection = false
         return view
     }()
-
+    
+    lazy var userInfoButton: UIButton = {
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
+        view.setImage(UIImage(named: "userProfile"), for: .normal)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        view.layer.cornerRadius = 22
+        view.clipsToBounds = true
+        view.imageView?.contentMode = .scaleAspectFit
+        view.isUserInteractionEnabled = true
+        view.setImage(UIImage(named: "userProfile")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
+        view.addTarget(self, action: #selector(didPressUserInfoButton), for: .touchUpInside)
+        return view
+    }()
+    
+    lazy var rightButton: UIButton = {
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
+        view.setImage(UIImage(named: "arrow-left-1"), for: .normal)
+        view.backgroundColor = UIColor(hexString: "#E5D820")
+        view.layer.cornerRadius = 22
+        view.clipsToBounds = true
+        view.imageView?.contentMode = .scaleAspectFit
+        view.isUserInteractionEnabled = true
+        view.setImage(UIImage(named: "arrow-left-1")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
+        view.addTarget(self, action: #selector(didPressRightButton), for: .touchUpInside)
+        return view
+    }()
+    
     lazy var darkOverlay: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         view.isHidden = true
         return view
     }()
-
+    
     lazy var addTaskView: AddTaskView = {
         let view = AddTaskView()
         view.layer.cornerRadius = 32
@@ -61,7 +73,7 @@ class AddWorkoutViewController: UIViewController {
         view.delegate = self
         return view
     }()
-
+    
     private lazy var taskView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
@@ -69,107 +81,67 @@ class AddWorkoutViewController: UIViewController {
         view.isHidden = true
         return view
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
         setupConstraint()
-
+        setupHierarchy()
+        configureCompositionLayout()
+        view.backgroundColor = UIColor(hexString: "#101538")
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+        
         setupTapToDismissKeyboard()
     }
-
+    
     func setup() {
         view.addSubview(collectionView)
+        view.addSubview(userInfoButton)
+        view.addSubview(rightButton)
         view.addSubview(darkOverlay)
         view.addSubview(addTaskView)
         view.addSubview(taskView)
     }
-
+    
     func setupConstraint() {
         collectionView.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top)
+            make.top.equalTo(userInfoButton.snp.bottom).offset(5)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.snp.bottom)
         }
-
+        
+        userInfoButton.snp.remakeConstraints { make in
+            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.leading.equalTo(view.snp.leading).offset(20 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
+        }
+        
+        rightButton.snp.remakeConstraints { make in
+            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.trailing.equalTo(view.snp.trailing).offset(-20 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
+        }
+        
         darkOverlay.snp.remakeConstraints { make in
             make.edges.equalToSuperview()
         }
-
+        
         addTaskView.snp.remakeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.snp.bottom)
             make.height.equalTo(343 * Constraint.yCoeff)
         }
     }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-
-    @objc func pressDeleteTaskViewButton() {
-
-    }
-}
-
-extension AddWorkoutViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let contentHeight = scrollView.contentSize.height
-        let frameHeight = scrollView.frame.size.height
-        let bottomOffsetThreshold: CGFloat = 60.0
-
-        if scrollView.contentOffset.y + frameHeight >= contentHeight {
-            scrollView.contentInset.bottom = bottomOffsetThreshold
-        } else {
-            scrollView.contentInset.bottom = 0
-        }
-    }
-}
-
-extension AddWorkoutViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return /*numberOfSections*/ 1
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddWorkoutViewCell", for: indexPath) as? AddWorkoutViewCell else {
-            return UICollectionViewCell()
-        }
-        let workout = workouts[indexPath.row]
-        cell.configure(with: workout)
-        cell.delegate = self
-        return cell
-    }
-}
-
-extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
-    func getSelectedTaskDetails() -> (name: String, description: String)? {
-        return ("", "")
-    }
     
-    func didUpdateTaskCount(_ count: Int) {
-        print("Updated task count from cell: \(count)")
-        saveTaskCountToServer(count)
-    }
-
-    private func saveTaskCountToServer(_ count: Int) {
-        let url = "https://example.com/api/v1/taskCount"
-        let parameters: [String: Any] = [
-            "taskCount": count - 1
-        ]
-
-        NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<Workouts>) in
-            switch result {
-            case .success(let response):
-                print("Task count updated on server: \(response)")
-            case .failure(let error):
-                print("Failed to update task count: \(error.localizedDescription)")
-            }
-        }
+    func setupHierarchy() {
+        collectionView.register(ImageViewCell.self, forCellWithReuseIdentifier: String(describing: ImageViewCell.self))
+        collectionView.register(NameViewCell.self, forCellWithReuseIdentifier: String(describing: NameViewCell.self))
+        collectionView.register(WorkLevelViewCell.self, forCellWithReuseIdentifier: String(describing: WorkLevelViewCell.self))
+        collectionView.register(DescriptionViewCell.self, forCellWithReuseIdentifier: String(describing: DescriptionViewCell.self))
+        collectionView.register(TaskViewCell.self, forCellWithReuseIdentifier: String(describing: TaskViewCell.self))
+        collectionView.register(AddTaskViewButtonCell.self, forCellWithReuseIdentifier: String(describing: AddTaskViewButtonCell.self))
     }
 
     func convertTimerToSeconds(_ timerString: String) -> Int {
@@ -181,64 +153,94 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
         return (hours * 3600) + (minutes * 60) + seconds
     }
 
-    func didPressUserInfoButton() {
+    @objc func didPressUserInfoButton() {
         let profileView = ProfileViewController()
         navigationController?.pushViewController(profileView, animated: true)
     }
 
-    func didPressRightButton(workoutName: String, workoutImage: UIImage) {
-        guard let workoutImageData = workoutImage.jpegData(compressionQuality: 0.8) else { return }
+    @objc func didPressRightButton() {
+        //MARK: workout image
+        let indexPath = IndexPath(item: 0, section: 0)
+        guard let imageCell = collectionView.cellForItem(at: indexPath) as? ImageViewCell,
+              let imageWorkout = imageCell.workoutImage.image else {
+            return
+        }
+        guard let imageData = imageWorkout.jpegData(compressionQuality: 0.8) else {
+            print("Error: Unable to convert image to data")
+            return
+        }
+        let imageBase64String = imageData.base64EncodedString()
 
-        let id = UserDefaults.standard.value(forKey: "userId")
-        let workoutId = UserDefaults.standard.value(forKey: "workoutId")
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/"
+        //MARK: user id
+        guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
+//        let userId = UserDefaults.standard.value(forKey: "userId")
 
-        guard let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell else { return }
+        //MARK: selected level
+        let indexPathLevel = IndexPath(item: 0, section: 2)
+        guard collectionView.indexPathsForVisibleItems.contains(indexPathLevel) else {
+            print("IndexPath for WorkLevelViewCell is not visible")
+            return
+        }
+        guard let visibleCell = collectionView.cellForItem(at: indexPathLevel) as? WorkLevelViewCell else {
+            print("WorkLevelViewCell is not visible")
+            return
+        }
         let selectedLevel = visibleCell.getSelectedLevel()
 
-        guard let timerValue = addTaskView.timerAddTextfield.text, !timerValue.isEmpty else {
-              showAlert(title: "Error", description: "Please provide a valid timer value.")
-              return
-          }
-        let timeInSeconds = convertTimerToSeconds(timerValue)
+        //MARK:workout name
+        guard let workoutName = addTaskView.nameWorkoutAddTextfield.text else { return }
 
-        var updatedTaskCount = 0
-        if let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell {
-            updatedTaskCount = visibleCell.taskViews.count - 1 + 1
+        //MARK: time
+        guard let timerValue = addTaskView.timerAddTextfield.text, !timerValue.isEmpty else {
+            showAlert(title: "Error", description: "Please provide a valid timer value.")
+            return
         }
 
+        //MARK: task name
+        guard let taskName = addTaskView.nameWorkoutAddTextfield.text else { return }
+
+        //MARK: task description
+        guard let taskDescription = addTaskView.descriptionWorkoutAddTextfield.text else { return }
+        
+        let timeInSeconds = convertTimerToSeconds(timerValue)
+
         let parameters: [String: Any] = [
-            "task_count": updatedTaskCount,
+            "task_count": tasks.count,
             "time": totalTimeInSeconds,
             "level": selectedLevel,
             "completers": [],
             "details": workoutName,
-            "user_id": id ?? "",
-            "image": workoutImageData.base64EncodedString(),
-            "workoutId": workoutId ?? ""
+            "task_name": taskName,
+            "task_description": taskDescription,
+            "user_id": userId,
+            "image": imageBase64String
         ]
-        NetworkManager.shared.showProgressHud(true, animated: true)
+//        print("Parameters: \(parameters)")
 
+        //MARK: url
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/"
+        NetworkManager.shared.showProgressHud(true, animated: true)
         NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<Workouts>) in
             NetworkManager.shared.showProgressHud(false, animated: false)
             switch result {
             case .success(let workout):
-                let mainViewController = MainViewController()
-                self.navigationController?.pushViewController(mainViewController, animated: true)
+                let workoutViewController = MainViewController()
+//                    NotificationCenter.default.post(
+//                        name: NSNotification.Name("workoutViewCenter"),
+//                        object: nil
+//                    )
+                self.navigationController?.pushViewController(workoutViewController, animated: true)
                 print("Workout saved successfully: \(workout)")
             case .failure(let error):
                 print("Error saving workout: \(error.localizedDescription)")
             }
         }
-//        for (key, value) in UserDefaults.standard.dictionaryRepresentation() {
-//            print("Key: \(key), Value: \(value)")
-//        }
-
         if let workoutID = UserDefaults.standard.value(forKey: "userId") as? String {
             print("Workout ID: \(workoutID)")
         } else {
             print("Workout ID not found or not stored as a single value.")
         }
+//        workoutViewController.receivedWorkoutDetails = "\(String(describing: userId))"
     }
     // Helper: Show an alert to the user
     private func showAlert(title: String, description: String) {
@@ -250,29 +252,315 @@ extension AddWorkoutViewController: AddWorkoutViewCellDelegate {
     func shouldHideMainBottomButtonView(_ hide: Bool) {
         delegate?.shouldHideMainBottomButtonView(hide)
     }
+
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+}
+
+//MARK: ProfileView configure layout
+extension AddWorkoutViewController {
+    func configureCompositionLayout() {
+        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
+
+            switch sectionIndex {
+            case 0:
+                return self?.imageViewLayout()
+            case 1:
+                return self?.nameViewLayout()
+            case 2:
+                return self?.workoutViewLayout()
+            case 3:
+                return self?.descriptionViewLayout()
+            case 4:
+                return self?.taskViewLayout()
+            case 5:
+                return self?.addTaskViewButtonLayout()
+            default:
+                return self?.defaultLayout()
+            }
+        }
+        self.collectionView.setCollectionViewLayout(layout, animated: false)
+    }
+    
+    func imageViewLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(287))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(287)
+        )
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(
+            top: 10 * Constraint.yCoeff,
+            leading: 0 * Constraint.xCoeff,
+            bottom: 0 * Constraint.yCoeff,
+            trailing: 0 * Constraint.xCoeff
+        )
+        return section
+    }
+    
+    func nameViewLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(44)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(44)
+        )
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(
+            top: 10 * Constraint.yCoeff,
+            leading: 0 * Constraint.xCoeff,
+            bottom: 0 * Constraint.yCoeff,
+            trailing: 0 * Constraint.xCoeff
+        )
+        return section
+    }
+    
+    func workoutViewLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(41)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(41)
+        )
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(
+            top: 10 * Constraint.yCoeff,
+            leading: 0 * Constraint.xCoeff,
+            bottom: 0 * Constraint.yCoeff,
+            trailing: 0 * Constraint.xCoeff
+        )
+        return section
+    }
+    
+    func descriptionViewLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(44)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(44)
+        )
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(
+            top: 10 * Constraint.yCoeff,
+            leading: 0 * Constraint.xCoeff,
+            bottom: 10 * Constraint.yCoeff,
+            trailing: 0 * Constraint.xCoeff
+        )
+        return section
+    }
+
+    func addTaskViewButtonLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(84)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(84)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(
+            top: 10 * Constraint.yCoeff,
+            leading: 0 * Constraint.xCoeff,
+            bottom: 0 * Constraint.yCoeff,
+            trailing: 0 * Constraint.xCoeff
+        )
+        return section
+    }
+
+    func taskViewLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(160)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(160)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(
+            top: 10 * Constraint.yCoeff,
+            leading: 10 * Constraint.xCoeff,
+            bottom: 0 * Constraint.yCoeff,
+            trailing: 10 * Constraint.xCoeff
+        )
+        return section
+    }
+
+    func defaultLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(0.7),
+            heightDimension: .absolute(200)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPagingCentered
+        
+        return section
+    }
+}
+
+extension AddWorkoutViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 6
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            return 1
+        case 2:
+            return 1
+        case 3:
+            return 1
+        case 4:
+            return tasks.count
+        case 5:
+            return 1
+        default:
+            return 0
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.section {
+        case 0:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: String(describing: ImageViewCell.self),
+                for: indexPath) as? ImageViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.delegate = self
+            return cell
+        case 1:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: String(describing: NameViewCell.self),
+                for: indexPath) as? NameViewCell else {
+                return UICollectionViewCell()
+            }
+            return cell
+        case 2:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: String(describing: WorkLevelViewCell.self),
+                for: indexPath) as? WorkLevelViewCell else {
+                return UICollectionViewCell()
+            }
+            return cell
+        case 3:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: String(describing: DescriptionViewCell.self),
+                for: indexPath
+            ) as? DescriptionViewCell else {
+                return UICollectionViewCell()
+            }
+            return cell
+        case 4:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: String(describing: TaskViewCell.self),
+                for: indexPath
+            ) as? TaskViewCell else {
+                return UICollectionViewCell()
+            }
+            let task = tasks[indexPath.row]
+            cell.configure(task: task)
+            cell.didTapOnDeleteButton = { [weak self] in
+                self?.tasks.remove(at: indexPath.row)
+                collectionView.reloadData()
+            }
+//            cell.delegate = self
+            return cell
+
+        case 5:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: String(describing: AddTaskViewButtonCell.self),
+                for: indexPath
+            ) as? AddTaskViewButtonCell else {
+                return UICollectionViewCell()
+            }
+            cell.delegate = self
+            return cell
+        default:
+            return UICollectionViewCell()
+        }
+    }
+}
+
+extension AddWorkoutViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        let bottomOffsetThreshold: CGFloat = 60.0
+        
+        if scrollView.contentOffset.y + frameHeight >= contentHeight {
+            scrollView.contentInset.bottom = bottomOffsetThreshold
+        } else {
+            scrollView.contentInset.bottom = 0
+        }
+    }
 }
 
 extension AddWorkoutViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func presentImagePicker(_ picker: UIImagePickerController) {
+    func presentImagePicker(_ picker: UIImagePickerController, for cell: ImageViewCell) {
+        imageCell = cell
         present(picker, animated: true, completion: nil)
     }
-
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        if let editedImage = info[.editedImage] as? UIImage {
-            updateVisibleCell(with: editedImage)
-        } else if let originalImage = info[.originalImage] as? UIImage {
-            updateVisibleCell(with: originalImage)
-        }
-        picker.dismiss(animated: true, completion: nil)
-    }
+        guard let imageCell = imageCell else { return }
 
+        if let editedImage = info[.editedImage] as? UIImage {
+            imageCell.updateUserImage(editedImage)
+        } else if let originalImage = info[.originalImage] as? UIImage {
+            imageCell.updateUserImage(originalImage)
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
+        self.imageCell = nil
+    }
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
-    }
-
-    private func updateVisibleCell(with image: UIImage) {
-        guard let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell else { return }
-        visibleCell.updateUserImage(image)
+        self.imageCell = nil 
     }
 }
 
@@ -280,39 +568,18 @@ extension AddWorkoutViewController: AddTaskViewDelegate {
     func didPressAddButton(taskName: String, timer: String, description: String) {
         darkOverlay.isHidden = true
         addTaskView.isHidden = true
-        taskView.isHidden = false
+        taskView.isHidden = true
 
-        if let visibleCell = collectionView.visibleCells.first as? AddWorkoutViewCell {
-            visibleCell.addTask(taskName: taskName, timer: timer, description: description)
-        }
         let timeInSeconds = convertTimerToSeconds(timer)
 
-        numberOfSections += 1
-//
-//        if let collectionViewHeightConstraint = collectionView.constraints.first(where: { $0.firstAttribute == .height }) {
-//            collectionViewHeightConstraint.constant += 150
-//        }
-
-        view.layoutIfNeeded()
-
+        tasks.append(.init(title: taskName, time: timer, description: description))
         collectionView.reloadData()
-
+        
         totalTimeInSeconds += timeInSeconds
 
-        let taskLabel = UILabel()
-        taskLabel.text = "Task: \(taskName)\nTimer: \(timer)\nDescription: \(description)"
-        taskLabel.textColor = UIColor.white
-        taskLabel.numberOfLines = 0
-        taskLabel.textAlignment = .left
-        taskView.addSubview(taskLabel)
-
-
-        taskLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(8 * Constraint.yCoeff)
-        }
         delegate?.shouldHideMainBottomButtonView(false)
     }
-
+    
     func didPressCancelButton() {
         darkOverlay.isHidden = true
         addTaskView.isHidden = true
@@ -326,11 +593,11 @@ extension AddWorkoutViewController {
     @objc private func keyboardWillShow(_ notification: Notification) {
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         guard let activeField = findFirstResponder() as? UIView else { return }
-
+        
         let keyboardHeight = keyboardFrame.height
         let bottomOfTextField = activeField.convert(activeField.bounds, to: view).maxY
         let visibleAreaHeight = view.bounds.height - keyboardHeight
-
+        
         if bottomOfTextField > visibleAreaHeight {
             let overlap = bottomOfTextField - visibleAreaHeight
             UIView.animate(withDuration: 0.3) {
@@ -338,23 +605,23 @@ extension AddWorkoutViewController {
             }
         }
     }
-
+    
     @objc private func keyboardWillHide(_ notification: Notification) {
         UIView.animate(withDuration: 0.3) {
             self.view.transform = .identity
         }
     }
-
+    
     private func setupTapToDismissKeyboard() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
-
+    
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
-
+    
     private func findFirstResponder() -> UIResponder? {
         for subview in view.subviews {
             if subview.isFirstResponder {
@@ -365,5 +632,30 @@ extension AddWorkoutViewController {
             }
         }
         return nil
+    }
+}
+
+extension UIView {
+    func findFirstResponder() -> UIResponder? {
+        if self.isFirstResponder {
+            return self
+        }
+        for subview in self.subviews {
+            if let responder = subview.findFirstResponder() {
+                return responder
+            }
+        }
+        return nil
+    }
+}
+
+extension AddWorkoutViewController: AddTaskViewCellDelegate {
+    func toggleTaskViewVisibility(hidden: Bool) {
+        taskView.isHidden = hidden
+        configureCompositionLayout()
+        collectionView.reloadData()
+        if let taskCell = collectionView.visibleCells.compactMap({ $0 as? TaskViewCell }).first {
+            taskCell.taskView.isHidden = hidden
+        }
     }
 }

@@ -12,6 +12,8 @@ class WorkoutInfoCell: UICollectionViewCell {
     var selectedLevel: String?
     var workout: Workouts?
 
+    var didTapOnLikeButton: ((Workouts) -> Void)?
+
     lazy var workoutImage: UIImageView = {
         let view = UIImageView(frame: .zero)
         view.contentMode = .scaleToFill
@@ -90,48 +92,8 @@ class WorkoutInfoCell: UICollectionViewCell {
     }
 
     @objc func likeViewButtonTapped() {
-        print("pressed like button")
-        guard selectedLevel != nil else {
-            print("Selected level is not set")
-            return
-        }
-
-        isLiked.toggle()
-        updateLikeState()
-
-        let likeState = isLiked
-        postLikeState(isLiked: likeState)
-    }
-
-    private func postLikeState(isLiked: Bool) {
-        guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
-        guard let workoutId = UserDefaults.standard.value(forKey: "id") else { return }
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
-//        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected"
-
-        for (key, value) in UserDefaults.standard.dictionaryRepresentation() {
-            print("Key: \(key), Value: \(value)")
-        }
-
-        let parameters: [String: Any] = [
-            "creator_id": userId,
-            "id": workoutId,
-            "isSelected": isLiked
-        ]
-
-        NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<LikeResponse>) in
-            switch result {
-            case .success(let response):
-                print("Like updated successfully: \(response.isSelected)")
-                self.fetchLikesCount(for: workoutId as! String )
-            case .failure(let error):
-                print("Error updating like: \(error.localizedDescription)")
-                DispatchQueue.main.async {
-                    self.isLiked.toggle()
-                    self.updateLikeState()
-                }
-            }
-        }
+        guard let workout else { return }
+        didTapOnLikeButton?(workout)
     }
 
     private func updateLikeState() {
@@ -156,11 +118,7 @@ class WorkoutInfoCell: UICollectionViewCell {
         workoutInfoView.taskView.taskNumberLabel.text = String(data.taskCount)
         workoutInfoView.timeView.remainingTime = Double(data.time)
         workoutInfoView.levelView.levelInfoLabel.text = data.level.rawValue
-
-//        isLiked = data.isSelected
-        updateLikeState()
-
-        fetchLikesCount(for: data.userId ?? "")
+        isLiked = data.isSelected
 
         if let url = URL(string: data.image) {
             DispatchQueue.global().async {
@@ -179,20 +137,4 @@ class WorkoutInfoCell: UICollectionViewCell {
         }
     }
 
-    private func fetchLikesCount(for workoutID: String) {
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/\(workoutID)/likes"
-
-        NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[String: Int]>) in
-            switch result {
-            case .success(let data):
-                if let likesCount = data["likesCount"] {
-                    DispatchQueue.main.async {
-                        self.likeViewButton.setTitle("\(likesCount)", for: .normal)
-                    }
-                }
-            case .failure(let error):
-                print("Error fetching likes count: \(error.localizedDescription)")
-            }
-        }
-    }
 }

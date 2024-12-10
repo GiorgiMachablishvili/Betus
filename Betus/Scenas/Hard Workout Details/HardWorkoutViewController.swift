@@ -95,7 +95,7 @@ class HardWorkoutViewController: UIViewController {
         return view
     }()
 
-    private lazy var workoutInfoView: WorkoutInfoView = {
+    lazy var workoutInfoView: WorkoutInfoView = {
         let view = WorkoutInfoView()
         view.layer.cornerRadius = 26
         view.layer.borderColor = UIColor.init(hexString: "FFFFFF").cgColor
@@ -274,14 +274,14 @@ class HardWorkoutViewController: UIViewController {
     @objc private func pressStartWorkoutButton() {
         let timerVC = TimerViewController()
         
-        if let (taskName, taskDescription) = getSelectedTaskDetails() {
-            timerVC.taskName = taskName
-            timerVC.taskDescription = taskDescription
-        }
-        if let workout = workoutData {
-            timerVC.remainingTime = Double(workout.time)
-            timerVC.duration = Double(workout.time) 
-        }
+//        if let (taskName, taskDescription) = getSelectedTaskDetails() {
+//            timerVC.taskName = taskName
+//            timerVC.taskDescription = taskDescription
+//        }
+//        if let workout = workoutData {
+//            timerVC.remainingTime = Double(workout.time)
+//            timerVC.duration = Double(workout.time) 
+//        }
         navigationController?.pushViewController(timerVC, animated: true)
     }
 
@@ -319,36 +319,3 @@ extension HardWorkoutViewController: WarningViewDelegate {
     }
 }
 
-extension HardWorkoutViewController: AddWorkoutViewCellDelegate {
-    func getSelectedTaskDetails() -> (name: String, description: String)? {
-        guard let workoutCell = view.subviews.compactMap({ $0 as? AddWorkoutViewCell }).first,
-              let selectedTask = workoutCell.taskDetails.first else {
-            return nil
-        }
-        return (name: selectedTask.name, description: selectedTask.description)
-    }
-
-    func didPressUserInfoButton() {
-        print()
-    }
-
-    func didPressRightButton(workoutName: String, workoutImage: UIImage) {
-        print()
-    }
-
-    func shouldHideMainBottomButtonView(_ hide: Bool) {
-        print()
-    }
-
-    func presentImagePicker(_ picker: UIImagePickerController) {
-        print()
-    }
-
-    func didUpdateTaskCount(_ count: Int) {
-        print()
-    }
-
-    func convertTimerToSeconds(_ timerString: String) -> Int {
-        0
-    }
-}

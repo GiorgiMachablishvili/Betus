@@ -13,21 +13,20 @@ struct Workouts: Codable {
     let level: Level
     let completers: [String]
     let details: String
+    let taskName: String
+    let taskDescription: String
     let userId: String?
     let image: String
-//    let workoutId: String
-//    let isSelected: Bool
+    let id: String
+    let isSelected: Bool
 
     enum CodingKeys: String, CodingKey {
         case taskCount = "task_count"
-        case time
-        case level
-        case completers
-        case details
+        case time, level, completers, details, image, id
         case userId = "user_id"
-        case image
-//        case workoutId = "workout_id"
-//        case isSelected
+        case taskName = "task_name"
+        case taskDescription = "task_description"
+        case isSelected = "is_selected"
     }
 
     enum Level: String, Codable {

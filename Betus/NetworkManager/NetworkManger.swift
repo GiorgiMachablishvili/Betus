@@ -59,28 +59,7 @@ class NetworkManager: NetworkManagerProtocol {
     }
 
     func post<T: Decodable>(url: String, parameters: Parameters?, headers: HTTPHeaders?, completion: @escaping (Result<T>) -> Void) {
-//        request(url: url, method: .post, parameters: parameters, headers: headers, completion: completion)
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-                .validate()
-                .responseJSON { response in
-                    switch response.result {
-                    case .success(let json):
-                        print("Response JSON: \(json)")
-                        do {
-                            let decodedResponse = try JSONDecoder().decode(T.self, from: response.data ?? Data())
-                            completion(.success(decodedResponse))
-                        } catch {
-                            print("Decoding error: \(error)")
-                            completion(.failure(error))
-                        }
-                    case .failure(let error):
-                        print("Request failed with error: \(error)") // Log error
-                        if let data = response.data {
-                            print("Response Data: \(String(data: data, encoding: .utf8) ?? "No Data")") // Log raw response data
-                        }
-                        completion(.failure(error))
-                    }
-                }
+        request(url: url, method: .post, parameters: parameters, headers: headers, completion: completion)
     }
 
     func delete<T: Decodable>(url: String, parameters: Parameters?, headers: HTTPHeaders?, completion: @escaping (Result<T>) -> Void) {
