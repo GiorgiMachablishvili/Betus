@@ -273,15 +273,27 @@ class HardWorkoutViewController: UIViewController {
 
     @objc private func pressStartWorkoutButton() {
         let timerVC = TimerViewController()
-        
-//        if let (taskName, taskDescription) = getSelectedTaskDetails() {
-//            timerVC.taskName = taskName
-//            timerVC.taskDescription = taskDescription
-//        }
-//        if let workout = workoutData {
-//            timerVC.remainingTime = Double(workout.time)
-//            timerVC.duration = Double(workout.time) 
-//        }
+
+        if let taskCountText = workoutInfoView.taskView.taskNumberLabel.text,
+           let taskCount = Int(taskCountText) {
+            timerVC.taskCount = taskCount
+        }
+
+        if let workoutId = workoutData?.id {
+            timerVC.currentWorkoutId = workoutId
+        }
+
+        if let taskTimeText = workoutInfoView.timeView.timerLabel.text {
+            let timeComponents = taskTimeText.split(separator: ":").compactMap { Int($0) }
+            if timeComponents.count == 3 {
+                let hours = timeComponents[0]
+                let minutes = timeComponents[1]
+                let seconds = timeComponents[2]
+
+                timerVC.remainingTime = TimeInterval(hours * 3600 + minutes * 60 + seconds)
+                timerVC.duration = timerVC.remainingTime
+            }
+        }
         navigationController?.pushViewController(timerVC, animated: true)
     }
 

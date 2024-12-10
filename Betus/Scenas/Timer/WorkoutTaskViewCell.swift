@@ -66,7 +66,7 @@ class WorkoutTaskViewCell: UICollectionViewCell {
         }
     }
 
-    func configure(with data: Workouts) {
+    func configure(with data: Workouts/*, workoutId: String*/) {
         nameLabel.text = data.taskName
         descriptionLabel.text = data.taskDescription
     }

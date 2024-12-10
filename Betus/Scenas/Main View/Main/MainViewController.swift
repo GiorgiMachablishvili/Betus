@@ -63,6 +63,7 @@ class MainViewController: UIViewController, MainBottomButtonViewDelegate, AddWor
 
     func pressHomeButton() {
         switchToViewController(homeVC)
+        reloadInputViews()
     }
 
     func pressSearchButton() {

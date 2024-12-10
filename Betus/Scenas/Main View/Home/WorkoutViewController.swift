@@ -27,6 +27,7 @@ class WorkoutViewController: UIViewController {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .clear
         view.showsHorizontalScrollIndicator = false
+        view.layer.cornerRadius = 16
         view.dataSource = self
         view.delegate = self
         view.register(HomeHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HomeHeaderView")
@@ -41,17 +42,17 @@ class WorkoutViewController: UIViewController {
         setup()
         setupConstraints()
 
-//        NotificationCenter.default
-//            .addObserver(
-//                self,
-//                selector: #selector(
-//                    didTapObserver
-//                ),
-//                name: NSNotification.Name (
-//                    "workoutViewCenter"
-//                ),
-//                object: nil
-//            )
+        NotificationCenter.default
+            .addObserver(
+                self,
+                selector: #selector(
+                    didTapObserver
+                ),
+                name: NSNotification.Name (
+                    "workout.view.observer"
+                ),
+                object: nil
+            )
 
         fetchWorkoutCurrentUserInfo()
     }
@@ -67,6 +68,17 @@ class WorkoutViewController: UIViewController {
             make.bottom.equalTo(view.snp.bottom).offset(-5)
         }
     }
+
+//    deinit {
+//        NotificationCenter.default
+//            .removeObserver(
+//                self,
+//                name:  NSNotification.Name(
+//                    "com.did.tap.observer"
+//                ),
+//                object: nil
+//            )
+//    }
 
     private func fetchWorkoutCurrentUserInfo() {
         guard let id = UserDefaults.standard.value(forKey: "userId") else { return }
@@ -86,7 +98,6 @@ class WorkoutViewController: UIViewController {
         }
     }
 
-
     private func postLikeState(userId: String, workoutId: String) {
         let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
 
@@ -105,13 +116,11 @@ class WorkoutViewController: UIViewController {
         }
     }
 
-//    @objc private func didTapObserver() {
-//        print("Notification received in WorkoutViewController")
-//        self.allWorkouts.removeAll()
-//        self.displayedWorkouts.removeAll()
-//
-//        self.collectionView.reloadData()
-//    }
+    @objc private func didTapObserver() {
+        self.allWorkouts.removeAll()
+        self.displayedWorkouts.removeAll()
+        self.collectionView.reloadData()
+    }
 }
 
 extension WorkoutViewController: UIScrollViewDelegate {

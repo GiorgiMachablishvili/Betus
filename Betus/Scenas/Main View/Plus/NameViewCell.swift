@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class NameViewCell: UICollectionViewCell {
-    private lazy var nameWorkoutTextfield: UITextField = {
+    lazy var nameWorkoutTextfield: UITextField = {
         let view = UITextField(frame: .zero)
         view.clipsToBounds = true
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)

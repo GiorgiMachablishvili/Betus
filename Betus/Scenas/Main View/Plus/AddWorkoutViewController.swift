@@ -173,7 +173,6 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
 
         //MARK: user id
         guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
-//        let userId = UserDefaults.standard.value(forKey: "userId")
 
         //MARK: selected level
         let indexPathLevel = IndexPath(item: 0, section: 2)
@@ -187,8 +186,13 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
         }
         let selectedLevel = visibleCell.getSelectedLevel()
 
-        //MARK:workout name
-        guard let workoutName = addTaskView.nameWorkoutAddTextfield.text else { return }
+        //MARK: workout name
+        let indexPathName = IndexPath(item: 0, section: 1)
+        guard let nameCell = collectionView.cellForItem(at: indexPathName) as? NameViewCell else {
+            return
+        }
+        guard let workoutName = nameCell.nameWorkoutTextfield.text else { return }
+//        //MARK: workout name
 
         //MARK: time
         guard let timerValue = addTaskView.timerAddTextfield.text, !timerValue.isEmpty else {
@@ -225,10 +229,12 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
             switch result {
             case .success(let workout):
                 let workoutViewController = MainViewController()
-//                    NotificationCenter.default.post(
-//                        name: NSNotification.Name("workoutViewCenter"),
-//                        object: nil
-//                    )
+                    NotificationCenter.default.post(
+                        name: NSNotification.Name(
+                            "workout.view.observer"
+                        ),
+                        object: nil
+                    )
                 self.navigationController?.pushViewController(workoutViewController, animated: true)
                 print("Workout saved successfully: \(workout)")
             case .failure(let error):
@@ -412,7 +418,7 @@ extension AddWorkoutViewController {
         section.contentInsets = .init(
             top: 10 * Constraint.yCoeff,
             leading: 10 * Constraint.xCoeff,
-            bottom: 0 * Constraint.yCoeff,
+            bottom: 10 * Constraint.yCoeff,
             trailing: 10 * Constraint.xCoeff
         )
         return section
@@ -529,8 +535,8 @@ extension AddWorkoutViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.size.height
-        let bottomOffsetThreshold: CGFloat = 60.0
-        
+        let bottomOffsetThreshold: CGFloat = 120.0
+
         if scrollView.contentOffset.y + frameHeight >= contentHeight {
             scrollView.contentInset.bottom = bottomOffsetThreshold
         } else {

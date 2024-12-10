@@ -20,6 +20,8 @@ class TimerViewController: UIViewController {
 
     var tasks: [Workouts] = []
     var hardWorkoutView = HardWorkoutViewController()
+    var taskCount: Int = 0
+    var currentWorkoutId: String = ""
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -82,7 +84,7 @@ class TimerViewController: UIViewController {
         return view
     }()
     
-    private lazy var timeLabel: UILabel = {
+    lazy var timeLabel: UILabel = {
         let view = UILabel()
         let hours = Int(remainingTime) / 3600
         let minutes = (Int(remainingTime) % 3600) / 60
@@ -230,8 +232,14 @@ class TimerViewController: UIViewController {
         isTimerRunning = false
         startButton.setTitle("Play", for: .normal)
         startButton.backgroundColor = UIColor(hexString: "E5D820")
-
         timer?.invalidate()
+    }
+
+    private func formatSecondsToHHMMSS(_ totalSeconds: Int) -> String {
+        let hours = totalSeconds / 3600
+        let minutes = (totalSeconds % 3600) / 60
+        let seconds = totalSeconds % 60
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
 
     private func updateTimeLabel() {
@@ -248,15 +256,18 @@ class TimerViewController: UIViewController {
 
 extension TimerViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        tasks.count
+        return tasks.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WorkoutTaskViewCell", for: indexPath) as? WorkoutTaskViewCell else {
             return UICollectionViewCell()
         }
-        let timerTask = tasks[indexPath.row]
-        cell.configure(with: timerTask)
+        let workInfoTask = tasks[indexPath.row]
+        if currentWorkoutId == workInfoTask.id {
+            cell.configure(with: workInfoTask/*, workoutId: workInfoTask.id*/)
+        }
+//        cell.configure(with: workInfoTask, workoutId: workInfoTask.id)
         return cell
     }
 }
