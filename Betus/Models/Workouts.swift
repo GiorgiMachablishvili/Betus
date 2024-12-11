@@ -12,6 +12,7 @@ struct Workouts: Codable {
     let time: Int
     let level: Level
     let completers: [String]
+//    let name: String
     let details: String
     let taskName: String
     let taskDescription: String
@@ -22,7 +23,7 @@ struct Workouts: Codable {
 
     enum CodingKeys: String, CodingKey {
         case taskCount = "task_count"
-        case time, level, completers, details, image, id
+        case time, level, completers, details, image, id /*name*/
         case userId = "user_id"
         case taskName = "task_name"
         case taskDescription = "task_description"

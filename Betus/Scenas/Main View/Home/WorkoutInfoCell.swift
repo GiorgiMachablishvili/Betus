@@ -11,8 +11,10 @@ import SnapKit
 class WorkoutInfoCell: UICollectionViewCell {
     var selectedLevel: String?
     var workout: Workouts?
+    var like: LikeResponse?
+    var likeArray: [LikeResponse] = []
 
-    var didTapOnLikeButton: ((Workouts) -> Void)?
+    var didTapOnLikeButton: ((LikeResponse) -> Void)?
 
     lazy var workoutImage: UIImageView = {
         let view = UIImageView(frame: .zero)
@@ -92,8 +94,11 @@ class WorkoutInfoCell: UICollectionViewCell {
     }
 
     @objc func likeViewButtonTapped() {
-        guard let workout else { return }
-        didTapOnLikeButton?(workout)
+        print("pressed like button")
+        guard let like else { return }
+        isLiked.toggle()
+        updateLikeState()
+        didTapOnLikeButton?(like)
     }
 
     private func updateLikeState() {
@@ -138,5 +143,4 @@ class WorkoutInfoCell: UICollectionViewCell {
             self.workoutImage.image = UIImage(named: "placeholderImage")
         }
     }
-
 }

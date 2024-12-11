@@ -10,7 +10,7 @@ import SnapKit
 
 class DescriptionViewCell: UICollectionViewCell {
 
-    private lazy var descriptionWorkoutTextfield: UITextField = {
+    lazy var descriptionWorkoutTextfield: UITextField = {
         let view = UITextField(frame: .zero)
         view.clipsToBounds = true
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)

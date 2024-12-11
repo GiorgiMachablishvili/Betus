@@ -192,7 +192,11 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
             return
         }
         guard let workoutName = nameCell.nameWorkoutTextfield.text else { return }
-//        //MARK: workout name
+
+//        //MARK: workout details
+        let indexPathDetails = IndexPath(item: 0, section: 3)
+        guard let detailsCell = collectionView.cellForItem(at: indexPathDetails) as? DescriptionViewCell else { return }
+        guard let workoutDetails = detailsCell.descriptionWorkoutTextfield.text else { return }
 
         //MARK: time
         guard let timerValue = addTaskView.timerAddTextfield.text, !timerValue.isEmpty else {
@@ -213,6 +217,7 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
             "time": totalTimeInSeconds,
             "level": selectedLevel,
             "completers": [],
+//            "name": workoutName,
             "details": workoutName,
             "task_name": taskName,
             "task_description": taskDescription,

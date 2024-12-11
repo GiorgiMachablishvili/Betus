@@ -8,16 +8,15 @@
 import Foundation
 
 struct LikeResponse: Codable {
-    let userId: Int
-    let id: Int
-    let isSelected: Bool
+    let userId: String
+    let id: String
+    let isSelected: Bool?
 
     enum CodingKeys: String, CodingKey {
         case userId = "user_id"
         case id
-        case isSelected
+        case isSelected = "is_selected"
     }
 }
-
 
 

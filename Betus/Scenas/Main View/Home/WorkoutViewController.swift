@@ -94,28 +94,29 @@ class WorkoutViewController: UIViewController {
                     self.collectionView.reloadData()
                 }
             case .failure(let error):
-                print("")
+                print(error)
             }
         }
     }
 
     private func postLikeState(userId: String, workoutId: String) {
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
+            let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
 
-        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[Workouts]>) in
-            switch result {
-            case .success(let response):
-                self?.workouts = response
-                self?.collectionView.reloadData()
-            case .failure(let error):
-                print("Error updating like: \(error.localizedDescription)")
-                DispatchQueue.main.async {
-//                    self.isLiked.toggle()
-//                    self.updateLikeState()
+            NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[LikeResponse]>) in
+                switch result {
+                case .success(let response):
+                    self?.likes = response
+                    self?.collectionView.reloadData()
+                case .failure(let error):
+                    print("Error updating like: \(error)")
+                    DispatchQueue.main.async {
+    //                    self.isLiked.toggle()
+    //                    self.updateLikeState()
+                    }
                 }
             }
         }
-    }
+
 
     @objc private func didTapObserver() {
         self.allWorkouts.removeAll()
@@ -199,8 +200,8 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
         let workout = displayedWorkouts[indexPath.row]
         let selectedLevel = workout.level.rawValue
         cell.configure(with: workout, selectedLevel: selectedLevel)
-        cell.didTapOnLikeButton = { [weak self] workout in
-            self?.postLikeState(userId: workout.userId ?? "", workoutId: workout.id)
+        cell.didTapOnLikeButton = { [weak self] likes in
+            self?.postLikeState(userId: likes.userId , workoutId: likes.id)
         }
         return cell
     }

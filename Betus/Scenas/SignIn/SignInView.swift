@@ -10,7 +10,6 @@
 //TODO: make images in workoutViewController conner radius
 //TODO: time view make task labels correct
 
-
 import UIKit
 import SnapKit
 import AuthenticationServices
