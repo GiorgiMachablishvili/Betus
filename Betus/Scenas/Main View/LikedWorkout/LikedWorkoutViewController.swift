@@ -7,14 +7,19 @@
 
 import UIKit
 import SnapKit
+import AuthenticationServices
+import Alamofire
+import ProgressHUD
 
 class LikedWorkoutViewController: UIViewController {
 
     var workoutImage: UIImage?
     var workoutData: [Workouts] = []
     var likedWorkouts: [LikeResponse] = []
-
     var likeWorkoutCell = LikeWorkoutViewCell()
+    var allWorkouts: [Workouts] = []
+
+    private var searchWorkItem: DispatchWorkItem?
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -27,8 +32,58 @@ class LikedWorkoutViewController: UIViewController {
         view.backgroundColor = .clear
         view.dataSource = self
         view.delegate = self
-        view.register(LikedWorkoutReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "LikedWorkoutReusableView")
+        view.isHidden = false
         view.register(LikeWorkoutViewCell.self, forCellWithReuseIdentifier: "LikeWorkoutViewCell")
+        return view
+    }()
+    
+    lazy var userInfoButton: UIButton = {
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
+        view.setImage(UIImage(named: "userProfile"), for: .normal)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        view.layer.cornerRadius = 22
+        view.clipsToBounds = true
+        view.imageView?.contentMode = .scaleAspectFit
+        view.isUserInteractionEnabled = true
+        view.setImage(UIImage(named: "userProfile")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
+        view.addTarget(self, action: #selector(didPressUserInfoButton), for: .touchUpInside)
+        return view
+    }()
+
+    private lazy var searchButton: UIButton = {
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        view.setImage(UIImage(named: "searchImage"), for: .normal)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        view.layer.cornerRadius = 22
+        view.clipsToBounds = true
+        view.isHidden = false
+        view.imageView?.contentMode = .scaleAspectFit
+        view.setImage(UIImage(named: "searchImage")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.addTarget(self, action: #selector(pressSearchButton), for: .touchUpInside)
+        return view
+    }()
+
+    private lazy var searchBar: UISearchBar = {
+        let view = UISearchBar(frame: .zero)
+        view.layer.cornerRadius = 22
+        view.placeholder = "Search"
+        view.backgroundColor = .clear
+        view.tintColor = UIColor(hexString: "FFFFFF")
+        view.isHidden = true
+        view.searchBarStyle = .minimal
+        view.delegate = self
+        if let textField = view.value(forKey: "searchField") as? UITextField {
+            let placeholderTextColor = UIColor.lightGray
+            textField.attributedPlaceholder = NSAttributedString(
+                string: "Search",
+                attributes: [NSAttributedString.Key.foregroundColor: placeholderTextColor]
+            )
+            textField.textColor = UIColor(hexString: "FFFFFF")
+            if let iconView = textField.leftView as? UIImageView {
+                iconView.tintColor = UIColor.lightGray
+                iconView.image = iconView.image?.withRenderingMode(.alwaysTemplate)
+            }
+        }
         return view
     }()
 
@@ -78,11 +133,16 @@ class LikedWorkoutViewController: UIViewController {
         setup()
         setupConstraints()
 
+        hiddenOrUnhidden()
+
         fetchLikedWorkouts()
     }
 
     private func setup() {
         view.addSubview(collectionView)
+        view.addSubview(userInfoButton)
+        view.addSubview(searchButton)
+        view.addSubview(searchBar)
         view.addSubview(infoLabel)
         view.addSubview(forOrderingStoreLabel)
         view.addSubview(signInWithAppleButton)
@@ -93,6 +153,25 @@ class LikedWorkoutViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
             make.top.equalTo(view.snp.top).offset(10 * Constraint.yCoeff)
             make.bottom.equalToSuperview()
+        }
+
+        userInfoButton.snp.remakeConstraints { make in
+            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.leading.equalTo(view.snp.leading).offset(12 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
+        }
+
+        searchButton.snp.remakeConstraints { make in
+            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.trailing.equalTo(view.snp.trailing).offset(-12 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
+        }
+
+        searchBar.snp.remakeConstraints { make in
+            make.centerY.equalTo(userInfoButton.snp.centerY)
+            make.leading.equalTo(userInfoButton.snp.trailing).offset(4 * Constraint.xCoeff)
+            make.width.equalTo(318 * Constraint.xCoeff)
+            make.height.equalTo(44 * Constraint.yCoeff)
         }
 
         infoLabel.snp.remakeConstraints { make in
@@ -112,6 +191,14 @@ class LikedWorkoutViewController: UIViewController {
             make.width.equalTo(366 * Constraint.xCoeff)
             make.height.equalTo(56 * Constraint.yCoeff)
         }
+    }
+
+    func hiddenOrUnhidden() {
+        let isGuestUser = UserDefaults.standard.bool(forKey: "isGuestUser")
+        collectionView.isHidden = isGuestUser
+        infoLabel.isHidden = !isGuestUser
+        forOrderingStoreLabel.isHidden = !isGuestUser
+        signInWithAppleButton.isHidden = !isGuestUser
     }
 
     private func fetchLikedWorkouts() {
@@ -148,14 +235,83 @@ class LikedWorkoutViewController: UIViewController {
     }
 
     @objc private func clickSignInWithAppleButton() {
+        // Simulating tokens for testing
+        let mockPushToken = "mockPushTokenTest2"
+        let mockAppleToken = "mockAppleTokenTest2"
 
+        // Store mock tokens in UserDefaults
+        UserDefaults.standard.setValue(mockPushToken, forKey: "PushToken")
+        UserDefaults.standard.setValue(mockAppleToken, forKey: "AccountCredential")
+
+        // Call createUser to simulate user creation
+        createUser()
+
+//        let authorizationProvider = ASAuthorizationAppleIDProvider()
+//        let request = authorizationProvider.createRequest()
+//        request.requestedScopes = [.email, .fullName]
+//
+//        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+//        authorizationController.delegate = self
+//        authorizationController.performRequests()
     }
-}
 
-extension LikedWorkoutViewController: LikeWorkoutReusableDelegate {
-    func didPressUserInfoButton() {
+    private func createUser() {
+        NetworkManager.shared.showProgressHud(true, animated: true)
+
+        let pushToken = UserDefaults.standard.string(forKey: "PushToken") ?? ""
+        let appleToken = UserDefaults.standard.string(forKey: "AccountCredential") ?? ""
+
+        // Prepare parameters
+        let parameters: [String: Any] = [
+            "push_token": pushToken,
+            "auth_token": appleToken
+        ]
+
+        // Make the network request
+        NetworkManager.shared.post(
+            url: "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/",
+            parameters: parameters,
+            headers: nil
+        ) { [weak self] (result: Result<UserInfo>) in
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                NetworkManager.shared.showProgressHud(false, animated: false)
+                UserDefaults.standard.setValue(false, forKey: "isGuestUser")
+            }
+
+            switch result {
+            case .success(let userInfo):
+                DispatchQueue.main.async {
+                    print("User created: \(userInfo)")
+                    UserDefaults.standard.setValue(userInfo.id, forKey: "userId")
+                    print("Received User ID: \(userInfo.id)")
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Error", description: error.localizedDescription)
+                }
+                print("Error: \(error)")
+            }
+        }
+        let mainVC = MainViewController()
+        navigationController?.pushViewController(mainVC, animated: true)
+    }
+
+    private func showAlert(title: String, description: String) {
+        let alert = UIAlertController(title: title, message: description, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
+    @objc func didPressUserInfoButton() {
         let profileView = ProfileViewController()
         navigationController?.pushViewController(profileView, animated: true)
+    }
+
+    @objc func pressSearchButton() {
+        searchButton.isHidden = true
+        searchBar.isHidden = false
     }
 }
 
@@ -177,21 +333,89 @@ extension LikedWorkoutViewController: UICollectionViewDelegate, UICollectionView
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader {
-            let header = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: "LikedWorkoutReusableView",
-                for: indexPath
-            ) as! LikedWorkoutReusableView
-            header.delegate = self
-            return header
-        }
-        return UICollectionReusableView()
-    }
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let hardWorkoutVC = HardWorkoutViewController()
         navigationController?.pushViewController(hardWorkoutVC, animated: true)
     }
 }
+
+extension LikedWorkoutViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchWorkItem?.cancel() // Cancel any pending search operations
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+            if searchText.isEmpty {
+                // Display all liked workouts when search text is empty
+                self.workoutData = self.workoutData.filter { $0.isSelected }
+            } else {
+                // Filter liked workouts by search text
+                self.workoutData = self.workoutData.filter { workout in
+                    workout.details.lowercased().contains(searchText.lowercased())
+                }
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
+        searchWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem) // Add a delay for better user experience
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.text = ""
+            searchBar.resignFirstResponder() // Dismiss the keyboard
+            allWorkouts = workoutData.filter { $0.isSelected } // Reset to all liked workouts
+            collectionView.reloadData()
+        }
+
+        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.resignFirstResponder() // Dismiss the keyboard
+        }
+    }
+extension LikedWorkoutViewController: ASAuthorizationControllerDelegate /*ASAuthorizationControllerPresentationContextProviding*/ {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
+        
+        UserDefaults.standard.setValue(credential.user, forKey: "AccountCredential")
+//        createUser()
+    }
+
+    //    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    //        print("Authorization failed: \(error.localizedDescription)")
+    //        showAlert(title: "Sign In Failed", description: error.localizedDescription)
+    //    }
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        let nsError = error as NSError
+        if nsError.domain == ASAuthorizationError.errorDomain {
+            switch nsError.code {
+            case ASAuthorizationError.canceled.rawValue:
+                print("User canceled the Apple Sign-In process.")
+                // Optionally show a message or simply return
+                return
+            case ASAuthorizationError.failed.rawValue:
+                print("Sign-In failed.")
+                showAlert(title: "Sign In Failed", description: "Something went wrong. Please try again.")
+            case ASAuthorizationError.invalidResponse.rawValue:
+                print("Invalid response from Apple Sign-In.")
+                showAlert(title: "Invalid Response", description: "We couldn't authenticate you. Please try again.")
+            case ASAuthorizationError.notHandled.rawValue:
+                print("Apple Sign-In not handled.")
+                showAlert(title: "Not Handled", description: "The request wasn't handled. Please try again.")
+            case ASAuthorizationError.unknown.rawValue:
+                print("An unknown error occurred.")
+                showAlert(title: "Unknown Error", description: "An unknown error occurred. Please try again.")
+            default:
+                break
+            }
+        } else {
+            print("Authorization failed with error: \(error.localizedDescription)")
+            showAlert(title: "Sign In Failed", description: error.localizedDescription)
+        }
+    }
+
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
+}
+
+

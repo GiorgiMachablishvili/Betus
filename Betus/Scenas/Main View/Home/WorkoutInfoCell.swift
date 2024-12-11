@@ -18,7 +18,7 @@ class WorkoutInfoCell: UICollectionViewCell {
         let view = UIImageView(frame: .zero)
         view.contentMode = .scaleToFill
         view.backgroundColor = .gray
-        view.layer.cornerRadius = 26
+        view.layer.cornerRadius = 20
         return view
     }()
 
@@ -29,7 +29,7 @@ class WorkoutInfoCell: UICollectionViewCell {
         return view
     }()
 
-    private lazy var likeViewButton: NonPropagatingButton = {
+    lazy var likeViewButton: NonPropagatingButton = {
         let view = NonPropagatingButton(type: .system)
         view.setTitle("44", for: .normal)
         view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)

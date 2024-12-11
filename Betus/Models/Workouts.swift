@@ -35,4 +35,5 @@ struct Workouts: Codable {
         case difficult = "Difficult"
         case all = "All"
     }
+
 }

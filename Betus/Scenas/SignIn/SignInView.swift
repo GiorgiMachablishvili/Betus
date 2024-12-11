@@ -6,8 +6,8 @@
 //
 
 //TODO: registration
-//TODO: how make number of likes likeViewButton title in WorkoutInfoCell
-//TODO: in workoutViewController changes images
+//TODO: in workoutViewController changes images when open view
+//TODO: make images in workoutViewController conner radius
 //TODO: time view make task labels correct
 
 
@@ -131,12 +131,10 @@ class SignInView: UIViewController {
 
     // MARK: - Button Actions
     @objc func clickLogInAsGuestButton() {
-//        UserDefaults.standard.setValue(true, forKey: "isGuestUser")
-//
-//        // Optionally, clear any existing user credentials
+        UserDefaults.standard.setValue(true, forKey: "isGuestUser")
+
 //        UserDefaults.standard.removeObject(forKey: "userId")
 //        UserDefaults.standard.removeObject(forKey: "AccountCredential")
-
 
         let mainVC = MainViewController()
         navigationController?.pushViewController(mainVC, animated: true)
@@ -185,6 +183,7 @@ class SignInView: UIViewController {
 
             DispatchQueue.main.async {
                 NetworkManager.shared.showProgressHud(false, animated: false)
+                UserDefaults.standard.setValue(false, forKey: "isGuestUser")
             }
 
             switch result {

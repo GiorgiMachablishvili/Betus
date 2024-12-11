@@ -58,7 +58,7 @@ class HardWorkoutViewController: UIViewController {
         return view
     }()
 
-    private lazy var likeViewButton: UIButton = {
+    lazy var likeViewButton: UIButton = {
         let view = UIButton(type: .system)
         view.setTitle("44", for: .normal)
         view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)

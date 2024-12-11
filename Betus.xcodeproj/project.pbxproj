@@ -31,7 +31,6 @@
 		E36E2F562CFE22E900613FBD /* NonPropagatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E2F552CFE22E900613FBD /* NonPropagatingButton.swift */; };
 		E36E2F582CFE57E800613FBD /* WorkoutInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36E2F572CFE57E800613FBD /* WorkoutInfo.swift */; };
 		E39997E02CF7AD4300CF8E48 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39997DF2CF7AD4300CF8E48 /* AddTaskView.swift */; };
-		E39997E42CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39997E32CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift */; };
 		E39997E62CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39997E52CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift */; };
 		E39C83D92CF4A573003177BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C83D82CF4A573003177BF /* AppDelegate.swift */; };
 		E39C83DB2CF4A573003177BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C83DA2CF4A573003177BF /* SceneDelegate.swift */; };
@@ -97,7 +96,6 @@
 		E36E2F552CFE22E900613FBD /* NonPropagatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPropagatingButton.swift; sourceTree = "<group>"; };
 		E36E2F572CFE57E800613FBD /* WorkoutInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfo.swift; sourceTree = "<group>"; };
 		E39997DF2CF7AD4300CF8E48 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
-		E39997E32CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedWorkoutReusableView.swift; sourceTree = "<group>"; };
 		E39997E52CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeWorkoutViewCell.swift; sourceTree = "<group>"; };
 		E39C83D52CF4A573003177BF /* Betus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Betus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E39C83D82CF4A573003177BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -325,7 +323,6 @@
 			isa = PBXGroup;
 			children = (
 				E39C84232CF4BD5B003177BF /* LikedWorkoutViewController.swift */,
-				E39997E32CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift */,
 				E39997E52CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift */,
 			);
 			path = LikedWorkout;
@@ -500,7 +497,6 @@
 				E36E2F562CFE22E900613FBD /* NonPropagatingButton.swift in Sources */,
 				E39997E62CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift in Sources */,
 				E3A372982D024E260008ED9C /* LikeResponse.swift in Sources */,
-				E39997E42CF7BD0300CF8E48 /* LikedWorkoutReusableView.swift in Sources */,
 				E39C84172CF4BACC003177BF /* MainViewController.swift in Sources */,
 				E359415C2CFCD29400624C50 /* AddWorkoutViewController.swift in Sources */,
 				E34103DD2CF627E700CB0CF6 /* ProfileViewController.swift in Sources */,

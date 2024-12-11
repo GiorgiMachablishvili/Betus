@@ -22,6 +22,8 @@ class TimerViewController: UIViewController {
     var hardWorkoutView = HardWorkoutViewController()
     var taskCount: Int = 0
     var currentWorkoutId: String = ""
+    var taskCountFromWorkouts: Workouts?
+
 
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()

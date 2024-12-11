@@ -7,7 +7,9 @@
 
 import UIKit
 import SnapKit
+import AuthenticationServices
 import Alamofire
+import ProgressHUD
 
 class ProfileViewController: UIViewController {
     private lazy var leftButton: UIButton = {
@@ -92,6 +94,7 @@ class ProfileViewController: UIViewController {
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
         view.addTarget(self, action: #selector(pressDeleteAccountButton), for: .touchUpInside)
+        view.isHidden = false
         return view
     }()
 
@@ -119,6 +122,9 @@ class ProfileViewController: UIViewController {
         view.applyGradientBackground()
         setup()
         setupConstraints()
+
+        hiddenOrUnhidden()
+
         self.navigationItem.hidesBackButton = true
     }
 
@@ -183,6 +189,13 @@ class ProfileViewController: UIViewController {
         }
     }
 
+    func hiddenOrUnhidden() {
+        let isGuestUser = UserDefaults.standard.bool(forKey: "isGuestUser")
+        deleteAccountButton.isHidden = isGuestUser
+        signInWithAppleButton.isHidden = !isGuestUser
+        
+    }
+
     @objc private func pressLeftButton() {
         navigationController?.popViewController(animated: true)
     }
@@ -196,7 +209,6 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func pressDeleteAccountButton() {
-        // Confirm user intention before deleting the account
         let alertController = UIAlertController(
             title: "Delete Account",
             message: "Are you sure you want to delete your account? This action cannot be undone.",
@@ -204,7 +216,6 @@ class ProfileViewController: UIViewController {
         )
 
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
-            // Get user ID from UserDefaults or another source
             guard let userId = UserDefaults.standard.value(forKey: "userId") as? String else {
                 return
             }
@@ -250,6 +261,119 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func clickSignInWithAppleButton() {
+        // Simulating tokens for testing
+        let mockPushToken = "mockPushTokenTest2"
+        let mockAppleToken = "mockAppleTokenTest2"
 
+        // Store mock tokens in UserDefaults
+        UserDefaults.standard.setValue(mockPushToken, forKey: "PushToken")
+        UserDefaults.standard.setValue(mockAppleToken, forKey: "AccountCredential")
+
+        // Call createUser to simulate user creation
+        createUser()
+
+//        let authorizationProvider = ASAuthorizationAppleIDProvider()
+//        let request = authorizationProvider.createRequest()
+//        request.requestedScopes = [.email, .fullName]
+//
+//        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+//        authorizationController.delegate = self
+//        authorizationController.performRequests()
+    }
+    
+    private func createUser() {
+        NetworkManager.shared.showProgressHud(true, animated: true)
+
+        let pushToken = UserDefaults.standard.string(forKey: "PushToken") ?? ""
+        let appleToken = UserDefaults.standard.string(forKey: "AccountCredential") ?? ""
+
+        // Prepare parameters
+        let parameters: [String: Any] = [
+            "push_token": pushToken,
+            "auth_token": appleToken
+        ]
+
+        // Make the network request
+        NetworkManager.shared.post(
+            url: "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/",
+            parameters: parameters,
+            headers: nil
+        ) { [weak self] (result: Result<UserInfo>) in
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                NetworkManager.shared.showProgressHud(false, animated: false)
+                UserDefaults.standard.setValue(false, forKey: "isGuestUser")
+            }
+
+            switch result {
+            case .success(let userInfo):
+                DispatchQueue.main.async {
+                    print("User created: \(userInfo)")
+                    UserDefaults.standard.setValue(userInfo.id, forKey: "userId")
+                    print("Received User ID: \(userInfo.id)")
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Error", description: error.localizedDescription)
+                }
+                print("Error: \(error)")
+            }
+        }
+        let mainVC = MainViewController()
+        navigationController?.pushViewController(mainVC, animated: true)
+    }
+
+    private func showAlert(title: String, description: String) {
+        let alert = UIAlertController(title: title, message: description, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
+
+extension ProfileViewController: ASAuthorizationControllerDelegate /*ASAuthorizationControllerPresentationContextProviding*/ {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
+
+        UserDefaults.standard.setValue(credential.user, forKey: "AccountCredential")
+//        createUser()
+    }
+
+    //    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    //        print("Authorization failed: \(error.localizedDescription)")
+    //        showAlert(title: "Sign In Failed", description: error.localizedDescription)
+    //    }
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        let nsError = error as NSError
+        if nsError.domain == ASAuthorizationError.errorDomain {
+            switch nsError.code {
+            case ASAuthorizationError.canceled.rawValue:
+                print("User canceled the Apple Sign-In process.")
+                // Optionally show a message or simply return
+                return
+            case ASAuthorizationError.failed.rawValue:
+                print("Sign-In failed.")
+                showAlert(title: "Sign In Failed", description: "Something went wrong. Please try again.")
+            case ASAuthorizationError.invalidResponse.rawValue:
+                print("Invalid response from Apple Sign-In.")
+                showAlert(title: "Invalid Response", description: "We couldn't authenticate you. Please try again.")
+            case ASAuthorizationError.notHandled.rawValue:
+                print("Apple Sign-In not handled.")
+                showAlert(title: "Not Handled", description: "The request wasn't handled. Please try again.")
+            case ASAuthorizationError.unknown.rawValue:
+                print("An unknown error occurred.")
+                showAlert(title: "Unknown Error", description: "An unknown error occurred. Please try again.")
+            default:
+                break
+            }
+        } else {
+            print("Authorization failed with error: \(error.localizedDescription)")
+            showAlert(title: "Sign In Failed", description: error.localizedDescription)
+        }
+    }
+
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
+}
+

@@ -28,6 +28,7 @@ class WorkoutViewController: UIViewController {
         view.backgroundColor = .clear
         view.showsHorizontalScrollIndicator = false
         view.layer.cornerRadius = 16
+        view.layer.masksToBounds = true
         view.dataSource = self
         view.delegate = self
         view.register(HomeHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HomeHeaderView")
@@ -93,7 +94,7 @@ class WorkoutViewController: UIViewController {
                     self.collectionView.reloadData()
                 }
             case .failure(let error):
-                print("Error fetching workouts: \(error.localizedDescription)")
+                print("")
             }
         }
     }
@@ -145,12 +146,20 @@ extension WorkoutViewController: HomeHeaderViewDelegate {
 
     func filterWorkouts(by level: Workouts.Level) {
         guard level != .all else {
-            displayedWorkouts = allWorkouts
-            collectionView.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                guard let self = self else { return }
+                self.displayedWorkouts = self.allWorkouts
+                self.collectionView.reloadData()
+            }
             return
         }
-        displayedWorkouts = allWorkouts.filter { $0.level.rawValue.lowercased() == level.rawValue.lowercased()}
-        collectionView.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.displayedWorkouts = self.allWorkouts.filter {
+                $0.level.rawValue.lowercased() == level.rawValue.lowercased()
+            }
+            self.collectionView.reloadData()
+        }
     }
 
     func searchWorkouts(with searchText: String) {
@@ -170,7 +179,7 @@ extension WorkoutViewController: HomeHeaderViewDelegate {
             }
         }
         searchWorkItem = workItem
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: workItem)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: workItem)
     }
 }
 
@@ -214,9 +223,11 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
               let selectedImage = cell.workoutImage.image else { return }
         let selectedWorkout = displayedWorkouts[indexPath.row]
         let hardWorkoutVC = HardWorkoutViewController()
+        let likeNumber = cell.likeViewButton.title(for: .normal)
 
         hardWorkoutVC.workoutImage.image = selectedImage
         hardWorkoutVC.workoutData = selectedWorkout
+        hardWorkoutVC.likeViewButton.setTitle(likeNumber, for: .normal)
         navigationController?.pushViewController(hardWorkoutVC, animated: true)
     }
 }

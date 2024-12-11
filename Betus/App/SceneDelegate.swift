@@ -16,9 +16,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         window = UIWindow(windowScene: windowScene)
-        let mainViewController = SignInView()
-        window?.rootViewController = UINavigationController(rootViewController: mainViewController)
+        ifUserISCreatedOrNot()
+//        let mainViewController = SignInView()
+//        window?.rootViewController = UINavigationController(rootViewController: mainViewController)
         window?.makeKeyAndVisible()
+    }
+
+    func ifUserISCreatedOrNot() {
+        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+            let mainViewController = MainViewController()
+            UserDefaults.standard.setValue(false, forKey: "isGuestUser")
+            window?.rootViewController = UINavigationController(rootViewController: mainViewController)
+        } else {
+            let signInViewController = SignInView()
+            window?.rootViewController = UINavigationController(rootViewController: signInViewController)
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
