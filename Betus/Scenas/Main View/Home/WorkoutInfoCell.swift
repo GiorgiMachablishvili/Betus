@@ -120,6 +120,8 @@ class WorkoutInfoCell: UICollectionViewCell {
         workoutInfoView.levelView.levelInfoLabel.text = data.level.rawValue
         isLiked = data.isSelected
 
+        likeViewButton.setTitle("\(data.completers.count)", for: .normal)
+
         if let url = URL(string: data.image) {
             DispatchQueue.global().async {
                 if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
