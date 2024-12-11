@@ -51,7 +51,6 @@
 		E39C84082CF4A978003177BF /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84072CF4A978003177BF /* UIFont+Extension.swift */; };
 		E39C840A2CF4AB69003177BF /* UIColor+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84092CF4AB69003177BF /* UIColor+Extention.swift */; };
 		E39C840D2CF4AC5E003177BF /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E39C840C2CF4AC5E003177BF /* SnapKit */; };
-		E39C840F2CF4AC5E003177BF /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E39C840E2CF4AC5E003177BF /* SnapKit-Dynamic */; };
 		E39C84122CF4AD6D003177BF /* Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84112CF4AD6D003177BF /* Constraints.swift */; };
 		E39C84142CF4B4B5003177BF /* UiColorGradiation+Exttention.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84132CF4B4B5003177BF /* UiColorGradiation+Exttention.swift */; };
 		E39C84172CF4BACC003177BF /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84162CF4BACC003177BF /* MainViewController.swift */; };
@@ -63,7 +62,6 @@
 		E3A372982D024E260008ED9C /* LikeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A372972D024E260008ED9C /* LikeResponse.swift */; };
 		E3AE85072CF751AA00202CBB /* WarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE85062CF751AA00202CBB /* WarningView.swift */; };
 		E3B785CC2CF9A79000A0492A /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785CB2CF9A79000A0492A /* Alamofire */; };
-		E3B785CE2CF9A79000A0492A /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785CD2CF9A79000A0492A /* AlamofireDynamic */; };
 		E3B785D12CF9A89800A0492A /* NetworkManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B785D02CF9A89800A0492A /* NetworkManger.swift */; };
 		E3B785DA2CF9D63F00A0492A /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785D92CF9D63F00A0492A /* ProgressHUD */; };
 		E3B785DD2CF9D68300A0492A /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785DC2CF9D68300A0492A /* SVProgressHUD */; };
@@ -140,9 +138,7 @@
 				E3B785DD2CF9D68300A0492A /* SVProgressHUD in Frameworks */,
 				E3B785DA2CF9D63F00A0492A /* ProgressHUD in Frameworks */,
 				E3B785CC2CF9A79000A0492A /* Alamofire in Frameworks */,
-				E3B785CE2CF9A79000A0492A /* AlamofireDynamic in Frameworks */,
 				E39C840D2CF4AC5E003177BF /* SnapKit in Frameworks */,
-				E39C840F2CF4AC5E003177BF /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,9 +379,7 @@
 			name = Betus;
 			packageProductDependencies = (
 				E39C840C2CF4AC5E003177BF /* SnapKit */,
-				E39C840E2CF4AC5E003177BF /* SnapKit-Dynamic */,
 				E3B785CB2CF9A79000A0492A /* Alamofire */,
-				E3B785CD2CF9A79000A0492A /* AlamofireDynamic */,
 				E3B785D92CF9D63F00A0492A /* ProgressHUD */,
 				E3B785DC2CF9D68300A0492A /* SVProgressHUD */,
 			);
@@ -759,20 +753,10 @@
 			package = E39C840B2CF4AC5E003177BF /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		E39C840E2CF4AC5E003177BF /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E39C840B2CF4AC5E003177BF /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
-		};
 		E3B785CB2CF9A79000A0492A /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E3B785CA2CF9A79000A0492A /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		E3B785CD2CF9A79000A0492A /* AlamofireDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E3B785CA2CF9A79000A0492A /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = AlamofireDynamic;
 		};
 		E3B785D92CF9D63F00A0492A /* ProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;

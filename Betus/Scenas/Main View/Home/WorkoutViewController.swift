@@ -102,13 +102,14 @@ class WorkoutViewController: UIViewController {
     private func postLikeState(userId: String, workoutId: String) {
         let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
 
-        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[Workouts]>) in
+        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[LikeResponse]>) in
             switch result {
             case .success(let response):
-                self?.workouts = response
+                print("DEBUG: response - \(response)")
+//                self?.workouts = response
                 self?.collectionView.reloadData()
             case .failure(let error):
-                print("Error updating like: \(error.localizedDescription)")
+                print("Error updating like: \(error)")
                 DispatchQueue.main.async {
 //                    self.isLiked.toggle()
 //                    self.updateLikeState()
