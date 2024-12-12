@@ -183,12 +183,13 @@ class TimerViewController: UIViewController {
     private func fetchWorkoutCurrentUserInfo() {
         guard let id = UserDefaults.standard.value(forKey: "userId") else { return }
         let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(id)"
-
+        print("DEBUG: will fetch from - \(#function)")
         NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
             switch result {
             case .success(let workouts):
                 self.tasks = workouts
                 DispatchQueue.main.async {
+                    print("DEBUG: tasks - \(workouts)")
                     self.collectionView.reloadData()
                 }
             case .failure(let error):

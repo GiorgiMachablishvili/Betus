@@ -68,6 +68,6 @@ class WorkoutTaskViewCell: UICollectionViewCell {
 
     func configure(with data: Workouts) {
         nameLabel.text = data.taskName
-        descriptionLabel.text = data.taskDescription
+//        descriptionLabel.text = data.taskDescription
     }
 }

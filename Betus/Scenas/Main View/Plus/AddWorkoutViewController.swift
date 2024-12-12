@@ -629,7 +629,7 @@ extension AddWorkoutViewController: AddTaskViewDelegate {
 
         let timeInSeconds = convertTimerToSeconds(timer)
 
-        tasks.append(.init(title: taskName, time: timer, description: description))
+        tasks.append(.init(title: taskName, description: description, time: Int(timer) ?? 0, id: UUID().uuidString))
         collectionView.reloadData()
         
         totalTimeInSeconds += timeInSeconds

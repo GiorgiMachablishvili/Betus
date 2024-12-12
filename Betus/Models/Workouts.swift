@@ -1,40 +1,75 @@
-//
-//  Workouts.swift
-//  Betus
-//
-//  Created by Gio's Mac on 03.12.24.
-//
-
 import Foundation
 
 struct Workouts: Codable {
+    let taskName: String
     let taskCount: Int
-    let time: Int
     let level: Level
     let completers: [String]
-//    let name: String
     let details: String
-    let taskName: String
-    let taskDescription: String
-    let userId: String?
-    let image: String
     let id: String
+    let image: String
+    let userId: String?
     let isSelected: Bool
+    let likeCount: Int
+    let tasks: [Task]
+    
+    var time: Int {
+        return tasks.reduce(0) { $0 + $1.time }
+    }
 
     enum CodingKeys: String, CodingKey {
+        case taskName = "name"
         case taskCount = "task_count"
-        case time, level, completers, details, image, id /*name*/
+        case level
+        case completers
+        case details
+        case id
+        case image
         case userId = "user_id"
-        case taskName = "task_name"
-        case taskDescription = "task_description"
         case isSelected = "is_selected"
+        case likeCount = "like_count"
+        case tasks
+    }
+    
+    enum Level: Codable, Equatable {
+        case easy
+        case advance
+        case difficult
+        case all
+        case intermediate(String) // To handle unexpected values
+
+        var rawValue: String {
+            switch self {
+            case .easy:
+                return "Easy"
+            case .advance:
+                return "Advance"
+            case .difficult:
+                return "Difficult"
+            case .all:
+                return "All"
+            case .intermediate(let value):
+                return value
+            }
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            let value = try container.decode(String.self)
+            switch value {
+            case "Easy": self = .easy
+            case "Advance": self = .advance
+            case "Difficult": self = .difficult
+            case "All": self = .all
+            default: self = .intermediate(value)
+            }
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encode(self.rawValue)
+        }
     }
 
-    enum Level: String, Codable {
-        case easy = "Easy"
-        case advance = "Advance"
-        case difficult = "Difficult"
-        case all = "All"
-    }
 
 }

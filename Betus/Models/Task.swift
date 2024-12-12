@@ -1,21 +1,13 @@
-//
-//  Task.swift
-//  Betus
-//
-//  Created by Gio's Mac on 10.12.24.
-//
-
-import Foundation
-
 struct Task: Codable {
     let title: String
-    let time: String
     let description: String
+    let time: Int
+    let id: String
 
-    public init(title: String, time: String, description: String) {
-        self.title = title
-        self.time = time
-        self.description = description
+    enum CodingKeys: String, CodingKey {
+        case title = "task_name"
+        case description = "task_description"
+        case time
+        case id
     }
 }
-

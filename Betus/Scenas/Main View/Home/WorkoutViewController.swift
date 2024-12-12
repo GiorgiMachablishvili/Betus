@@ -83,13 +83,14 @@ class WorkoutViewController: UIViewController {
 
     private func fetchWorkoutCurrentUserInfo() {
         guard let id = UserDefaults.standard.value(forKey: "userId") else { return }
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(id)"
-
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/d9c7c1d8-3647-405d-94e9-881c847ebc0a"
+        
         NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
             switch result {
             case .success(let workouts):
                 self.allWorkouts = workouts
                 self.displayedWorkouts = workouts
+                
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
