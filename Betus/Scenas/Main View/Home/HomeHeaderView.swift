@@ -19,38 +19,38 @@ class HomeHeaderView: UICollectionReusableView {
     weak var delegate: HomeHeaderViewDelegate?
 
     private lazy var userInfoButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "userProfile"), for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
-        view.setImage(UIImage(named: "userProfile")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "userProfile")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.addTarget(self, action: #selector(pressUserInfoButton), for: .touchUpInside)
         return view
     }()
 
     private lazy var searchButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "searchImage"), for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
-        view.setImage(UIImage(named: "searchImage")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "searchImage")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.isHidden = false
         view.addTarget(self, action: #selector(pressSearchButton), for: .touchUpInside)
         return view
     }()
 
     private lazy var backButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "backArrow"), for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 22
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
-        view.setImage(UIImage(named: "backArrow")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "backArrow")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.isHidden = true
         view.addTarget(self, action: #selector(pressBackButton), for: .touchUpInside)
         return view
@@ -81,7 +81,7 @@ class HomeHeaderView: UICollectionReusableView {
     }()
 
     private lazy var allWorkoutLevelsButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("All", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 16
@@ -94,7 +94,7 @@ class HomeHeaderView: UICollectionReusableView {
     }()
 
     private lazy var easyWorkoutLevelsButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Easy", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 16
@@ -107,7 +107,7 @@ class HomeHeaderView: UICollectionReusableView {
     }()
 
     private lazy var advancedWorkoutLevelsButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Advance", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 16
@@ -120,7 +120,7 @@ class HomeHeaderView: UICollectionReusableView {
     }()
     
     private lazy var difficultWorkoutLevelsButton: UIButton = {
-        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 41))
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 65 * Constraint.xCoeff, height: 41 * Constraint.yCoeff))
         view.setTitle("Difficult", for: .normal)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
         view.layer.cornerRadius = 16

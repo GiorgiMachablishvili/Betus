@@ -81,7 +81,15 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
         view.isHidden = true
         return view
     }()
-    
+
+//    private lazy var mainBottomButtons: MainBottomButtonView = {
+//        let view = MainBottomButtonView()
+//        view.layer.cornerRadius = 26
+//        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.8)
+////        view.delegate = self
+//        return view
+//    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -107,7 +115,7 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
     
     func setupConstraint() {
         collectionView.snp.remakeConstraints { make in
-            make.top.equalTo(userInfoButton.snp.bottom).offset(5)
+            make.top.equalTo(userInfoButton.snp.bottom).offset(5 * Constraint.yCoeff)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.snp.bottom)
         }
@@ -233,14 +241,19 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
             NetworkManager.shared.showProgressHud(false, animated: false)
             switch result {
             case .success(let workout):
-                let workoutViewController = MainViewController()
+//                let workoutViewController = MainViewController()
                     NotificationCenter.default.post(
                         name: NSNotification.Name(
                             "workout.view.observer"
                         ),
                         object: nil
                     )
-                self.navigationController?.pushViewController(workoutViewController, animated: true)
+                DispatchQueue.main.async {
+                    self.tabBarController?.selectedIndex = 0
+                }
+                self.resetAllFields()
+
+//                self.navigationController?.pushViewController(workoutViewController, animated: true)
                 print("Workout saved successfully: \(workout)")
             case .failure(let error):
                 print("Error saving workout: \(error.localizedDescription)")
@@ -264,7 +277,40 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
         delegate?.shouldHideMainBottomButtonView(hide)
     }
 
-    
+    private func resetAllFields() {
+        // Clear tasks array
+        tasks.removeAll()
+        totalTimeInSeconds = 0
+
+        // Reset image
+        if let imageCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ImageViewCell {
+            imageCell.updateUserImageAfterPressRightButton()
+           }
+
+        // Reset workout name
+        if let nameCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 1)) as? NameViewCell {
+            nameCell.nameWorkoutTextfield.text = ""
+        }
+
+        // Reset workout level
+        if let levelCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 2)) as? WorkLevelViewCell {
+            levelCell.resetLevelSelection()
+        }
+
+        // Reset workout details
+        if let detailsCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 3)) as? DescriptionViewCell {
+            detailsCell.descriptionWorkoutTextfield.text = ""
+        }
+
+        // Reset task input fields
+        addTaskView.nameWorkoutAddTextfield.text = ""
+        addTaskView.timerAddTextfield.text = ""
+        addTaskView.descriptionWorkoutAddTextfield.text = ""
+
+        // Reload collection view to reflect changes
+        collectionView.reloadData()
+    }
+
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -299,12 +345,12 @@ extension AddWorkoutViewController {
     func imageViewLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(287))
+            heightDimension: .absolute(287 * Constraint.yCoeff))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(287)
+            heightDimension: .absolute(287 * Constraint.yCoeff)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
@@ -321,13 +367,13 @@ extension AddWorkoutViewController {
     func nameViewLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(44)
+            heightDimension: .absolute(44 * Constraint.yCoeff)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(44)
+            heightDimension: .absolute(44 * Constraint.yCoeff)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
@@ -344,13 +390,13 @@ extension AddWorkoutViewController {
     func workoutViewLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(41)
+            heightDimension: .absolute(41 * Constraint.yCoeff)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(41)
+            heightDimension: .absolute(41 * Constraint.yCoeff)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
@@ -367,13 +413,13 @@ extension AddWorkoutViewController {
     func descriptionViewLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(44)
+            heightDimension: .estimated(44 * Constraint.yCoeff)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(44)
+            heightDimension: .estimated(44 * Constraint.yCoeff)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
@@ -390,12 +436,12 @@ extension AddWorkoutViewController {
     func addTaskViewButtonLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(84)
+            heightDimension: .fractionalHeight(84 * Constraint.yCoeff)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(84)
+            heightDimension: .absolute(84 * Constraint.yCoeff)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
@@ -411,12 +457,12 @@ extension AddWorkoutViewController {
     func taskViewLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(160)
+            heightDimension: .absolute(160 * Constraint.yCoeff)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(160)
+            heightDimension: .absolute(160 * Constraint.yCoeff)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
@@ -438,7 +484,7 @@ extension AddWorkoutViewController {
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(0.7),
-            heightDimension: .absolute(200)
+            heightDimension: .absolute(200 * Constraint.yCoeff)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
@@ -540,7 +586,7 @@ extension AddWorkoutViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.size.height
-        let bottomOffsetThreshold: CGFloat = 120.0
+        let bottomOffsetThreshold: CGFloat = 120.0  * Constraint.yCoeff
 
         if scrollView.contentOffset.y + frameHeight >= contentHeight {
             scrollView.contentInset.bottom = bottomOffsetThreshold
@@ -612,7 +658,7 @@ extension AddWorkoutViewController {
         if bottomOfTextField > visibleAreaHeight {
             let overlap = bottomOfTextField - visibleAreaHeight
             UIView.animate(withDuration: 0.3) {
-                self.view.transform = CGAffineTransform(translationX: 0, y: -overlap - 20)
+                self.view.transform = CGAffineTransform(translationX: 0, y: -overlap - 20 * Constraint.yCoeff)
             }
         }
     }

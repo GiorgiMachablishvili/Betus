@@ -7,12 +7,12 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 class WorkoutInfoCell: UICollectionViewCell {
     var selectedLevel: String?
     var workout: Workouts?
     var like: LikeResponse?
-    var likeArray: [LikeResponse] = []
 
     var didTapOnLikeButton: ((LikeResponse) -> Void)?
 
@@ -21,6 +21,7 @@ class WorkoutInfoCell: UICollectionViewCell {
         view.contentMode = .scaleToFill
         view.backgroundColor = .gray
         view.layer.cornerRadius = 20
+        view.layer.masksToBounds = true
         return view
     }()
 
@@ -28,20 +29,21 @@ class WorkoutInfoCell: UICollectionViewCell {
         let view = WorkoutInfoView()
         view.layer.cornerRadius = 26
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.4)
+        view.layer.masksToBounds = true
         return view
     }()
 
     lazy var likeViewButton: NonPropagatingButton = {
         let view = NonPropagatingButton(type: .system)
         view.setTitle("44", for: .normal)
-        view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16, height: 16)), for: .normal)
+        view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.tintColor = UIColor(hexString: "FFFFFF")
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.3)
         view.layer.cornerRadius = 22
         view.imageView?.contentMode = .scaleAspectFit
-        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8)
-        view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8 * Constraint.xCoeff)
+        view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8 * Constraint.xCoeff, bottom: 0, right: 0)
         view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
         return view
     }()
@@ -128,19 +130,23 @@ class WorkoutInfoCell: UICollectionViewCell {
         likeViewButton.setTitle("\(data.completers.count)", for: .normal)
 
         if let url = URL(string: data.image) {
-            DispatchQueue.global().async {
-                if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self.workoutImage.image = image
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        self.workoutImage.image = UIImage(named: "placeholderImage")
-                    }
-                }
-            }
-        } else {
-            self.workoutImage.image = UIImage(named: "placeholderImage")
+            workoutImage.kf.setImage(with: url)
         }
+
+//        if let url = URL(string: data.image) {
+//            DispatchQueue.global().async {
+//                if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+//                    DispatchQueue.main.async {
+//                        self.workoutImage.image = image
+//                    }
+//                } else {
+//                    DispatchQueue.main.async {
+//                        self.workoutImage.image = UIImage(named: "placeholderImage")
+//                    }
+//                }
+//            }
+//        } else {
+//            self.workoutImage.image = UIImage(named: "placeholderImage")
+//        }
     }
 }

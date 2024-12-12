@@ -27,8 +27,7 @@ class WorkoutViewController: UIViewController {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .clear
         view.showsHorizontalScrollIndicator = false
-        view.layer.cornerRadius = 16
-        view.layer.masksToBounds = true
+//        view.layer.cornerRadius = 16
         view.dataSource = self
         view.delegate = self
         view.register(HomeHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HomeHeaderView")
@@ -39,6 +38,7 @@ class WorkoutViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(hexString: "#101538")
+
         view.applyGradientBackground()
         setup()
         setupConstraints()
@@ -121,7 +121,7 @@ class WorkoutViewController: UIViewController {
     @objc private func didTapObserver() {
         self.allWorkouts.removeAll()
         self.displayedWorkouts.removeAll()
-        self.collectionView.reloadData()
+        fetchWorkoutCurrentUserInfo()
     }
 }
 
@@ -146,21 +146,17 @@ extension WorkoutViewController: HomeHeaderViewDelegate {
     }
 
     func filterWorkouts(by level: Workouts.Level) {
+        displayedWorkouts = []
         guard level != .all else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                guard let self = self else { return }
-                self.displayedWorkouts = self.allWorkouts
-                self.collectionView.reloadData()
-            }
+            self.displayedWorkouts = self.allWorkouts
+            self.collectionView.reloadData()
             return
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            self.displayedWorkouts = self.allWorkouts.filter {
-                $0.level.rawValue.lowercased() == level.rawValue.lowercased()
-            }
-            self.collectionView.reloadData()
+        self.displayedWorkouts = self.allWorkouts.filter {
+            $0.level.rawValue.lowercased() == level.rawValue.lowercased()
         }
+        self.collectionView.reloadData()
+
     }
 
     func searchWorkouts(with searchText: String) {

@@ -83,4 +83,8 @@ class ImageViewCell: UICollectionViewCell {
     func updateUserImage(_ image: UIImage) {
         workoutImage.image = image
     }
+
+    func updateUserImageAfterPressRightButton() {
+        workoutImage.image = UIImage(named: "userImageHolder")
+    }
 }

@@ -294,7 +294,7 @@ class LikedWorkoutViewController: UIViewController {
                 print("Error: \(error)")
             }
         }
-        let mainVC = MainViewController()
+        let mainVC = MainViewControllerTab()
         navigationController?.pushViewController(mainVC, animated: true)
     }
 

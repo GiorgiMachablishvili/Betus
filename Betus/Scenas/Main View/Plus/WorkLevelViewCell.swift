@@ -126,4 +126,9 @@ class WorkLevelViewCell: UICollectionViewCell {
             return "Unknown"
         }
     }
+
+    func resetLevelSelection() {
+        resetButtonImages()
+        easyWorkoutLevelsButton.backgroundColor = UIColor(hexString: "E5D820")
+    }
 }

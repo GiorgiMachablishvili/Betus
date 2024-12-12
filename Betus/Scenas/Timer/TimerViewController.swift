@@ -199,7 +199,7 @@ class TimerViewController: UIViewController {
 
     @objc private func didPressStartButton() {
         if startButton.title(for: .normal) == "Complete" {
-            let mainViewController = MainViewController()
+            let mainViewController = MainViewControllerTab()
             navigationController?.pushViewController(mainViewController, animated: true)
         } else if isTimerRunning {
             pauseTimer()

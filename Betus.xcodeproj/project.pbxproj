@@ -12,6 +12,7 @@
 		E32C49F62CF5EB2900C650B3 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C49F52CF5EB2900C650B3 /* CircularProgressView.swift */; };
 		E32C49F82CF5FDE500C650B3 /* UIImage+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C49F72CF5FDE500C650B3 /* UIImage+Extention.swift */; };
 		E32E6D132CF71AB600C17240 /* HardWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32E6D122CF71AB600C17240 /* HardWorkoutViewController.swift */; };
+		E33682D02D0B0BEA00C31B28 /* MainViewControllerTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33682CF2D0B0BEA00C31B28 /* MainViewControllerTab.swift */; };
 		E34103DD2CF627E700CB0CF6 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34103DC2CF627E700CB0CF6 /* ProfileViewController.swift */; };
 		E359415C2CFCD29400624C50 /* AddWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */; };
 		E35A458E2D08979A00C99907 /* WorkoutTaskViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35A458D2D08979A00C99907 /* WorkoutTaskViewCell.swift */; };
@@ -69,6 +70,7 @@
 		E3B785DD2CF9D68300A0492A /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E3B785DC2CF9D68300A0492A /* SVProgressHUD */; };
 		E3B7E30B2CF876FC00ABCDC4 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B7E30A2CF876FC00ABCDC4 /* UserInfo.swift */; };
 		E3B8DCAB2D078BCD005A8B19 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B8DCAA2D078BCD005A8B19 /* Task.swift */; };
+		E3CDA0392D0A1822006D513E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E3CDA0382D0A1822006D513E /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +79,7 @@
 		E32C49F52CF5EB2900C650B3 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		E32C49F72CF5FDE500C650B3 /* UIImage+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extention.swift"; sourceTree = "<group>"; };
 		E32E6D122CF71AB600C17240 /* HardWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardWorkoutViewController.swift; sourceTree = "<group>"; };
+		E33682CF2D0B0BEA00C31B28 /* MainViewControllerTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewControllerTab.swift; sourceTree = "<group>"; };
 		E34103DC2CF627E700CB0CF6 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E359415B2CFCD29400624C50 /* AddWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutViewController.swift; sourceTree = "<group>"; };
 		E35A458D2D08979A00C99907 /* WorkoutTaskViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTaskViewCell.swift; sourceTree = "<group>"; };
@@ -139,6 +142,7 @@
 			files = (
 				E3B785DD2CF9D68300A0492A /* SVProgressHUD in Frameworks */,
 				E3B785DA2CF9D63F00A0492A /* ProgressHUD in Frameworks */,
+				E3CDA0392D0A1822006D513E /* Kingfisher in Frameworks */,
 				E3B785CC2CF9A79000A0492A /* Alamofire in Frameworks */,
 				E3B785CE2CF9A79000A0492A /* AlamofireDynamic in Frameworks */,
 				E39C840D2CF4AC5E003177BF /* SnapKit in Frameworks */,
@@ -296,6 +300,7 @@
 		E39C841D2CF4BCD9003177BF /* Main View */ = {
 			isa = PBXGroup;
 			children = (
+				E33682CF2D0B0BEA00C31B28 /* MainViewControllerTab.swift */,
 				E39C84152CF4BA9F003177BF /* Main */,
 				E39C841E2CF4BCE6003177BF /* Home */,
 				E39C841F2CF4BD01003177BF /* LikedWorkout */,
@@ -388,6 +393,7 @@
 				E3B785CD2CF9A79000A0492A /* AlamofireDynamic */,
 				E3B785D92CF9D63F00A0492A /* ProgressHUD */,
 				E3B785DC2CF9D68300A0492A /* SVProgressHUD */,
+				E3CDA0382D0A1822006D513E /* Kingfisher */,
 			);
 			productName = Betus;
 			productReference = E39C83D52CF4A573003177BF /* Betus.app */;
@@ -422,6 +428,7 @@
 				E3B785CA2CF9A79000A0492A /* XCRemoteSwiftPackageReference "Alamofire" */,
 				E3B785D82CF9D63F00A0492A /* XCRemoteSwiftPackageReference "ProgressHUD" */,
 				E3B785DB2CF9D68300A0492A /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
+				E3CDA0372D0A1822006D513E /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = E39C83D62CF4A573003177BF /* Products */;
 			projectDirPath = "";
@@ -483,6 +490,7 @@
 				E39C840A2CF4AB69003177BF /* UIColor+Extention.swift in Sources */,
 				E32E6D132CF71AB600C17240 /* HardWorkoutViewController.swift in Sources */,
 				E39C84082CF4A978003177BF /* UIFont+Extension.swift in Sources */,
+				E33682D02D0B0BEA00C31B28 /* MainViewControllerTab.swift in Sources */,
 				E361C1462D06EDCA00B9D3D7 /* TaskViewCell.swift in Sources */,
 				E39C84222CF4BD46003177BF /* WorkoutViewController.swift in Sources */,
 				E39C84122CF4AD6D003177BF /* Constraints.swift in Sources */,
@@ -751,6 +759,14 @@
 				minimumVersion = 2.3.1;
 			};
 		};
+		E3CDA0372D0A1822006D513E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -783,6 +799,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E3B785DB2CF9D68300A0492A /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
 			productName = SVProgressHUD;
+		};
+		E3CDA0382D0A1822006D513E /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3CDA0372D0A1822006D513E /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

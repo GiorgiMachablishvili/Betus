@@ -15,23 +15,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        window = UIWindow(windowScene: windowScene)
+//        window = UIWindow(windowScene: windowScene)
 //        ifUserISCreatedOrNot()
-        let mainViewController = SignInView()
-        window?.rootViewController = UINavigationController(rootViewController: mainViewController)
-        window?.makeKeyAndVisible()
+////        let mainViewController = SignInView()
+////        window?.rootViewController = UINavigationController(rootViewController: mainViewController)
+//        window?.makeKeyAndVisible()
+
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = MainViewControllerTab()
+        window.makeKeyAndVisible()
+        self.window = window
     }
 
-    func ifUserISCreatedOrNot() {
-        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
-            let mainViewController = MainViewController()
-            UserDefaults.standard.setValue(false, forKey: "isGuestUser")
-            window?.rootViewController = UINavigationController(rootViewController: mainViewController)
-        } else {
-            let signInViewController = SignInView()
-            window?.rootViewController = UINavigationController(rootViewController: signInViewController)
-        }
-    }
+//    func ifUserISCreatedOrNot() {
+//        if let userId = UserDefaults.standard.string(forKey: "userId"), !userId.isEmpty {
+//            let mainViewController = MainViewController()
+//            UserDefaults.standard.setValue(false, forKey: "isGuestUser")
+//            window?.rootViewController = UINavigationController(rootViewController: mainViewController)
+//        } else {
+//            let signInViewController = SignInView()
+//            window?.rootViewController = UINavigationController(rootViewController: signInViewController)
+//        }
+//    }
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

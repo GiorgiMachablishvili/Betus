@@ -6,8 +6,6 @@
 //
 
 //TODO: registration
-//TODO: in workoutViewController changes images when open view
-//TODO: make images in workoutViewController conner radius
 //TODO: time view make task labels correct
 
 import UIKit
@@ -135,7 +133,7 @@ class SignInView: UIViewController {
 //        UserDefaults.standard.removeObject(forKey: "userId")
 //        UserDefaults.standard.removeObject(forKey: "AccountCredential")
 
-        let mainVC = MainViewController()
+        let mainVC = MainViewControllerTab()
         navigationController?.pushViewController(mainVC, animated: true)
     }
 
@@ -199,7 +197,7 @@ class SignInView: UIViewController {
                 print("Error: \(error)")
             }
         }
-        let mainVC = MainViewController()
+        let mainVC = MainViewControllerTab()
         navigationController?.pushViewController(mainVC, animated: true)
     }
 
