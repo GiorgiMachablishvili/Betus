@@ -11,7 +11,7 @@ import SnapKit
 class WorkoutViewController: UIViewController {
 
     private var workouts: [Workouts] = []
-    private var likes: [LikeResponse] = []
+    private var likes: [Workouts] = []
     private var allWorkouts: [Workouts] = []
     private var displayedWorkouts: [Workouts] = []
     private var searchWorkItem: DispatchWorkItem?
@@ -83,8 +83,9 @@ class WorkoutViewController: UIViewController {
 
     private func fetchWorkoutCurrentUserInfo() {
         guard let id = UserDefaults.standard.value(forKey: "userId") else { return }
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/d9c7c1d8-3647-405d-94e9-881c847ebc0a"
-        
+//        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/d9c7c1d8-3647-405d-94e9-881c847ebc0a"
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts"
+
         NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
             switch result {
             case .success(let workouts):
@@ -103,11 +104,12 @@ class WorkoutViewController: UIViewController {
     private func postLikeState(userId: String, workoutId: String) {
             let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
 
-            NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[LikeResponse]>) in
+            NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[Workouts]>) in
                 switch result {
                 case .success(let response):
                     self?.likes = response
                     self?.collectionView.reloadData()
+                    print("like successed")
                 case .failure(let error):
                     print("Error updating like: \(error)")
                     DispatchQueue.main.async {
@@ -198,7 +200,7 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
         let selectedLevel = workout.level.rawValue
         cell.configure(with: workout, selectedLevel: selectedLevel)
         cell.didTapOnLikeButton = { [weak self] likes in
-            self?.postLikeState(userId: likes.userId , workoutId: likes.id)
+            self?.postLikeState(userId: likes.userId ?? "" , workoutId: likes.id)
         }
         return cell
     }
@@ -226,6 +228,7 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
         hardWorkoutVC.workoutImage.image = selectedImage
         hardWorkoutVC.workoutData = selectedWorkout
         hardWorkoutVC.likeViewButton.setTitle(likeNumber, for: .normal)
+        hardWorkoutVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(hardWorkoutVC, animated: true)
     }
 }

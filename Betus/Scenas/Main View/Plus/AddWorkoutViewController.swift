@@ -119,26 +119,26 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.snp.bottom)
         }
-        
+
         userInfoButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
             make.leading.equalTo(view.snp.leading).offset(20 * Constraint.xCoeff)
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
-        
+
         rightButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
             make.trailing.equalTo(view.snp.trailing).offset(-20 * Constraint.xCoeff)
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
-        
+
         darkOverlay.snp.remakeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         addTaskView.snp.remakeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(view.snp.bottom)
+            make.bottom.equalTo(view.snp.bottom).offset(20)
             make.height.equalTo(343 * Constraint.yCoeff)
         }
     }
@@ -206,33 +206,37 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
         guard let detailsCell = collectionView.cellForItem(at: indexPathDetails) as? DescriptionViewCell else { return }
         guard let workoutDetails = detailsCell.descriptionWorkoutTextfield.text else { return }
 
-        //MARK: time
-        guard let timerValue = addTaskView.timerAddTextfield.text, !timerValue.isEmpty else {
-            showAlert(title: "Error", description: "Please provide a valid timer value.")
-            return
-        }
+//        //MARK: time
+//        guard let timerValue = addTaskView.timerAddTextfield.text, !timerValue.isEmpty else {
+//            showAlert(title: "Error", description: "Please provide a valid timer value.")
+//            return
+//        }
 
-        //MARK: task name
-        guard let taskName = addTaskView.nameWorkoutAddTextfield.text else { return }
-
-        //MARK: task description
-        guard let taskDescription = addTaskView.descriptionWorkoutAddTextfield.text else { return }
-        
-        let timeInSeconds = convertTimerToSeconds(timerValue)
+//        //MARK: task name
+//        guard let taskName = addTaskView.nameWorkoutAddTextfield.text else { return }
+//
+//        //MARK: task description
+//        guard let taskDescription = addTaskView.descriptionWorkoutAddTextfield.text else { return }
+//        
+//        let timeInSeconds = convertTimerToSeconds(timerValue)
 
         let parameters: [String: Any] = [
             "task_count": tasks.count,
-            "time": totalTimeInSeconds,
             "level": selectedLevel,
             "completers": [],
-//            "name": workoutName,
-            "details": workoutName,
-            "task_name": taskName,
-            "task_description": taskDescription,
+            "name": workoutName,
+            "details": workoutDetails,
             "user_id": userId,
+            "tasks": tasks.map { task in
+                [
+                    "time": task.time,
+                    "task_name": task.title,
+                    "task_description": task.description
+                ]
+            },
             "image": imageBase64String
         ]
-//        print("Parameters: \(parameters)")
+        print("Parameters: \(parameters)")
 
         //MARK: url
         let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/"
@@ -628,11 +632,8 @@ extension AddWorkoutViewController: AddTaskViewDelegate {
         taskView.isHidden = true
 
         let timeInSeconds = convertTimerToSeconds(timer)
-
-        tasks.append(.init(title: taskName, description: description, time: Int(timer) ?? 0, id: UUID().uuidString))
+        tasks.append(.init(title: taskName, description: description, time: timeInSeconds, id: UUID().uuidString))
         collectionView.reloadData()
-        
-        totalTimeInSeconds += timeInSeconds
 
         delegate?.shouldHideMainBottomButtonView(false)
     }

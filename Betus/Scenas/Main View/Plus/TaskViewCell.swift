@@ -107,8 +107,15 @@ class TaskViewCell: UICollectionViewCell {
 
     func configure(task: Task) {
         nameLabel.text = task.title
-        timerLabel.text = "\(task.time)"
+        timerLabel.text = formatSecondsToTime(task.time)
         descriptionLabel.text = task.description
+    }
+
+    private func formatSecondsToTime(_ seconds: Int) -> String {
+        let hours = seconds / 3600
+        let minutes = (seconds % 3600) / 60
+        let seconds = seconds % 60
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
 
     @objc func pressDeleteTaskViewButton(_ sender: UIButton) {

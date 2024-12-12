@@ -36,7 +36,7 @@ struct Workouts: Codable {
         case advance
         case difficult
         case all
-        case intermediate(String) // To handle unexpected values
+        case intermediate(String)
 
         var rawValue: String {
             switch self {
@@ -70,6 +70,4 @@ struct Workouts: Codable {
             try container.encode(self.rawValue)
         }
     }
-
-
 }

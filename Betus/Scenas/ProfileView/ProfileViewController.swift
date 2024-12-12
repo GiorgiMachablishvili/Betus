@@ -141,14 +141,14 @@ class ProfileViewController: UIViewController {
 
     private func setupConstraints() {
         leftButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
-            make.leading.equalTo(view.snp.leading).offset(12)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
+            make.leading.equalTo(view.snp.leading).offset(20)
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
         userDeleteButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
-            make.trailing.equalTo(view.snp.trailing).offset(-12 * Constraint.xCoeff)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
+            make.trailing.equalTo(view.snp.trailing).offset(-20 * Constraint.xCoeff)
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 

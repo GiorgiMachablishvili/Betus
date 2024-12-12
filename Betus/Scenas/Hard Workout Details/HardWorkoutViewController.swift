@@ -164,6 +164,7 @@ class HardWorkoutViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(hexString: "#101538")
+
         view.applyGradientBackground()
         setup()
         setupConstraints()
@@ -189,13 +190,13 @@ class HardWorkoutViewController: UIViewController {
 
     private func setupConstraints() {
         leftButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
-            make.leading.equalTo(view.snp.leading).offset(12 * Constraint.xCoeff)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
+            make.leading.equalTo(view.snp.leading).offset(20 * Constraint.xCoeff)
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
         warningButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
             make.leading.equalTo(leftButton.snp.trailing).offset(4 * Constraint.xCoeff)
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
@@ -213,8 +214,8 @@ class HardWorkoutViewController: UIViewController {
         }
 
         likeViewButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
-            make.trailing.equalTo(view.snp.trailing).offset(-12 * Constraint.xCoeff)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
+            make.trailing.equalTo(view.snp.trailing).offset(-20 * Constraint.xCoeff)
             make.height.equalTo(44 * Constraint.yCoeff)
             make.width.equalTo(66 * Constraint.xCoeff)
         }
@@ -294,6 +295,8 @@ class HardWorkoutViewController: UIViewController {
                 timerVC.duration = timerVC.remainingTime
             }
         }
+
+        timerVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(timerVC, animated: true)
     }
 

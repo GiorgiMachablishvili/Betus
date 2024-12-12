@@ -134,7 +134,11 @@ class SignInView: UIViewController {
 //        UserDefaults.standard.removeObject(forKey: "AccountCredential")
 
         let mainVC = MainViewControllerTab()
+        navigationController?.isNavigationBarHidden = true
         navigationController?.pushViewController(mainVC, animated: true)
+
+//        let mainVC = MainViewControllerTab()
+//        navigationController?.pushViewController(mainVC, animated: true)
     }
 
     @objc func clickSignInWithAppleButton() {
@@ -198,7 +202,10 @@ class SignInView: UIViewController {
             }
         }
         let mainVC = MainViewControllerTab()
+        navigationController?.isNavigationBarHidden = true
         navigationController?.pushViewController(mainVC, animated: true)
+//        let mainVC = MainViewControllerTab()
+//        navigationController?.pushViewController(mainVC, animated: true)
     }
 
     private func showAlert(title: String, description: String) {

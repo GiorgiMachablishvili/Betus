@@ -137,8 +137,8 @@ class TimerViewController: UIViewController {
 
     private func setupConstraints() {
         leftButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
-            make.leading.equalTo(view.snp.leading).offset(12 * Constraint.xCoeff)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
+            make.leading.equalTo(view.snp.leading).offset(20 * Constraint.xCoeff)
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
@@ -149,8 +149,8 @@ class TimerViewController: UIViewController {
         }
 
         likeViewButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
-            make.trailing.equalTo(view.snp.trailing).offset(-12 * Constraint.xCoeff)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
+            make.trailing.equalTo(view.snp.trailing).offset(-20 * Constraint.xCoeff)
             make.height.equalTo(44 * Constraint.yCoeff)
             make.width.equalTo(66 * Constraint.xCoeff)
         }
@@ -167,7 +167,7 @@ class TimerViewController: UIViewController {
         }
 
         collectionView.snp.remakeConstraints { make in
-            make.top.equalTo(circularProgressView.snp.bottom).offset(110 * Constraint.yCoeff)
+            make.bottom.equalTo(startButton.snp.top).offset(-16 * Constraint.yCoeff)
             make.leading.trailing.equalToSuperview().inset(24 * Constraint.xCoeff)
             make.height.equalTo(103 * Constraint.yCoeff)
         }
@@ -259,7 +259,7 @@ class TimerViewController: UIViewController {
 
 extension TimerViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tasks.count
+        return taskCountFromWorkouts?.tasks.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -268,7 +268,7 @@ extension TimerViewController: UICollectionViewDelegate, UICollectionViewDataSou
         }
         let workInfoTask = tasks[indexPath.row]
         if currentWorkoutId == workInfoTask.id {
-            cell.configure(with: workInfoTask/*, workoutId: workInfoTask.id*/)
+            cell.configure(with: workInfoTask)
         }
 //        cell.configure(with: workInfoTask, workoutId: workInfoTask.id)
         return cell

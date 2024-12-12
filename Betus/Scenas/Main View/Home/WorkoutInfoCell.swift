@@ -14,7 +14,7 @@ class WorkoutInfoCell: UICollectionViewCell {
     var workout: Workouts?
     var like: LikeResponse?
 
-    var didTapOnLikeButton: ((LikeResponse) -> Void)?
+    var didTapOnLikeButton: ((Workouts) -> Void)?
 
     lazy var workoutImage: UIImageView = {
         let view = UIImageView(frame: .zero)
@@ -97,10 +97,10 @@ class WorkoutInfoCell: UICollectionViewCell {
 
     @objc func likeViewButtonTapped() {
         print("pressed like button")
-        guard let like else { return }
+        guard let workout else { return }
         isLiked.toggle()
         updateLikeState()
-        didTapOnLikeButton?(like)
+        didTapOnLikeButton?(workout)
     }
 
     private func updateLikeState() {
@@ -132,21 +132,5 @@ class WorkoutInfoCell: UICollectionViewCell {
         if let url = URL(string: data.image) {
             workoutImage.kf.setImage(with: url)
         }
-
-//        if let url = URL(string: data.image) {
-//            DispatchQueue.global().async {
-//                if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
-//                    DispatchQueue.main.async {
-//                        self.workoutImage.image = image
-//                    }
-//                } else {
-//                    DispatchQueue.main.async {
-//                        self.workoutImage.image = UIImage(named: "placeholderImage")
-//                    }
-//                }
-//            }
-//        } else {
-//            self.workoutImage.image = UIImage(named: "placeholderImage")
-//        }
     }
 }

@@ -15,7 +15,7 @@ class LikedWorkoutViewController: UIViewController {
 
     var workoutImage: UIImage?
     var workoutData: [Workouts] = []
-    var likedWorkouts: [LikeResponse] = []
+    var likedWorkouts: [Workouts] = []
     var likeWorkoutCell = LikeWorkoutViewCell()
     var allWorkouts: [Workouts] = []
 
@@ -36,7 +36,7 @@ class LikedWorkoutViewController: UIViewController {
         view.register(LikeWorkoutViewCell.self, forCellWithReuseIdentifier: "LikeWorkoutViewCell")
         return view
     }()
-    
+
     lazy var userInfoButton: UIButton = {
         let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
         view.setImage(UIImage(named: "userProfile"), for: .normal)
@@ -98,6 +98,19 @@ class LikedWorkoutViewController: UIViewController {
         return view
     }()
 
+    private lazy var backButton: UIButton = {
+        let view = UIButton(frame: CGRect(x: 0, y: 0, width: 44 * Constraint.xCoeff, height: 44 * Constraint.yCoeff))
+        view.setImage(UIImage(named: "backArrow"), for: .normal)
+        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.1)
+        view.layer.cornerRadius = 22
+        view.clipsToBounds = true
+        view.imageView?.contentMode = .scaleAspectFit
+        view.setImage(UIImage(named: "backArrow")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
+        view.isHidden = true
+        view.addTarget(self, action: #selector(pressBackButton), for: .touchUpInside)
+        return view
+    }()
+
     private lazy var forOrderingStoreLabel: UILabel = {
         let view = UILabel(frame: .zero)
         view.textAlignment = .center
@@ -144,6 +157,7 @@ class LikedWorkoutViewController: UIViewController {
         view.addSubview(searchButton)
         view.addSubview(searchBar)
         view.addSubview(infoLabel)
+        view.addSubview(backButton)
         view.addSubview(forOrderingStoreLabel)
         view.addSubview(signInWithAppleButton)
     }
@@ -156,14 +170,20 @@ class LikedWorkoutViewController: UIViewController {
         }
 
         userInfoButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
-            make.leading.equalTo(view.snp.leading).offset(12 * Constraint.xCoeff)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
+            make.leading.equalTo(view.snp.leading).offset(20 * Constraint.xCoeff)
+            make.width.height.equalTo(44 * Constraint.xCoeff)
+        }
+
+        backButton.snp.remakeConstraints { make in
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
+            make.leading.equalTo(view.snp.leading).offset(20 * Constraint.xCoeff)
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
         searchButton.snp.remakeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60 * Constraint.yCoeff)
-            make.trailing.equalTo(view.snp.trailing).offset(-12 * Constraint.xCoeff)
+            make.top.equalTo(view.snp.top).offset(80 * Constraint.yCoeff)
+            make.trailing.equalTo(view.snp.trailing).offset(-20 * Constraint.xCoeff)
             make.width.height.equalTo(44 * Constraint.xCoeff)
         }
 
@@ -203,12 +223,13 @@ class LikedWorkoutViewController: UIViewController {
 
     private func fetchLikedWorkouts() {
         guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(userId)"
+//        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(userId)"
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts"
 
-        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { (result: Result<[LikeResponse]>) in
-                switch result {
-                case .success(let likedWorkouts):
-                    let likedWorkouts = likedWorkouts.filter { $0.isSelected == true }
+        NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
+            switch result {
+            case .success(let likedWorkouts):
+                let likedWorkouts = self.likedWorkouts.filter { $0.isSelected == true }
                 DispatchQueue.main.async {
                     if likedWorkouts.isEmpty {
                         self.likeWorkoutCell.workoutInfoView.isHidden = true
@@ -222,6 +243,7 @@ class LikedWorkoutViewController: UIViewController {
                         self.infoLabel.isHidden = true
                     }
                     self.likedWorkouts = likedWorkouts
+
                     self.collectionView.reloadData()
                 }
             case .failure(let error):
@@ -231,6 +253,33 @@ class LikedWorkoutViewController: UIViewController {
                     self.collectionView.isHidden = true
                 }
             }
+
+//        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
+//                switch result {
+//                case .success(let likedWorkouts):
+//                    let likedWorkouts = likedWorkouts.filter { $0.isSelected == true }
+//                DispatchQueue.main.async {
+//                    if likedWorkouts.isEmpty {
+//                        self.likeWorkoutCell.workoutInfoView.isHidden = true
+//                        self.likeWorkoutCell.likeViewButton.isHidden = true
+//                        self.likeWorkoutCell.workoutInfoView.isHidden = true
+//                        self.infoLabel.isHidden = false
+//                    } else {
+//                        self.likeWorkoutCell.workoutInfoView.isHidden = false
+//                        self.likeWorkoutCell.likeViewButton.isHidden = false
+//                        self.likeWorkoutCell.workoutInfoView.isHidden = false
+//                        self.infoLabel.isHidden = true
+//                    }
+//                    self.likedWorkouts = likedWorkouts
+//                    self.collectionView.reloadData()
+//                }
+//            case .failure(let error):
+//                print("Error fetching liked workouts: \(error.localizedDescription)")
+//                DispatchQueue.main.async {
+//                    self.infoLabel.isHidden = false
+//                    self.collectionView.isHidden = true
+//                }
+//            }
         }
     }
 
@@ -312,6 +361,15 @@ class LikedWorkoutViewController: UIViewController {
     @objc func pressSearchButton() {
         searchButton.isHidden = true
         searchBar.isHidden = false
+        backButton.isHidden = false
+        userInfoButton.isHidden = true
+    }
+
+    @objc func pressBackButton() {
+        searchButton.isHidden = false
+        searchBar.isHidden = true
+        backButton.isHidden = true
+        userInfoButton.isHidden = false
     }
 }
 
