@@ -57,3 +57,11 @@ class MainViewControllerTab: UITabBarController,  UITabBarControllerDelegate {
     }
 }
 
+//extension MainViewControllerTab {
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        if let navController = viewController as? UINavigationController,
+//           let workoutVC = navController.viewControllers.first as? WorkoutViewController {
+//            workoutVC.reloadView()
+//        }
+//    }
+//}

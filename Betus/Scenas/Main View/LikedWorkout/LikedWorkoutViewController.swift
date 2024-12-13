@@ -149,6 +149,18 @@ class LikedWorkoutViewController: UIViewController {
         hiddenOrUnhidden()
 
         fetchLikedWorkouts()
+
+        NotificationCenter.default
+            .addObserver(
+                self,
+                selector: #selector(
+                    didTapObserver
+                ),
+                name: NSNotification.Name (
+                    "likeWorkout.view.observer"
+                ),
+                object: nil
+            )
     }
 
     private func setup() {
@@ -213,6 +225,11 @@ class LikedWorkoutViewController: UIViewController {
         }
     }
 
+    @objc func didTapObserver() {
+        likedWorkouts = []
+        fetchLikedWorkouts()
+    }
+
     func hiddenOrUnhidden() {
         let isGuestUser = UserDefaults.standard.bool(forKey: "isGuestUser")
         collectionView.isHidden = isGuestUser
@@ -222,8 +239,8 @@ class LikedWorkoutViewController: UIViewController {
     }
 
     private func fetchLikedWorkouts() {
-        guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
-//        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(userId)"
+        //        guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
+        //        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(userId)"
         let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts"
 
         NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
@@ -243,7 +260,6 @@ class LikedWorkoutViewController: UIViewController {
                         self.infoLabel.isHidden = true
                     }
                     self.likedWorkouts = likedWorkouts
-
                     self.collectionView.reloadData()
                 }
             case .failure(let error):
@@ -253,34 +269,6 @@ class LikedWorkoutViewController: UIViewController {
                     self.collectionView.isHidden = true
                 }
             }
-            
-
-//        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
-//                switch result {
-//                case .success(let likedWorkouts):
-//                    let likedWorkouts = likedWorkouts.filter { $0.isSelected == true }
-//                DispatchQueue.main.async {
-//                    if likedWorkouts.isEmpty {
-//                        self.likeWorkoutCell.workoutInfoView.isHidden = true
-//                        self.likeWorkoutCell.likeViewButton.isHidden = true
-//                        self.likeWorkoutCell.workoutInfoView.isHidden = true
-//                        self.infoLabel.isHidden = false
-//                    } else {
-//                        self.likeWorkoutCell.workoutInfoView.isHidden = false
-//                        self.likeWorkoutCell.likeViewButton.isHidden = false
-//                        self.likeWorkoutCell.workoutInfoView.isHidden = false
-//                        self.infoLabel.isHidden = true
-//                    }
-//                    self.likedWorkouts = likedWorkouts
-//                    self.collectionView.reloadData()
-//                }
-//            case .failure(let error):
-//                print("Error fetching liked workouts: \(error.localizedDescription)")
-//                DispatchQueue.main.async {
-//                    self.infoLabel.isHidden = false
-//                    self.collectionView.isHidden = true
-//                }
-//            }
         }
     }
 
@@ -290,18 +278,32 @@ class LikedWorkoutViewController: UIViewController {
         NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[Workouts]>) in
             switch result {
             case .success(let response):
-                self?.likedWorkouts = response
+                self?.likedWorkouts = response.filter { $0.isSelected == true }
                 self?.collectionView.reloadData()
-                    print("like successed")
-                case .failure(let error):
-                    print("Error updating like: \(error)")
-                    DispatchQueue.main.async {
-    //                    self.isLiked.toggle()
-    //                    self.updateLikeState()
+                NotificationCenter.default.post(
+                    name: NSNotification.Name(
+                        "unLikeWorkout.view.observer"
+                    ),
+                    object: nil
+                )
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    if likedWorkouts.isEmpty {
+                        self.infoLabel.isHidden = false
+                    } else {
+                        self.infoLabel.isHidden = true
                     }
+                }
+                print("like successed")
+            case .failure(let error):
+                print("Error updating like: \(error)")
+                DispatchQueue.main.async {
+                    //                    self.isLiked.toggle()
+                    //                    self.updateLikeState()
                 }
             }
         }
+    }
 
     @objc private func clickSignInWithAppleButton() {
         // Simulating tokens for testing
@@ -315,13 +317,13 @@ class LikedWorkoutViewController: UIViewController {
         // Call createUser to simulate user creation
         createUser()
 
-//        let authorizationProvider = ASAuthorizationAppleIDProvider()
-//        let request = authorizationProvider.createRequest()
-//        request.requestedScopes = [.email, .fullName]
-//
-//        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-//        authorizationController.delegate = self
-//        authorizationController.performRequests()
+        //        let authorizationProvider = ASAuthorizationAppleIDProvider()
+        //        let request = authorizationProvider.createRequest()
+        //        request.requestedScopes = [.email, .fullName]
+        //
+        //        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        //        authorizationController.delegate = self
+        //        authorizationController.performRequests()
     }
 
     private func createUser() {
@@ -410,7 +412,6 @@ extension LikedWorkoutViewController: UICollectionViewDelegate, UICollectionView
         cell.configure(with: workout)
         cell.didTapOnLikeButton = { [weak self]  in
             self?.postLikeState(userId: workout.userId ?? "", workoutId: workout.id)
-            self?.fetchLikedWorkouts()
         }
         return cell
     }
@@ -453,22 +454,22 @@ extension LikedWorkoutViewController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-            searchBar.text = ""
-            searchBar.resignFirstResponder() // Dismiss the keyboard
-            allWorkouts = workoutData.filter { $0.isSelected } // Reset to all liked workouts
-            collectionView.reloadData()
-        }
-
-        func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-            searchBar.resignFirstResponder() // Dismiss the keyboard
-        }
+        searchBar.text = ""
+        searchBar.resignFirstResponder() // Dismiss the keyboard
+        allWorkouts = workoutData.filter { $0.isSelected } // Reset to all liked workouts
+        collectionView.reloadData()
     }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder() // Dismiss the keyboard
+    }
+}
 extension LikedWorkoutViewController: ASAuthorizationControllerDelegate /*ASAuthorizationControllerPresentationContextProviding*/ {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
-        
+
         UserDefaults.standard.setValue(credential.user, forKey: "AccountCredential")
-//        createUser()
+        //        createUser()
     }
 
     //    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {

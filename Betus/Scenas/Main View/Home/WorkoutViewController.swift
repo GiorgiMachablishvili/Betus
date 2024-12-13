@@ -54,7 +54,20 @@ class WorkoutViewController: UIViewController {
                 object: nil
             )
 
+        NotificationCenter.default
+            .addObserver(
+                self,
+                selector: #selector(
+                    pressTapObserver
+                ),
+                name: NSNotification.Name (
+                    "unLikeWorkout.view.observer"
+                ),
+                object: nil
+            )
+
         fetchWorkoutCurrentUserInfo()
+        collectionView.reloadData()
     }
 
     private func setup() {
@@ -107,6 +120,12 @@ class WorkoutViewController: UIViewController {
             case .success(let response):
                 self?.displayedWorkouts = response
                 self?.collectionView.reloadData()
+                NotificationCenter.default.post(
+                    name: NSNotification.Name(
+                        "likeWorkout.view.observer"
+                    ),
+                    object: nil
+                )
                     print("like successed")
                 case .failure(let error):
                     print("Error updating like: \(error)")
@@ -118,6 +137,10 @@ class WorkoutViewController: UIViewController {
             }
         }
 
+    @objc func pressTapObserver() {
+        displayedWorkouts = []
+        fetchWorkoutCurrentUserInfo()
+    }
 
     @objc private func didTapObserver() {
         self.allWorkouts.removeAll()
@@ -199,6 +222,7 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
         cell.configure(with: workout, selectedLevel: selectedLevel)
         cell.didTapOnLikeButton = { [weak self]  in
             self?.postLikeState(userId: workout.userId ?? "", workoutId: workout.id)
+            self?.view.reloadInputViews()
         }
         return cell
     }

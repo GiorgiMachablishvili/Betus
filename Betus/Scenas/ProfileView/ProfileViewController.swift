@@ -206,20 +206,18 @@ class ProfileViewController: UIViewController {
     @objc private func pressTermsOfUserButton() {
         let termsURL = "https://apps.apple.com/us/app/apple-support/id1130498044"
         let webViewController = WebViewController(urlString: termsURL)
-        navigationController?.pushViewController(webViewController, animated: true)
+        navigationController?.present(webViewController, animated: true)
     }
 
     @objc private func pressPrivacyPolicyButton() {
         let termsURL = ""
         let webViewController = WebViewController(urlString: termsURL)
-        navigationController?.pushViewController(webViewController, animated: true)
-    }
+        navigationController?.present(webViewController, animated: true)    }
 
     @objc private func pressSupportButton() {
         let termsURL = ""
         let webViewController = WebViewController(urlString: termsURL)
-        navigationController?.pushViewController(webViewController, animated: true)
-    }
+        navigationController?.present(webViewController, animated: true)    }
 
     @objc private func pressRateUsButton() {
         let termsURL = ""

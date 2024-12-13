@@ -88,22 +88,14 @@ class LikeWorkoutViewCell: UICollectionViewCell {
     }
 
     @objc func likeViewButtonTapped() {
-        print(".....")
         didTapOnLikeButton?()
     }
 
-    private func updateLikeState(isSelected: Bool) {
-        if isSelected {
+    private func updateLikeState() {
             likeViewButton.setImage(UIImage(named: "heartFilled")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
             if let likes = Int(likeViewButton.title(for: .normal) ?? "0") {
                 likeViewButton.setTitle("\(likes + 1)", for: .normal)
             }
-        } else {
-            likeViewButton.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
-            if let likes = Int(likeViewButton.title(for: .normal) ?? "0"), likes > 0 {
-                likeViewButton.setTitle("\(likes - 1)", for: .normal)
-            }
-        }
     }
 
     func configure(with data: Workouts) {
@@ -115,6 +107,6 @@ class LikeWorkoutViewCell: UICollectionViewCell {
         if let url = URL(string: data.image) {
             workoutImageLikeView.kf.setImage(with: url)
         }
-        updateLikeState(isSelected: data.isSelected)
+        updateLikeState()
     }
 }
