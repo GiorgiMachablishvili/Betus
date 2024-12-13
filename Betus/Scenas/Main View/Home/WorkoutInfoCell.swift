@@ -12,9 +12,9 @@ import Kingfisher
 class WorkoutInfoCell: UICollectionViewCell {
     var selectedLevel: String?
     var workout: Workouts?
-    var like: LikeResponse?
+    var likes: LikeResponse?
 
-    var didTapOnLikeButton: ((Workouts) -> Void)?
+    var didTapOnLikeButton: (() -> Void)?
 
     lazy var workoutImage: UIImageView = {
         let view = UIImageView(frame: .zero)
@@ -47,10 +47,8 @@ class WorkoutInfoCell: UICollectionViewCell {
         view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
         return view
     }()
-
-    private var didTapCell: (() -> Void)?
-
-    private var isLiked = false
+    
+    var isLiked = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -96,15 +94,11 @@ class WorkoutInfoCell: UICollectionViewCell {
     }
 
     @objc func likeViewButtonTapped() {
-        print("pressed like button")
-        guard let workout else { return }
-        isLiked.toggle()
-        updateLikeState()
-        didTapOnLikeButton?(workout)
+        didTapOnLikeButton?()
     }
 
-    private func updateLikeState() {
-        if isLiked {
+    private func updateLikeState(isSelected: Bool) {
+        if isSelected {
             likeViewButton.setImage(UIImage(named: "heartFilled")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
             if let likes = Int(likeViewButton.title(for: .normal) ?? "0") {
                 likeViewButton.setTitle("\(likes + 1)", for: .normal)
@@ -119,9 +113,8 @@ class WorkoutInfoCell: UICollectionViewCell {
 
     func configure(with data: Workouts, selectedLevel: String) {
         self.selectedLevel = selectedLevel
-        self.workout = data
 
-        workoutInfoView.workoutLevel.text = data.details
+        workoutInfoView.workoutLevel.text = data.taskName
         workoutInfoView.taskView.taskNumberLabel.text = String(data.taskCount)
         workoutInfoView.timeView.remainingTime = Double(data.time)
         workoutInfoView.levelView.levelInfoLabel.text = data.level.rawValue
@@ -132,5 +125,6 @@ class WorkoutInfoCell: UICollectionViewCell {
         if let url = URL(string: data.image) {
             workoutImage.kf.setImage(with: url)
         }
+        updateLikeState(isSelected: data.isSelected)
     }
 }

@@ -7,13 +7,17 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 class LikeWorkoutViewCell: UICollectionViewCell {
+    var didTapOnLikeButton: (() -> Void)?
+
     lazy var workoutImageLikeView: UIImageView = {
         let view = UIImageView(frame: .zero)
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .scaleToFill
         view.image = UIImage(systemName: "figure.australian.football.circle")
-        view.layer.cornerRadius = 26
+        view.layer.cornerRadius = 20
+        view.layer.masksToBounds = true
         view.isHidden = false
         return view
     }()
@@ -25,8 +29,8 @@ class LikeWorkoutViewCell: UICollectionViewCell {
         return view
     }()
 
-    lazy var likeViewButton: UIButton = {
-        let view = UIButton(type: .system)
+    lazy var likeViewButton: NonPropagatingButton = {
+        let view = NonPropagatingButton(type: .system)
         view.setTitle("44", for: .normal)
         view.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
         view.tintColor = UIColor(hexString: "FFFFFF")
@@ -34,10 +38,9 @@ class LikeWorkoutViewCell: UICollectionViewCell {
         view.backgroundColor = UIColor.clearBlur(withAlpha: 0.3)
         view.layer.cornerRadius = 22
         view.imageView?.contentMode = .scaleAspectFit
-        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8)
+        view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8 * Constraint.xCoeff)
         view.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8 * Constraint.xCoeff, bottom: 0, right: 0)
         view.addTarget(self, action: #selector(likeViewButtonTapped), for: .touchUpInside)
-        view.isHidden = false
         return view
     }()
 
@@ -49,6 +52,14 @@ class LikeWorkoutViewCell: UICollectionViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let convertedPoint = likeViewButton.convert(point, from: self)
+        if likeViewButton.bounds.contains(convertedPoint) {
+            return likeViewButton
+        }
+        return super.hitTest(point, with: event)
     }
 
     private func setup() {
@@ -77,12 +88,35 @@ class LikeWorkoutViewCell: UICollectionViewCell {
     }
 
     @objc func likeViewButtonTapped() {
+        print(".....")
+        didTapOnLikeButton?()
+    }
 
+    private func updateLikeState(isSelected: Bool) {
+        if isSelected {
+            likeViewButton.setImage(UIImage(named: "heartFilled")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
+            if let likes = Int(likeViewButton.title(for: .normal) ?? "0") {
+                likeViewButton.setTitle("\(likes + 1)", for: .normal)
+            }
+        } else {
+            likeViewButton.setImage(UIImage(named: "heart")?.resize(to: CGSize(width: 16 * Constraint.xCoeff, height: 16 * Constraint.yCoeff)), for: .normal)
+            if let likes = Int(likeViewButton.title(for: .normal) ?? "0"), likes > 0 {
+                likeViewButton.setTitle("\(likes - 1)", for: .normal)
+            }
+        }
     }
 
     func configure(with data: Workouts) {
+        workoutInfoView.workoutLevel.text = data.details
         workoutInfoView.taskView.taskNumberLabel.text = String(data.taskCount)
-        workoutInfoView.timeView.timerLabel.text = String(data.time)
+        workoutInfoView.timeView.remainingTime = Double(data.time)
         workoutInfoView.levelView.levelInfoLabel.text = data.level.rawValue
+
+        likeViewButton.setTitle("\(data.completers.count)", for: .normal)
+
+        if let url = URL(string: data.image) {
+            workoutImageLikeView.kf.setImage(with: url)
+        }
+        updateLikeState(isSelected: data.isSelected)
     }
 }

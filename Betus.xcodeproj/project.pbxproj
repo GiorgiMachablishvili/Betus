@@ -54,8 +54,6 @@
 		E39C840D2CF4AC5E003177BF /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E39C840C2CF4AC5E003177BF /* SnapKit */; };
 		E39C84122CF4AD6D003177BF /* Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84112CF4AD6D003177BF /* Constraints.swift */; };
 		E39C84142CF4B4B5003177BF /* UiColorGradiation+Exttention.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84132CF4B4B5003177BF /* UiColorGradiation+Exttention.swift */; };
-		E39C84172CF4BACC003177BF /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84162CF4BACC003177BF /* MainViewController.swift */; };
-		E39C84192CF4BB0D003177BF /* MainBottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84182CF4BB0D003177BF /* MainBottomButtonView.swift */; };
 		E39C84222CF4BD46003177BF /* WorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84212CF4BD46003177BF /* WorkoutViewController.swift */; };
 		E39C84242CF4BD5B003177BF /* LikedWorkoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39C84232CF4BD5B003177BF /* LikedWorkoutViewController.swift */; };
 		E39D36C42D03450900A5ABCA /* EmptyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39D36C32D03450900A5ABCA /* EmptyResponse.swift */; };
@@ -120,8 +118,6 @@
 		E39C84092CF4AB69003177BF /* UIColor+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extention.swift"; sourceTree = "<group>"; };
 		E39C84112CF4AD6D003177BF /* Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraints.swift; sourceTree = "<group>"; };
 		E39C84132CF4B4B5003177BF /* UiColorGradiation+Exttention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UiColorGradiation+Exttention.swift"; sourceTree = "<group>"; };
-		E39C84162CF4BACC003177BF /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		E39C84182CF4BB0D003177BF /* MainBottomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBottomButtonView.swift; sourceTree = "<group>"; };
 		E39C84212CF4BD46003177BF /* WorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutViewController.swift; sourceTree = "<group>"; };
 		E39C84232CF4BD5B003177BF /* LikedWorkoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedWorkoutViewController.swift; sourceTree = "<group>"; };
 		E39D36C32D03450900A5ABCA /* EmptyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResponse.swift; sourceTree = "<group>"; };
@@ -280,8 +276,7 @@
 		E39C84152CF4BA9F003177BF /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				E39C84162CF4BACC003177BF /* MainViewController.swift */,
-				E39C84182CF4BB0D003177BF /* MainBottomButtonView.swift */,
+				E33682CF2D0B0BEA00C31B28 /* MainViewControllerTab.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -296,7 +291,6 @@
 		E39C841D2CF4BCD9003177BF /* Main View */ = {
 			isa = PBXGroup;
 			children = (
-				E33682CF2D0B0BEA00C31B28 /* MainViewControllerTab.swift */,
 				E39C84152CF4BA9F003177BF /* Main */,
 				E39C841E2CF4BCE6003177BF /* Home */,
 				E39C841F2CF4BD01003177BF /* LikedWorkout */,
@@ -499,10 +493,8 @@
 				E36E2F562CFE22E900613FBD /* NonPropagatingButton.swift in Sources */,
 				E39997E62CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift in Sources */,
 				E3A372982D024E260008ED9C /* LikeResponse.swift in Sources */,
-				E39C84172CF4BACC003177BF /* MainViewController.swift in Sources */,
 				E359415C2CFCD29400624C50 /* AddWorkoutViewController.swift in Sources */,
 				E34103DD2CF627E700CB0CF6 /* ProfileViewController.swift in Sources */,
-				E39C84192CF4BB0D003177BF /* MainBottomButtonView.swift in Sources */,
 				E39D36C62D03B31900A5ABCA /* WorkoutLikes.swift in Sources */,
 				E32C49DF2CF5C19700C650B3 /* HomeHeaderView.swift in Sources */,
 			);

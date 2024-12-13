@@ -273,7 +273,7 @@ class HardWorkoutViewController: UIViewController {
     }
 
     @objc private func pressStartWorkoutButton() {
-        let timerVC = TimerViewController()
+       let timerVC = TimerViewController(tasks: workoutData?.tasks ?? [])
 
         if let taskCountText = workoutInfoView.taskView.taskNumberLabel.text,
            let taskCount = Int(taskCountText) {
@@ -319,7 +319,7 @@ class HardWorkoutViewController: UIViewController {
             titleLabel.text = workout.details
             workoutLevelLabel.text = "Level \(workout.level.rawValue)"
 
-            workoutInfoView.workoutLevel.text = workout.details
+            workoutInfoView.workoutLevel.text = workout.taskName
             workoutInfoView.taskView.taskNumberLabel.text = String(workout.taskCount)
             workoutInfoView.timeView.remainingTime = Double(workout.time)
             workoutInfoView.levelView.levelInfoLabel.text = workout.level.rawValue

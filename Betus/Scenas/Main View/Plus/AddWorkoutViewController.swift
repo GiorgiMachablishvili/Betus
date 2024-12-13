@@ -167,44 +167,12 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
     }
 
     @objc func didPressRightButton() {
-        //MARK: workout image
-        let indexPath = IndexPath(item: 0, section: 0)
-        guard let imageCell = collectionView.cellForItem(at: indexPath) as? ImageViewCell,
-              let imageWorkout = imageCell.workoutImage.image else {
-            return
-        }
-        guard let imageData = imageWorkout.jpegData(compressionQuality: 0.8) else {
-            print("Error: Unable to convert image to data")
-            return
-        }
-        let imageBase64String = imageData.base64EncodedString()
+        let workoutImageString = workoutImage()
+        let userIdString = userId()
+        let selectedLevelString = selectedLevel()
+        let workoutNameString = workoutName()
+        let workoutDetailsString = workoutDetails()
 
-        //MARK: user id
-        guard let userId = UserDefaults.standard.value(forKey: "userId") else { return }
-
-        //MARK: selected level
-        let indexPathLevel = IndexPath(item: 0, section: 2)
-        guard collectionView.indexPathsForVisibleItems.contains(indexPathLevel) else {
-            print("IndexPath for WorkLevelViewCell is not visible")
-            return
-        }
-        guard let visibleCell = collectionView.cellForItem(at: indexPathLevel) as? WorkLevelViewCell else {
-            print("WorkLevelViewCell is not visible")
-            return
-        }
-        let selectedLevel = visibleCell.getSelectedLevel()
-
-        //MARK: workout name
-        let indexPathName = IndexPath(item: 0, section: 1)
-        guard let nameCell = collectionView.cellForItem(at: indexPathName) as? NameViewCell else {
-            return
-        }
-        guard let workoutName = nameCell.nameWorkoutTextfield.text else { return }
-
-//        //MARK: workout details
-        let indexPathDetails = IndexPath(item: 0, section: 3)
-        guard let detailsCell = collectionView.cellForItem(at: indexPathDetails) as? DescriptionViewCell else { return }
-        guard let workoutDetails = detailsCell.descriptionWorkoutTextfield.text else { return }
 
 //        //MARK: time
 //        guard let timerValue = addTaskView.timerAddTextfield.text, !timerValue.isEmpty else {
@@ -222,11 +190,11 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
 
         let parameters: [String: Any] = [
             "task_count": tasks.count,
-            "level": selectedLevel,
+            "level": selectedLevelString,
             "completers": [],
-            "name": workoutName,
-            "details": workoutDetails,
-            "user_id": userId,
+            "name": workoutNameString,
+            "details": workoutDetailsString,
+            "user_id": userIdString,
             "tasks": tasks.map { task in
                 [
                     "time": task.time,
@@ -234,9 +202,9 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
                     "task_description": task.description
                 ]
             },
-            "image": imageBase64String
+            "image": workoutImageString
         ]
-        print("Parameters: \(parameters)")
+//        print("Parameters: \(parameters)")
 
         //MARK: url
         let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/"
@@ -279,6 +247,60 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
 
     func shouldHideMainBottomButtonView(_ hide: Bool) {
         delegate?.shouldHideMainBottomButtonView(hide)
+    }
+
+    func workoutImage() -> String {
+        //MARK: workout image
+        let indexPath = IndexPath(item: 0, section: 0)
+        guard let imageCell = collectionView.cellForItem(at: indexPath) as? ImageViewCell,
+              let imageWorkout = imageCell.workoutImage.image else {
+            return ""
+        }
+        guard let imageData = imageWorkout.jpegData(compressionQuality: 0.8) else {
+            print("Error: Unable to convert image to data")
+            return ""
+        }
+        let imageBase64String = imageData.base64EncodedString()
+        return imageBase64String
+    }
+
+    func userId() -> String {
+        //MARK: user id
+        guard let userId = UserDefaults.standard.value(forKey: "userId") else {
+            return ""
+        }
+        return userId as! String
+    }
+
+    func selectedLevel() -> String {
+        //MARK: selected level
+        let indexPathLevel = IndexPath(item: 0, section: 2)
+        guard collectionView.indexPathsForVisibleItems.contains(indexPathLevel) else {
+            print("IndexPath for WorkLevelViewCell is not visible")
+            return ""
+        }
+        guard let visibleCell = collectionView.cellForItem(at: indexPathLevel) as? WorkLevelViewCell else {
+            print("WorkLevelViewCell is not visible")
+            return ""
+        }
+        let selectedLevel = visibleCell.getSelectedLevel()
+        return selectedLevel
+    }
+
+    func workoutName() -> String {
+        //MARK: workout name
+        let indexPathName = IndexPath(item: 0, section: 1)
+        guard let nameCell = collectionView.cellForItem(at: indexPathName) as? NameViewCell else { return ""}
+        guard let workoutName = nameCell.nameWorkoutTextfield.text else { return ""}
+        return workoutName
+    }
+
+    func workoutDetails() -> String {
+        //MARK: workout details
+        let indexPathDetails = IndexPath(item: 0, section: 3)
+        guard let detailsCell = collectionView.cellForItem(at: indexPathDetails) as? DescriptionViewCell else { return ""}
+        guard let workoutDetails = detailsCell.descriptionWorkoutTextfield.text else { return ""}
+        return workoutDetails
     }
 
     private func resetAllFields() {

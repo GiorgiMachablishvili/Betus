@@ -66,13 +66,8 @@ class WorkoutTaskViewCell: UICollectionViewCell {
         }
     }
 
-    func configure(with data: Workouts) {
-        if let firstTask = data.tasks.first {
-            nameLabel.text = firstTask.title
-            descriptionLabel.text = firstTask.description
-        } else {
-            nameLabel.text = "No tasks available"
-            descriptionLabel.text = "No descriptionLabel available"
-        }
+    func configure(with data: Task) {
+        nameLabel.text = data.title
+        descriptionLabel.text = data.description
     }
 }

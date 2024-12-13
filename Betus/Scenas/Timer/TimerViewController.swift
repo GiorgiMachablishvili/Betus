@@ -18,7 +18,7 @@ class TimerViewController: UIViewController {
     }
     private var isTimerRunning = false
 
-    var tasks: [Workouts] = []
+    var tasks: [Task] = []
     var hardWorkoutView = HardWorkoutViewController()
     var taskCount: Int = 0
     var currentWorkoutId: String = ""
@@ -113,14 +113,21 @@ class TimerViewController: UIViewController {
         return view
     }()
 
+    init(tasks: [Task]) {
+        self.tasks = tasks
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(hexString: "#101538")
         view.applyGradientBackground()
         setup()
         setupConstraints()
-
-        fetchWorkoutCurrentUserInfo()
 
         self.navigationItem.hidesBackButton = true
     }
@@ -177,24 +184,6 @@ class TimerViewController: UIViewController {
             make.centerX.equalTo(view.snp.centerX)
             make.width.equalTo(115 * Constraint.xCoeff)
             make.height.equalTo(59 * Constraint.yCoeff)
-        }
-    }
-
-    private func fetchWorkoutCurrentUserInfo() {
-        guard let id = UserDefaults.standard.value(forKey: "userId") else { return }
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/\(id)"
-        print("DEBUG: will fetch from - \(#function)")
-        NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
-            switch result {
-            case .success(let workouts):
-                self.tasks = workouts
-                DispatchQueue.main.async {
-                    print("DEBUG: tasks - \(workouts)")
-                    self.collectionView.reloadData()
-                }
-            case .failure(let error):
-                print("Error fetching workouts: \(error.localizedDescription)")
-            }
         }
     }
 
@@ -259,7 +248,7 @@ class TimerViewController: UIViewController {
 
 extension TimerViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return taskCountFromWorkouts?.tasks.count ?? 0
+        return tasks.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -267,9 +256,9 @@ extension TimerViewController: UICollectionViewDelegate, UICollectionViewDataSou
             return UICollectionViewCell()
         }
         let workInfoTask = tasks[indexPath.row]
-        if currentWorkoutId == workInfoTask.id {
+//        if currentWorkoutId == workInfoTask.id {
             cell.configure(with: workInfoTask)
-        }
+//        }
 //        cell.configure(with: workInfoTask, workoutId: workInfoTask.id)
         return cell
     }

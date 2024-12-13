@@ -201,11 +201,7 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func pressTermsOfUserButton() {
-        if let url = URL(string: "") {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        } else {
-            print("Invalid URL")
-        }
+        
     }
 
     @objc private func pressDeleteAccountButton() {

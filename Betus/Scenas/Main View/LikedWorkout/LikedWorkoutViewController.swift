@@ -228,18 +228,18 @@ class LikedWorkoutViewController: UIViewController {
 
         NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
             switch result {
-            case .success(let likedWorkouts):
-                let likedWorkouts = self.likedWorkouts.filter { $0.isSelected == true }
+            case .success(let workouts):
+                let likedWorkouts = workouts.filter { $0.isSelected == true }
                 DispatchQueue.main.async {
                     if likedWorkouts.isEmpty {
+                        self.likeWorkoutCell.workoutImageLikeView.isHidden = true
                         self.likeWorkoutCell.workoutInfoView.isHidden = true
                         self.likeWorkoutCell.likeViewButton.isHidden = true
-                        self.likeWorkoutCell.workoutInfoView.isHidden = true
                         self.infoLabel.isHidden = false
                     } else {
+                        self.likeWorkoutCell.workoutImageLikeView.isHidden = false
                         self.likeWorkoutCell.workoutInfoView.isHidden = false
                         self.likeWorkoutCell.likeViewButton.isHidden = false
-                        self.likeWorkoutCell.workoutInfoView.isHidden = false
                         self.infoLabel.isHidden = true
                     }
                     self.likedWorkouts = likedWorkouts
@@ -253,6 +253,7 @@ class LikedWorkoutViewController: UIViewController {
                     self.collectionView.isHidden = true
                 }
             }
+            
 
 //        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
 //                switch result {
@@ -282,6 +283,25 @@ class LikedWorkoutViewController: UIViewController {
 //            }
         }
     }
+
+    private func postLikeState(userId: String, workoutId: String) {
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
+
+        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[Workouts]>) in
+            switch result {
+            case .success(let response):
+                self?.likedWorkouts = response
+                self?.collectionView.reloadData()
+                    print("like successed")
+                case .failure(let error):
+                    print("Error updating like: \(error)")
+                    DispatchQueue.main.async {
+    //                    self.isLiked.toggle()
+    //                    self.updateLikeState()
+                    }
+                }
+            }
+        }
 
     @objc private func clickSignInWithAppleButton() {
         // Simulating tokens for testing
@@ -386,13 +406,25 @@ extension LikedWorkoutViewController: UICollectionViewDelegate, UICollectionView
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: LikeWorkoutViewCell.self), for: indexPath) as? LikeWorkoutViewCell else {
             return UICollectionViewCell()
         }
-        let workout = workoutData[indexPath.row]
+        let workout = likedWorkouts[indexPath.row]
         cell.configure(with: workout)
+        cell.didTapOnLikeButton = { [weak self]  in
+            self?.postLikeState(userId: workout.userId ?? "", workoutId: workout.id)
+        }
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? LikeWorkoutViewCell,
+              let selectedImage = cell.workoutImageLikeView.image else { return }
+        let selectedWorkout = likedWorkouts[indexPath.row]
         let hardWorkoutVC = HardWorkoutViewController()
+        let likeNumber = cell.likeViewButton.title(for: .normal)
+
+        hardWorkoutVC.workoutImage.image = selectedImage
+        hardWorkoutVC.workoutData = selectedWorkout
+        hardWorkoutVC.likeViewButton.setTitle(likeNumber, for: .normal)
+        hardWorkoutVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(hardWorkoutVC, animated: true)
     }
 }

@@ -12,6 +12,7 @@ class WorkoutViewController: UIViewController {
 
     private var workouts: [Workouts] = []
     private var likes: [Workouts] = []
+    private var like: [LikeResponse] = []
     private var allWorkouts: [Workouts] = []
     private var displayedWorkouts: [Workouts] = []
     private var searchWorkItem: DispatchWorkItem?
@@ -27,7 +28,6 @@ class WorkoutViewController: UIViewController {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .clear
         view.showsHorizontalScrollIndicator = false
-//        view.layer.cornerRadius = 16
         view.dataSource = self
         view.delegate = self
         view.register(HomeHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HomeHeaderView")
@@ -38,7 +38,6 @@ class WorkoutViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(hexString: "#101538")
-
         view.applyGradientBackground()
         setup()
         setupConstraints()
@@ -83,7 +82,6 @@ class WorkoutViewController: UIViewController {
 
     private func fetchWorkoutCurrentUserInfo() {
         guard let id = UserDefaults.standard.value(forKey: "userId") else { return }
-//        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/user/d9c7c1d8-3647-405d-94e9-881c847ebc0a"
         let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts"
 
         NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
@@ -102,13 +100,13 @@ class WorkoutViewController: UIViewController {
     }
 
     private func postLikeState(userId: String, workoutId: String) {
-            let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
 
-            NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[Workouts]>) in
-                switch result {
-                case .success(let response):
-                    self?.likes = response
-                    self?.collectionView.reloadData()
+        NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[Workouts]>) in
+            switch result {
+            case .success(let response):
+                self?.displayedWorkouts = response
+                self?.collectionView.reloadData()
                     print("like successed")
                 case .failure(let error):
                     print("Error updating like: \(error)")
@@ -199,8 +197,8 @@ extension WorkoutViewController: UICollectionViewDelegate, UICollectionViewDataS
         let workout = displayedWorkouts[indexPath.row]
         let selectedLevel = workout.level.rawValue
         cell.configure(with: workout, selectedLevel: selectedLevel)
-        cell.didTapOnLikeButton = { [weak self] likes in
-            self?.postLikeState(userId: likes.userId ?? "" , workoutId: likes.id)
+        cell.didTapOnLikeButton = { [weak self]  in
+            self?.postLikeState(userId: workout.userId ?? "", workoutId: workout.id)
         }
         return cell
     }
