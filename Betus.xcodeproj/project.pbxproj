@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E31768CB2D0C84DB0043B77E /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31768CA2D0C84DB0043B77E /* WebViewController.swift */; };
 		E32C49DF2CF5C19700C650B3 /* HomeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C49DE2CF5C19700C650B3 /* HomeHeaderView.swift */; };
 		E32C49F42CF5EAFF00C650B3 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C49F32CF5EAFF00C650B3 /* TimerViewController.swift */; };
 		E32C49F62CF5EB2900C650B3 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C49F52CF5EB2900C650B3 /* CircularProgressView.swift */; };
@@ -70,6 +71,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E31768CA2D0C84DB0043B77E /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		E32C49DE2CF5C19700C650B3 /* HomeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderView.swift; sourceTree = "<group>"; };
 		E32C49F32CF5EAFF00C650B3 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 		E32C49F52CF5EB2900C650B3 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
@@ -145,6 +147,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E31768C92D0C7C540043B77E /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				E31768CA2D0C84DB0043B77E /* WebViewController.swift */,
+			);
+			path = WebView;
+			sourceTree = "<group>";
+		};
 		E32C49F22CF5EAB400C650B3 /* Timer */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +233,7 @@
 				E32E6D112CF71A8200C17240 /* Hard Workout Details */,
 				E32C49F22CF5EAB400C650B3 /* Timer */,
 				E34103DB2CF627BD00CB0CF6 /* ProfileView */,
+				E31768C92D0C7C540043B77E /* WebView */,
 			);
 			path = Scenas;
 			sourceTree = "<group>";
@@ -476,6 +487,7 @@
 				E3667EEE2CF4F5CB00D1AE68 /* TaskView.swift in Sources */,
 				E32C49F62CF5EB2900C650B3 /* CircularProgressView.swift in Sources */,
 				E39C840A2CF4AB69003177BF /* UIColor+Extention.swift in Sources */,
+				E31768CB2D0C84DB0043B77E /* WebViewController.swift in Sources */,
 				E32E6D132CF71AB600C17240 /* HardWorkoutViewController.swift in Sources */,
 				E39C84082CF4A978003177BF /* UIFont+Extension.swift in Sources */,
 				E33682D02D0B0BEA00C31B28 /* MainViewControllerTab.swift in Sources */,

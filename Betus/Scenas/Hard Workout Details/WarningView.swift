@@ -9,7 +9,11 @@ import UIKit
 import SnapKit
 
 protocol WarningViewDelegate: AnyObject {
+    func didPressComplaintButton()
+    func didPressDontWantToSeeUserAccountButton()
+    func didPressSheWillFileAComlaintButton()
     func didPressCancelButton ()
+
 }
 
 class WarningView: UIView {
@@ -25,7 +29,7 @@ class WarningView: UIView {
         view.setTitleColor(UIColor(hexString: "#1D0840"), for: .normal)
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
-//        view.addTarget(self, action: #selector(pressComplaintButton), for: .touchUpInside)
+        view.addTarget(self, action: #selector(pressComplaintButton), for: .touchUpInside)
         return view
     }()
 
@@ -50,7 +54,7 @@ class WarningView: UIView {
         view.layer.borderColor = UIColor.init(hexString: "FFFFFF").cgColor
         view.layer.borderWidth = 1
         view.imageView?.contentMode = .scaleAspectFit
-//        view.addTarget(self, action: #selector(pressComplaintButton), for: .touchUpInside)
+        view.addTarget(self, action: #selector(pressDontWantToSeeUserAccountButton), for: .touchUpInside)
         return view
     }()
 
@@ -65,7 +69,7 @@ class WarningView: UIView {
         view.layer.borderColor = UIColor.init(hexString: "FFFFFF").cgColor
         view.layer.borderWidth = 1
         view.imageView?.contentMode = .scaleAspectFit
-//        view.addTarget(self, action: #selector(pressComplaintButton), for: .touchUpInside)
+        view.addTarget(self, action: #selector(pressSheWillFileAComlaintButton), for: .touchUpInside)
         return view
     }()
 
@@ -138,6 +142,18 @@ class WarningView: UIView {
             make.leading.trailing.equalToSuperview().inset(87 * Constraint.xCoeff)
             make.height.equalTo(44 * Constraint.yCoeff)
         }
+    }
+
+    @objc func pressComplaintButton() {
+        delegate?.didPressComplaintButton()
+    }
+
+    @objc func pressDontWantToSeeUserAccountButton() {
+        delegate?.didPressDontWantToSeeUserAccountButton()
+    }
+
+    @objc func pressSheWillFileAComlaintButton() {
+        delegate?.didPressSheWillFileAComlaintButton()
     }
 
     @objc private func pressCancelButton() {

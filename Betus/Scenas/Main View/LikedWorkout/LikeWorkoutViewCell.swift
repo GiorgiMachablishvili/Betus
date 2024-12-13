@@ -107,13 +107,11 @@ class LikeWorkoutViewCell: UICollectionViewCell {
     }
 
     func configure(with data: Workouts) {
-        workoutInfoView.workoutLevel.text = data.details
+        workoutInfoView.workoutLevel.text = data.taskName
         workoutInfoView.taskView.taskNumberLabel.text = String(data.taskCount)
         workoutInfoView.timeView.remainingTime = Double(data.time)
         workoutInfoView.levelView.levelInfoLabel.text = data.level.rawValue
-
         likeViewButton.setTitle("\(data.completers.count)", for: .normal)
-
         if let url = URL(string: data.image) {
             workoutImageLikeView.kf.setImage(with: url)
         }

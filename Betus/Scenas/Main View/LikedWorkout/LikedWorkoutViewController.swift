@@ -410,6 +410,7 @@ extension LikedWorkoutViewController: UICollectionViewDelegate, UICollectionView
         cell.configure(with: workout)
         cell.didTapOnLikeButton = { [weak self]  in
             self?.postLikeState(userId: workout.userId ?? "", workoutId: workout.id)
+            self?.fetchLikedWorkouts()
         }
         return cell
     }

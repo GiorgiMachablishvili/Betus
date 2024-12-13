@@ -256,10 +256,7 @@ extension TimerViewController: UICollectionViewDelegate, UICollectionViewDataSou
             return UICollectionViewCell()
         }
         let workInfoTask = tasks[indexPath.row]
-//        if currentWorkoutId == workInfoTask.id {
             cell.configure(with: workInfoTask)
-//        }
-//        cell.configure(with: workInfoTask, workoutId: workInfoTask.id)
         return cell
     }
 }

@@ -57,6 +57,7 @@ class ProfileViewController: UIViewController {
         view.setTitleColor(UIColor(hexString: "FFFFFF"), for: .normal)
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
+        view.addTarget(self, action: #selector(pressPrivacyPolicyButton), for: .touchUpInside)
         return view
     }()
 
@@ -69,6 +70,7 @@ class ProfileViewController: UIViewController {
         view.setTitleColor(UIColor(hexString: "FFFFFF"), for: .normal)
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
+        view.addTarget(self, action: #selector(pressSupportButton), for: .touchUpInside)
         return view
     }()
 
@@ -81,6 +83,7 @@ class ProfileViewController: UIViewController {
         view.setTitleColor(UIColor(hexString: "FFFFFF"), for: .normal)
         view.clipsToBounds = true
         view.imageView?.contentMode = .scaleAspectFit
+        view.addTarget(self, action: #selector(pressRateUsButton), for: .touchUpInside)
         return view
     }()
 
@@ -201,8 +204,30 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func pressTermsOfUserButton() {
-        
+        let termsURL = "https://apps.apple.com/us/app/apple-support/id1130498044"
+        let webViewController = WebViewController(urlString: termsURL)
+        navigationController?.pushViewController(webViewController, animated: true)
     }
+
+    @objc private func pressPrivacyPolicyButton() {
+        let termsURL = ""
+        let webViewController = WebViewController(urlString: termsURL)
+        navigationController?.pushViewController(webViewController, animated: true)
+    }
+
+    @objc private func pressSupportButton() {
+        let termsURL = ""
+        let webViewController = WebViewController(urlString: termsURL)
+        navigationController?.pushViewController(webViewController, animated: true)
+    }
+
+    @objc private func pressRateUsButton() {
+        let termsURL = ""
+        let webViewController = WebViewController(urlString: termsURL)
+        navigationController?.pushViewController(webViewController, animated: true)
+    }
+
+
 
     @objc private func pressDeleteAccountButton() {
         let alertController = UIAlertController(

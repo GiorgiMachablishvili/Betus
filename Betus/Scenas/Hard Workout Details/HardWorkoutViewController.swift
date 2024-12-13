@@ -328,6 +328,26 @@ class HardWorkoutViewController: UIViewController {
 }
 
 extension HardWorkoutViewController: WarningViewDelegate {
+    func didPressComplaintButton() {
+        let termsURL = ""
+        let webViewController = WebViewController(urlString: termsURL)
+        navigationController?.pushViewController(webViewController, animated: true)
+    }
+    
+    func didPressDontWantToSeeUserAccountButton() {
+        let termsURL = ""
+        let webViewController = WebViewController(urlString: termsURL)
+        navigationController?.pushViewController(webViewController, animated: true)
+    }
+    
+    func didPressSheWillFileAComlaintButton() {
+        let termsURL = ""
+        let webViewController = WebViewController(urlString: termsURL)
+        navigationController?.pushViewController(webViewController, animated: true)
+    }
+    
+    
+
     func didPressCancelButton() {
         darkOverlay.isHidden = true
         warningView.isHidden = true
