@@ -7,10 +7,21 @@
 
 import UIKit
 import WebKit
+import SnapKit
 
 class WebViewController: UIViewController {
     private let webView = WKWebView()
     private let urlString: String
+
+    private lazy var closeButton: UIButton = {
+        let view = UIButton(frame: .zero)
+//        view.setImage(UIImage(named: "xButton"), for: .normal)
+        view.setImage(UIImage(named: "xButton"), for: .normal)
+        view.backgroundColor = .blue
+        view.layer.cornerRadius = 22
+        view.addTarget(self, action: #selector(pressCloseButton), for: .touchUpInside)
+        return view
+    }()
 
     init(urlString: String) {
         self.urlString = urlString
@@ -23,16 +34,28 @@ class WebViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupWebView()
+        setup()
+        setupConstraints()
         loadURL()
     }
 
-    private func setupWebView() {
+    private func setup() {
         view.addSubview(webView)
-        webView.snp.makeConstraints { make in
+        webView.addSubview(closeButton)
+    }
+
+    private func setupConstraints() {
+        webView.snp.remakeConstraints{ make in
             make.edges.equalToSuperview()
         }
+
+        closeButton.snp.remakeConstraints { make in
+            make.top.equalTo(webView.snp.top).offset(20)
+            make.trailing.equalTo(webView.snp.trailing).offset(-20)
+            make.height.width.equalTo(40)
+        }
     }
+
 
     private func loadURL() {
         guard let url = URL(string: urlString) else {
@@ -47,5 +70,9 @@ class WebViewController: UIViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+
+    @objc func pressCloseButton() {
+        dismiss(animated: true, completion: nil)
     }
 }

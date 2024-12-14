@@ -225,59 +225,159 @@ class ProfileViewController: UIViewController {
         navigationController?.pushViewController(webViewController, animated: true)
     }
 
-
-
     @objc private func pressDeleteAccountButton() {
+        // Create an alert to confirm account deletion
         let alertController = UIAlertController(
             title: "Delete Account",
             message: "Are you sure you want to delete your account? This action cannot be undone.",
             preferredStyle: .alert
         )
 
+        // Add a "Delete" action
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
-            guard let userId = UserDefaults.standard.value(forKey: "userId") as? String else {
-                return
-            }
-
-            let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/\(userId)"
-
-            NetworkManager.shared.delete(url: url, parameters: nil, headers: nil) { (result: Result<EmptyResponse>) in
-                switch result {
-                case .success:
-                    print("Account deleted successfully")
-                    UserDefaults.standard.removeObject(forKey: "userId")
-                    DispatchQueue.main.async {
-                        self.navigateToSignInView()
-                    }
-                case .failure(let error):
-                    print("Failed to delete account: \(error.localizedDescription)")
-                    DispatchQueue.main.async {
-                        let errorAlert = UIAlertController(
-                            title: "Error",
-                            message: "Failed to delete account. Please try again later.",
-                            preferredStyle: .alert
-                        )
-                        errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
-                        self.present(errorAlert, animated: true)
-                    }
-                }
-            }
+            self.deleteAccount()
         }
 
+        // Add a "Cancel" action
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
         alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)
 
+        // Present the alert
         present(alertController, animated: true)
     }
 
-    private func navigateToSignInView() {
-        let loginVC = SignInView()
-        let navController = UINavigationController(rootViewController: loginVC)
-        navController.modalPresentationStyle = .fullScreen
-        self.present(navController, animated: true)
+    // Function to delete the account
+    private func deleteAccount() {
+        // Check if the user ID exists in UserDefaults
+        guard let userId = UserDefaults.standard.value(forKey: "userId") as? String else {
+            return
+        }
+
+        // Define the API endpoint for deleting the account
+        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/\(userId)"
+
+        // Show a loading indicator
+//        ProgressHUD.show("Deleting account...")
+
+        // Make the network request
+        NetworkManager.shared.delete(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<EmptyResponse>) in
+//            DispatchQueue.main.async {
+//                // Hide the loading indicator
+//                ProgressHUD.dismiss()
+//            }
+
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    // Clear user session data
+                    UserDefaults.standard.removeObject(forKey: "userId")
+                    UserDefaults.standard.setValue(true, forKey: "isGuestUser")
+
+                    // Redirect to the sign-in view
+                    self?.navigateToSignInView()
+                }
+
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    // Show an error alert
+                    self?.showAlert(title: "Error", message: "Failed to delete account. \(error.localizedDescription)")
+                }
+            }
+        }
     }
+
+    // Navigate to the sign-in view
+    private func navigateToSignInView() {
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+            let signInViewController = SignInView()
+            let navController = UINavigationController(rootViewController: signInViewController)
+            sceneDelegate.changeRootViewController(navController)
+        }
+    }
+
+    // Function to display alerts
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
+
+
+
+
+
+
+
+
+//    @objc private func pressDeleteAccountButton() {
+//        let alertController = UIAlertController(
+//            title: "Delete Account",
+//            message: "Are you sure you want to delete your account? This action cannot be undone.",
+//            preferredStyle: .alert
+//        )
+//
+//        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { _ in
+//            guard let userId = UserDefaults.standard.value(forKey: "userId") as? String else {
+//                return
+//            }
+//
+//            let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/\(userId)"
+//
+////            ProgressHUD.show("Deleting account...")
+//
+//            NetworkManager.shared.delete(url: url, parameters: nil, headers: nil) { (result: Result<EmptyResponse>) in
+////                DispatchQueue.main.async {
+////                    ProgressHUD.dismiss()
+////                }
+//                switch result {
+//                case .success:
+//                    print("Account deleted successfully")
+//                    DispatchQueue.main.async {
+//                        UserDefaults.standard.removeObject(forKey: "userId")
+//                        UserDefaults.standard.setValue(true, forKey: "isGuestUser")
+//                        self.navigateToSignInView()
+//                    }
+//                case .failure(let error):
+//                    print("Failed to delete account: \(error.localizedDescription)")
+//                    DispatchQueue.main.async {
+//                        let errorAlert = UIAlertController(
+//                            title: "Error",
+//                            message: "Failed to delete account. Please try again later.",
+//                            preferredStyle: .alert
+//                        )
+//                        errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+//                        self.present(errorAlert, animated: true)
+//                    }
+//                }
+//            }
+//        }
+//
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+//
+//        alertController.addAction(deleteAction)
+//        alertController.addAction(cancelAction)
+//
+//        present(alertController, animated: true)
+//    }
+//
+////    private func navigateToSignInView() {
+////        let loginVC = SignInView()
+////        let navController = UINavigationController(rootViewController: loginVC)
+////        navController.modalPresentationStyle = .fullScreen
+////        self.present(navController, animated: true)
+////    }
+//
+//    private func navigateToSignInView() {
+//        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+//            let signInViewController = SignInView()
+//            let navController = UINavigationController(rootViewController: signInViewController)
+//            sceneDelegate.changeRootViewController(navController)
+//        }
+//    }
+
 
     @objc private func clickSignInWithAppleButton() {
         // Simulating tokens for testing

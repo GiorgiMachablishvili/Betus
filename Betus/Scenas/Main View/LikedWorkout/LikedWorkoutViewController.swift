@@ -317,6 +317,10 @@ class LikedWorkoutViewController: UIViewController {
         // Call createUser to simulate user creation
         createUser()
 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.navigateToMainViewController()
+        }
+
         //        let authorizationProvider = ASAuthorizationAppleIDProvider()
         //        let request = authorizationProvider.createRequest()
         //        request.requestedScopes = [.email, .fullName]
@@ -367,6 +371,23 @@ class LikedWorkoutViewController: UIViewController {
         }
         let mainVC = MainViewControllerTab()
         navigationController?.pushViewController(mainVC, animated: true)
+    }
+
+    private func navigateToMainViewController() {
+        let mainVC = MainViewControllerTab()
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+           let window = sceneDelegate.window {
+            let navController = UINavigationController(rootViewController: mainVC)
+            window.rootViewController = navController
+            window.makeKeyAndVisible()
+
+            // Optionally add a transition animation
+            UIView.transition(with: window,
+                              duration: 0.5,
+                              options: .transitionCrossDissolve,
+                              animations: nil,
+                              completion: nil)
+        }
     }
 
     private func showAlert(title: String, description: String) {
