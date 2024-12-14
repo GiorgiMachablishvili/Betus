@@ -98,7 +98,7 @@
 		E36E2F572CFE57E800613FBD /* WorkoutInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfo.swift; sourceTree = "<group>"; };
 		E39997DF2CF7AD4300CF8E48 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		E39997E52CF7BDD900CF8E48 /* LikeWorkoutViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeWorkoutViewCell.swift; sourceTree = "<group>"; };
-		E39C83D52CF4A573003177BF /* Betus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Betus.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E39C83D52CF4A573003177BF /* Be-Sports.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Be-Sports.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E39C83D82CF4A573003177BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E39C83DA2CF4A573003177BF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E39C83DC2CF4A573003177BF /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 		E39C83CC2CF4A573003177BF = {
 			isa = PBXGroup;
 			children = (
-				E39C83D72CF4A573003177BF /* Betus */,
+				E39C83D72CF4A573003177BF /* Be-Sports */,
 				E39C83D62CF4A573003177BF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -193,12 +193,12 @@
 		E39C83D62CF4A573003177BF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E39C83D52CF4A573003177BF /* Betus.app */,
+				E39C83D52CF4A573003177BF /* Be-Sports.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E39C83D72CF4A573003177BF /* Betus */ = {
+		E39C83D72CF4A573003177BF /* Be-Sports */ = {
 			isa = PBXGroup;
 			children = (
 				E39C83EC2CF4A619003177BF /* App */,
@@ -213,7 +213,7 @@
 				E39C83E32CF4A575003177BF /* LaunchScreen.storyboard */,
 				E39C83E62CF4A575003177BF /* Info.plist */,
 			);
-			path = Betus;
+			path = "Be-Sports";
 			sourceTree = "<group>";
 		};
 		E39C83EC2CF4A619003177BF /* App */ = {
@@ -374,9 +374,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E39C83D42CF4A573003177BF /* Betus */ = {
+		E39C83D42CF4A573003177BF /* Be-Sports */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E39C83E92CF4A575003177BF /* Build configuration list for PBXNativeTarget "Betus" */;
+			buildConfigurationList = E39C83E92CF4A575003177BF /* Build configuration list for PBXNativeTarget "Be-Sports" */;
 			buildPhases = (
 				E39C83D12CF4A573003177BF /* Sources */,
 				E39C83D22CF4A573003177BF /* Frameworks */,
@@ -386,7 +386,7 @@
 			);
 			dependencies = (
 			);
-			name = Betus;
+			name = "Be-Sports";
 			packageProductDependencies = (
 				E39C840C2CF4AC5E003177BF /* SnapKit */,
 				E3B785CB2CF9A79000A0492A /* Alamofire */,
@@ -395,7 +395,7 @@
 				E3CDA0382D0A1822006D513E /* Kingfisher */,
 			);
 			productName = Betus;
-			productReference = E39C83D52CF4A573003177BF /* Betus.app */;
+			productReference = E39C83D52CF4A573003177BF /* Be-Sports.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -413,7 +413,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E39C83D02CF4A573003177BF /* Build configuration list for PBXProject "Betus" */;
+			buildConfigurationList = E39C83D02CF4A573003177BF /* Build configuration list for PBXProject "Be-Sports" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -433,7 +433,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E39C83D42CF4A573003177BF /* Betus */,
+				E39C83D42CF4A573003177BF /* Be-Sports */,
 			);
 		};
 /* End PBXProject section */
@@ -654,7 +654,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z8QVL3H8TQ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Betus/Info.plist;
+				INFOPLIST_FILE = "Be-Sports/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -682,7 +682,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z8QVL3H8TQ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Betus/Info.plist;
+				INFOPLIST_FILE = "Be-Sports/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -704,7 +704,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E39C83D02CF4A573003177BF /* Build configuration list for PBXProject "Betus" */ = {
+		E39C83D02CF4A573003177BF /* Build configuration list for PBXProject "Be-Sports" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E39C83E72CF4A575003177BF /* Debug */,
@@ -713,7 +713,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E39C83E92CF4A575003177BF /* Build configuration list for PBXNativeTarget "Betus" */ = {
+		E39C83E92CF4A575003177BF /* Build configuration list for PBXNativeTarget "Be-Sports" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E39C83EA2CF4A575003177BF /* Debug */,
