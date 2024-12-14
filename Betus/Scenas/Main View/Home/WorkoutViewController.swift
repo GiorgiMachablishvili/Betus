@@ -21,10 +21,10 @@ class WorkoutViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: view.frame.width - 24, height: 287)
+        layout.itemSize = CGSize(width: view.frame.width - 24 * Constraint.xCoeff, height: 287 * Constraint.yCoeff)
         layout.minimumLineSpacing = 10
-        layout.headerReferenceSize = CGSize(width: view.frame.width, height: 120)
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
+        layout.headerReferenceSize = CGSize(width: view.frame.width, height: 120 * Constraint.yCoeff)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10 * Constraint.yCoeff, right: 0)
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .clear
         view.showsHorizontalScrollIndicator = false
@@ -76,9 +76,9 @@ class WorkoutViewController: UIViewController {
 
     private func setupConstraints() {
         collectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(12)
-            make.top.equalTo(view.snp.top).offset(10)
-            make.bottom.equalTo(view.snp.bottom).offset(-5)
+            make.leading.trailing.equalToSuperview().inset(12 * Constraint.xCoeff)
+            make.top.equalTo(view.snp.top).offset(10 * Constraint.yCoeff)
+            make.bottom.equalTo(view.snp.bottom).offset(-5 * Constraint.yCoeff)
         }
     }
 
@@ -153,7 +153,7 @@ extension WorkoutViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.size.height
-        let bottomOffsetThreshold: CGFloat = 80.0
+        let bottomOffsetThreshold: CGFloat = 80.0 * Constraint.yCoeff
 
         if scrollView.contentOffset.y + frameHeight >= contentHeight {
             scrollView.contentInset.bottom = bottomOffsetThreshold

@@ -82,14 +82,6 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
         return view
     }()
 
-//    private lazy var mainBottomButtons: MainBottomButtonView = {
-//        let view = MainBottomButtonView()
-//        view.layer.cornerRadius = 26
-//        view.backgroundColor = UIColor.clearBlur(withAlpha: 0.8)
-////        view.delegate = self
-//        return view
-//    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -173,21 +165,6 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
         let workoutNameString = workoutName()
         let workoutDetailsString = workoutDetails()
 
-
-//        //MARK: time
-//        guard let timerValue = addTaskView.timerAddTextfield.text, !timerValue.isEmpty else {
-//            showAlert(title: "Error", description: "Please provide a valid timer value.")
-//            return
-//        }
-
-//        //MARK: task name
-//        guard let taskName = addTaskView.nameWorkoutAddTextfield.text else { return }
-//
-//        //MARK: task description
-//        guard let taskDescription = addTaskView.descriptionWorkoutAddTextfield.text else { return }
-//        
-//        let timeInSeconds = convertTimerToSeconds(timerValue)
-
         let parameters: [String: Any] = [
             "task_count": tasks.count,
             "level": selectedLevelString,
@@ -213,7 +190,6 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
             NetworkManager.shared.showProgressHud(false, animated: false)
             switch result {
             case .success(let workout):
-//                let workoutViewController = MainViewController()
                     NotificationCenter.default.post(
                         name: NSNotification.Name(
                             "workout.view.observer"
@@ -224,8 +200,6 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
                     self.tabBarController?.selectedIndex = 0
                 }
                 self.resetAllFields()
-
-//                self.navigationController?.pushViewController(workoutViewController, animated: true)
                 print("Workout saved successfully: \(workout)")
             case .failure(let error):
                 print("Error saving workout: \(error.localizedDescription)")
@@ -236,7 +210,6 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
         } else {
             print("Workout ID not found or not stored as a single value.")
         }
-//        workoutViewController.receivedWorkoutDetails = "\(String(describing: userId))"
     }
     // Helper: Show an alert to the user
     private func showAlert(title: String, description: String) {
@@ -472,7 +445,7 @@ extension AddWorkoutViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = .init(
-            top: 10 * Constraint.yCoeff,
+            top: 0 * Constraint.yCoeff,
             leading: 0 * Constraint.xCoeff,
             bottom: 0 * Constraint.yCoeff,
             trailing: 0 * Constraint.xCoeff

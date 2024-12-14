@@ -431,6 +431,11 @@ class ProfileViewController: UIViewController {
                     print("User created: \(userInfo)")
                     UserDefaults.standard.setValue(userInfo.id, forKey: "userId")
                     print("Received User ID: \(userInfo.id)")
+                    if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                        let mainViewController = MainViewControllerTab()
+                        let navigationController = UINavigationController(rootViewController: mainViewController)
+                        sceneDelegate.changeRootViewController(navigationController)
+                    }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -439,8 +444,6 @@ class ProfileViewController: UIViewController {
                 print("Error: \(error)")
             }
         }
-        let mainVC = MainViewControllerTab()
-        navigationController?.pushViewController(mainVC, animated: true)
     }
 
     private func showAlert(title: String, description: String) {

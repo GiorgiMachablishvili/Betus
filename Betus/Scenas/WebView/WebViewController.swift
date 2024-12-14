@@ -50,9 +50,9 @@ class WebViewController: UIViewController {
         }
 
         closeButton.snp.remakeConstraints { make in
-            make.top.equalTo(webView.snp.top).offset(20)
-            make.trailing.equalTo(webView.snp.trailing).offset(-20)
-            make.height.width.equalTo(40)
+            make.top.equalTo(webView.snp.top).offset(20 * Constraint.yCoeff)
+            make.trailing.equalTo(webView.snp.trailing).offset(-20 * Constraint.xCoeff)
+            make.height.width.equalTo(40 * Constraint.yCoeff)
         }
     }
 
