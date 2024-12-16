@@ -95,7 +95,7 @@ class WorkoutViewController: UIViewController {
 
     private func fetchWorkoutCurrentUserInfo() {
         guard let id = UserDefaults.standard.value(forKey: "userId") else { return }
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts"
+        let url = "https://be-sport.org/api/v1/workouts"
 
         NetworkManager.shared.get(url: url, parameters: nil, headers: nil) { (result: Result<[Workouts]>) in
             switch result {
@@ -113,7 +113,7 @@ class WorkoutViewController: UIViewController {
     }
 
     private func postLikeState(userId: String, workoutId: String) {
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
+        let url = "https://be-sport.org/api/v1/workouts/selected?user_id=\(userId)&workout_id=\(workoutId)"
 
         NetworkManager.shared.post(url: url, parameters: nil, headers: nil) { [weak self] (result: Result<[Workouts]>) in
             switch result {

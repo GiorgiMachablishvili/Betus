@@ -184,7 +184,7 @@ class AddWorkoutViewController: UIViewController, ImageViewDelegate {
 //        print("Parameters: \(parameters)")
 
         //MARK: url
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/workouts/"
+        let url = "https://be-sport.org/api/v1/workouts/"
         NetworkManager.shared.showProgressHud(true, animated: true)
         NetworkManager.shared.post(url: url, parameters: parameters, headers: nil) { (result: Result<Workouts>) in
             NetworkManager.shared.showProgressHud(false, animated: false)

@@ -174,7 +174,7 @@ class SignInView: UIViewController {
 
         // Make the network request
         NetworkManager.shared.post(
-            url: "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/",
+            url: "https://be-sport.org/api/v1/users/",
             parameters: parameters,
             headers: nil
         ) { [weak self] (result: Result<UserInfo>) in

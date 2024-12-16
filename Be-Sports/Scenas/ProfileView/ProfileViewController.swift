@@ -204,7 +204,7 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func pressTermsOfUserButton() {
-        let termsURL = "https://apps.apple.com/us/app/apple-support/id1130498044"
+        let termsURL = "https://be-sport.org/terms"
         let webViewController = WebViewController(urlString: termsURL)
         navigationController?.present(webViewController, animated: true)
     }
@@ -256,7 +256,7 @@ class ProfileViewController: UIViewController {
         }
 
         // Define the API endpoint for deleting the account
-        let url = "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/\(userId)"
+        let url = "https://be-sport.org/api/v1/users/\(userId)"
 
         // Show a loading indicator
 //        ProgressHUD.show("Deleting account...")
@@ -414,7 +414,7 @@ class ProfileViewController: UIViewController {
 
         // Make the network request
         NetworkManager.shared.post(
-            url: "https://betus-orange-nika-46706b42b39b.herokuapp.com/api/v1/users/",
+            url: "https://be-sport.org/api/v1/users/",
             parameters: parameters,
             headers: nil
         ) { [weak self] (result: Result<UserInfo>) in
